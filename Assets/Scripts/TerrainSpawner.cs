@@ -33,7 +33,6 @@ public class TerrainSpawner : MonoBehaviour
         {
             for (int y = 0; y < ratio; y++)
             {
-                print($"Perlin Noise on position {x},{y} is: {Mathf.PerlinNoise(environmentXOffset + x * sampleScale,environmentYOffset + y * sampleScale)}");
                 perlinMap[x, y] = Mathf.PerlinNoise(environmentXOffset + x * sampleScale, environmentYOffset + y * sampleScale);
             }
         }
@@ -42,7 +41,6 @@ public class TerrainSpawner : MonoBehaviour
     private void SetWorldTile()
     {
         var tileTransform = tile.transform;
-        // tileTransform.localScale = new Vector3(worldTileSideSize, worldTileSideSize, worldTileSideSize);
         SpawnTerrainElements();
     }
 
@@ -54,7 +52,7 @@ public class TerrainSpawner : MonoBehaviour
         {
             for (int y = 0; y < ratio; y++)
             {
-                var newElement = Instantiate(element, new Vector3(tilePosition.x + x * gridSize, perlinMap[x,y] * 10, tilePosition.x + y * gridSize), Quaternion.identity);
+                var newElement = Instantiate(element, new Vector3(tilePosition.x + x * gridSize, Mathf.RoundToInt(perlinMap[x, y] * 10), tilePosition.y + y * gridSize), Quaternion.identity);
                 newElement.transform.parent = tile.transform;
             }
         }
