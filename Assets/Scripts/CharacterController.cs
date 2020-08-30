@@ -6,12 +6,15 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
+#pragma warning disable 649
     [SerializeField] private bool movementEnabled;
     
     [SerializeField] float lookSpeedH = 2f;
     [SerializeField] float lookSpeedV = 2f;
     [SerializeField] float zoomSpeed = 2f;
     [SerializeField] float moveSpeed = 2f;
+    [SerializeField] float fastSpeed = 2f;
+    
     [SerializeField] private Rigidbody rigidBody;
      
     private float yaw = 1f;
@@ -19,6 +22,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField] Position position;
     [SerializeField] TerrainSpawner terrainSpawner;
     [SerializeField] EnvironmentControler environment;
+#pragma warning restore 649
 
     private void Start()
     {
@@ -33,21 +37,19 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    public void EnableMovement(bool state)
+    {
+        movementEnabled = state;
+    }
+
     private void FixCharacterPosition()
     {
         float initialGridDimension = environment.GridSize * environment.WorldTileSideSize;
         var spawnPosition = position.GetGridPosition(new Vector3(initialGridDimension / 2, 20, initialGridDimension / 2));
         spawnPosition = position.GetGridPosition(spawnPosition);
-        // print($"Spawn Position is: {spawnPosition}");
-        
-        // foreach (var el in terrainSpawner.GridMap.Keys)
-        // {
-        //     print($"el = {terrainSpawner.GridMap[el]}");
-        //     // if((int)el.x == 15) print($"Found element: {terrainSpawner.GridMap[el]}, it's y-position is {el.y}");;
-        // }
+       
         var positionElement = terrainSpawner.GridMap
             .FirstOrDefault(element => element.Key.x == (int) spawnPosition.x && element.Key.y == (int) spawnPosition.z);
-        // print($"Found element: {positionElement}, it's y-position is {positionElement.Key.y}");
         
         transform.position = new Vector3(spawnPosition.x, positionElement.Value.transform.position.y + (1 * environment.GridSize), spawnPosition.z);
     }
@@ -59,36 +61,36 @@ public class CharacterController : MonoBehaviour
  
         transform.eulerAngles = new Vector3(pitch, yaw, 0f);
      
-        var moveMultiplier = Time.deltaTime * moveSpeed;
+        
         
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Translate(Vector3.left * moveMultiplier);
+            MoveCharacter(Vector3.left);
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            transform.Translate(Vector3.right * moveMultiplier);
+            MoveCharacter(Vector3.right);
         }
         
         if (Input.GetKey(KeyCode.W))
         {
-            transform.Translate(Vector3.forward * moveMultiplier);
+            MoveCharacter(Vector3.forward);
         }
         
         if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(Vector3.back * moveMultiplier);
+            MoveCharacter(Vector3.back);
         }
         
         if (Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.Space))
         {
-            transform.Translate(Vector3.up * moveMultiplier);
+            MoveCharacter(Vector3.up);
         }
         
         if (Input.GetKey(KeyCode.Q))
         {
-            transform.Translate(Vector3.down * moveMultiplier);
+            MoveCharacter(Vector3.down);
         }
      
         //Zoom in and out with Mouse Wheel
@@ -96,5 +98,11 @@ public class CharacterController : MonoBehaviour
         
         rigidBody.velocity = Vector3.zero;
         rigidBody.angularVelocity = Vector3.zero;
+    }
+
+    private void MoveCharacter(Vector3 direction)
+    {
+        var moveMultiplier = Time.deltaTime * (Input.GetKey(KeyCode.LeftShift) ? fastSpeed : moveSpeed);
+        transform.Translate(direction * moveMultiplier);
     }
 }

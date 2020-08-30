@@ -6,19 +6,19 @@ using UnityEngine.Events;
 public class Position : MonoBehaviour
 {
 #pragma warning disable 649
-    public Vector3 currentGridPosition;
-    public Vector3 oldGridPosition;
-    [SerializeField] public EventVector3 OnPositionChanged;
+    public Vector3Int CurrentGridPosition;
+    public Vector3Int OldGridPosition;
+    [SerializeField] public EventVector3Int OnPositionChanged;
     [SerializeField] EnvironmentControler environment;
 #pragma warning restore 649
 
     [System.Serializable]
-    public class EventVector3 : UnityEvent<Vector3> {};
+    public class EventVector3Int : UnityEvent<Vector3Int> {};
 
     private void Start()
     {
-        currentGridPosition = GetGridPosition();
-        oldGridPosition = currentGridPosition;
+        CurrentGridPosition = GetGridPosition();
+        OldGridPosition = CurrentGridPosition;
     }
 
     void Update()
@@ -30,28 +30,28 @@ public class Position : MonoBehaviour
     {
         var newPosition = GetGridPosition();
         
-        if (newPosition != currentGridPosition)
+        if (newPosition != CurrentGridPosition)
         {
-            oldGridPosition = currentGridPosition;
-            currentGridPosition = newPosition;
+            OldGridPosition = CurrentGridPosition;
+            CurrentGridPosition = newPosition;
             OnPositionChanged?.Invoke(newPosition);
         }        
     }
 
-    private Vector3 GetGridPosition()
+    private Vector3Int GetGridPosition()
     {
         return GetGridPosition(transform.position);
     }
 
-    private float NormalizePositionVector(float vector)
+    private int NormalizePositionVector(float vector)
     {
         var gridSize = environment.GridSize;
         return Mathf.RoundToInt(vector) * gridSize;
     }
 
-    public Vector3 GetGridPosition(Vector3 worldPosition)
+    public Vector3Int GetGridPosition(Vector3 worldPosition)
     {
-        return new Vector3(
+        return new Vector3Int(
             NormalizePositionVector(worldPosition.x),
             NormalizePositionVector(worldPosition.y),
             NormalizePositionVector(worldPosition.z));

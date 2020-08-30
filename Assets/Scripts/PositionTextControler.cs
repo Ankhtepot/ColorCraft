@@ -19,10 +19,10 @@ public class PositionTextControler : MonoBehaviour
     {
         characterPosition = FindObjectOfType<CharacterController>().GetComponent<Position>();
         characterPosition.OnPositionChanged.AddListener(RefreshPositionText);
-        RefreshPositionText(characterPosition.currentGridPosition);
+        RefreshPositionText(characterPosition.CurrentGridPosition);
     }
 
-    private void RefreshPositionText(Vector3 newPosition)
+    private void RefreshPositionText(Vector3Int newPosition)
     {
         XText.text = newPosition.x.ToString(CultureInfo.InvariantCulture);
         ZText.text = newPosition.z.ToString(CultureInfo.InvariantCulture);
