@@ -64,14 +64,7 @@ public class TerrainSpawner : MonoBehaviour
 
     private IEnumerable<float> Get1DPerlinNoiseValues(List<Vector2Int> positions)
     {
-        List<float> result = new List<float>();
-        
-        for (int i = 0; i < positions.Count; i++)
-        {
-            result.Add(Mathf.PerlinNoise(positions[i].x, positions[i].y));
-        }
-
-        return result;
+        return positions.Select(item => Mathf.PerlinNoise(item.x, item.y));
     }
 
     private void SetWorldTile()
@@ -115,7 +108,6 @@ public class TerrainSpawner : MonoBehaviour
     {
         if (newPosition.y == 1 || newPosition.y == -1)
         {
-            print("Ignoring movement");
             return;
         }
         
@@ -125,53 +117,65 @@ public class TerrainSpawner : MonoBehaviour
 
         var offsetsChange = new Vector2Int(moveVector3.x, moveVector3.z);
         var oldWorldOffset = worldOffset;
-        worldOffset += offsetsChange;
+        
         
         if (moveVector2Int == Vector2Int.up)
         {
-            print("Moving Front");
+            worldOffset += offsetsChange;
+            // print("Moving Front");
             MoveForward(oldWorldOffset);
         }
         else
         if (moveVector2Int == Vector2Int.down)
         {
-            print("Moving Back");
+            worldOffset += offsetsChange;
+            // print("Moving Back");
             MoveBack(oldWorldOffset);
         }
         else
         if (moveVector2Int == Vector2Int.right)
         {
-            print("Moving Right");
+            worldOffset += offsetsChange;
+            // print("Moving Right");
             MoveRight(oldWorldOffset);
         }
         else
         if (moveVector2Int == Vector2Int.left)
         {
-            print("Moving Left");
+            worldOffset += offsetsChange;
+            // print("Moving Left");
             MoveLeft(oldWorldOffset);
         }
         else if (moveVector2Int == ForwardRight)
         {
-            print("Moving Forward Right");
+            worldOffset += Vector2Int.up;
+            // print("Moving Forward Right");
             MoveForward(oldWorldOffset);
+            worldOffset += Vector2Int.right;
             MoveRight(oldWorldOffset + Vector2Int.up);
         }
         else if (moveVector2Int == ForwardLeft)
         {
-            print("Moving Forward Left");
+            worldOffset += Vector2Int.up;
+            // print("Moving Forward Left");
             MoveForward(oldWorldOffset);
+            worldOffset += Vector2Int.left;
             MoveLeft(oldWorldOffset + Vector2Int.up);
         }
         else if (moveVector2Int == BackLeft)
         {
-            print("Moving Back Left");
+            worldOffset += Vector2Int.down;
+            // print("Moving Back Left");
             MoveBack(oldWorldOffset);
+            worldOffset += Vector2Int.left;
             MoveLeft(oldWorldOffset + Vector2Int.down);
         }
         else if (moveVector2Int == BackRight)
         {
-            print("Moving Back Right");
+            worldOffset += Vector2Int.down;
+            // print("Moving Back Right");
             MoveBack(oldWorldOffset);
+            worldOffset += Vector2Int.right;
             MoveRight(oldWorldOffset + Vector2Int.down);
         }
     }
@@ -180,11 +184,11 @@ public class TerrainSpawner : MonoBehaviour
     {
         for (int i = 0; i < ratio; i++)
         {
-            var oldElementKey = new Vector2Int(i + oldWorldOffset.x, oldWorldOffset.y);
-            if (i == 0) print($"Old Element key: {oldElementKey}");
-            var updatedYPosition = ratio + oldWorldOffset.y + Vector2Int.up.y - 1;
-
-            MoveElement(oldElementKey, i, updatedYPosition, Vector2Int.up);
+            var oldGridPosition = new Vector2Int(i + oldWorldOffset.x, oldWorldOffset.y);
+            // print($"Old Element key: {oldGridPosition}");
+            var newGridPosition = new Vector2Int(i,ratio - 1) + worldOffset;
+            // print($"New Element key: {newGridPosition}");
+            MoveElement(oldGridPosition, newGridPosition);
         }
     }
 
@@ -192,11 +196,11 @@ public class TerrainSpawner : MonoBehaviour
     {
         for (int i = 0; i < ratio; i++)
         {
-            var oldElementKey = new Vector2Int(ratio + oldWorldOffset.x - 1, i + oldWorldOffset.y);
-            if (i == 0) print($"Old Element key: {oldElementKey}");
-            var updatedXPosition = worldOffset.x;
-
-            MoveElement(oldElementKey, updatedXPosition, i, Vector2Int.left);
+            var oldGridPosition = new Vector2Int(ratio + oldWorldOffset.x - 1, i + oldWorldOffset.y);
+            // print($"Old Element key: {oldGridPosition}");
+            var newGridPosition = new Vector2Int(0,i) + worldOffset;
+            // print($"New Element key: {newGridPosition}");
+            MoveElement(oldGridPosition, newGridPosition);
         }
     }
 
@@ -204,11 +208,11 @@ public class TerrainSpawner : MonoBehaviour
     {
         for (int i = 0; i < ratio; i++)
         {
-            var oldElementKey = new Vector2Int(oldWorldOffset.x, i + oldWorldOffset.y);
-            if (i == 0) print($"Old Element key: {oldElementKey}");
-            var updatedXPosition = ratio + worldOffset.x - 1;
-
-            MoveElement(oldElementKey, updatedXPosition, i, Vector2Int.right);
+            var oldGridPosition = new Vector2Int(oldWorldOffset.x, i + oldWorldOffset.y);
+            // print($"Old Element key: {oldGridPosition}");
+            var newGridPosition = new Vector2Int(ratio - 1,i) + worldOffset;
+            // print($"New Element key: {newGridPosition}");
+            MoveElement(oldGridPosition, newGridPosition);
         }
     }
 
@@ -216,29 +220,27 @@ public class TerrainSpawner : MonoBehaviour
     {
         for (int i = 0; i < ratio; i++)
         {
-            var oldElementKey = new Vector2Int(i + oldWorldOffset.x, ratio + oldWorldOffset.y - 1);
-            if (i == 0) print($"Old Element key: {oldElementKey}");
-            var updatedYPosition = worldOffset.y;
-
-            MoveElement(oldElementKey, i, updatedYPosition, Vector2Int.down);
+            var oldGridPosition = new Vector2Int(i + oldWorldOffset.x, ratio + oldWorldOffset.y - 1);
+            // print($"Old Element key: {oldGridPosition}");
+            var newGridPosition = new Vector2Int(i,0) + worldOffset;
+            // print($"New Element key: {newGridPosition}");
+            MoveElement(oldGridPosition, newGridPosition);
         }
     }
 
-    private void MoveElement(Vector2Int oldElementKey, int updatedXPosition, int updatedYPosition, Vector2Int movementDirection)
+    private void MoveElement(Vector2Int oldElementKey, Vector2Int newGridPosition)
     {
-        float newYValue = GetPerlinNoiseValue(updatedXPosition, updatedYPosition);
+        float newYHeightValue = GetPerlinNoiseValue(newGridPosition.x, newGridPosition.y);
         var elementToMove = GridMap[oldElementKey];
-        var newElement2DPosition = new Vector2Int(updatedXPosition, updatedYPosition) ;
-        if (updatedXPosition == 0 || updatedYPosition == 0) 
-            print($"New Element key: {newElement2DPosition}");
+        
         elementToMove.transform.position = new Vector3(
-            updatedXPosition,
-            Mathf.RoundToInt(newYValue * heightMultiplier),
-            updatedYPosition);
+            newGridPosition.x,
+            Mathf.RoundToInt(newYHeightValue * heightMultiplier),
+            newGridPosition.y);
         GridMap.Remove(oldElementKey);
         GridMapCoords.Remove(oldElementKey);
-        GridMap.Add(newElement2DPosition, elementToMove);
-        GridMapCoords.Add(newElement2DPosition);
+        GridMap.Add(newGridPosition, elementToMove);
+        GridMapCoords.Add(newGridPosition);
     }
 
     private Vector2Int Generate2DOffset()

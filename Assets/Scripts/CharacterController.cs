@@ -14,6 +14,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField] float zoomSpeed = 2f;
     [SerializeField] float moveSpeed = 2f;
     [SerializeField] float fastSpeed = 2f;
+    [SerializeField] private float heightConstraint;
     
     [SerializeField] private Rigidbody rigidBody;
      
@@ -83,7 +84,7 @@ public class CharacterController : MonoBehaviour
             MoveCharacter(Vector3.back);
         }
         
-        if (Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.Space))
+        if (position.CurrentGridPosition.y < heightConstraint &&(Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.Space)))
         {
             MoveCharacter(Vector3.up);
         }
