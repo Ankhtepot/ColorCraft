@@ -14,7 +14,7 @@ public class TerrainSpawner : MonoBehaviour
     [Range(0f, 1f)] [SerializeField] private float sampleScale = 0.1f;
     [SerializeField] private Vector2Int currentPerlinOffset;
     [SerializeField] private Vector2Int worldOffset = new Vector2Int(0, 0);
-    [Header("Assignables")]
+    [Header("Assignable")]
     [SerializeField] private TerrainElement element;
     [SerializeField] private Transform elementParent;
     [SerializeField] private EnvironmentControler environment;
@@ -26,7 +26,7 @@ public class TerrainSpawner : MonoBehaviour
     private int ratio;
     private float[,] perlinMap;
     public Dictionary<Vector2Int, TerrainElement> GridMap = new Dictionary<Vector2Int, TerrainElement>();
-    public List<Vector2Int> GridMapCoords = new List<Vector2Int>();
+    // public List<Vector2Int> GridMapCoords = new List<Vector2Int>();
 
     public UnityEvent SpawningFinished;
 #pragma warning restore 649
@@ -67,12 +67,6 @@ public class TerrainSpawner : MonoBehaviour
         return positions.Select(item => Mathf.PerlinNoise(item.x, item.y));
     }
 
-    private void SetWorldTile()
-    {
-        var tileTransform = elementParent.transform;
-        SpawnTerrainElements();
-    }
-
     private void SpawnTerrainElements()
     {
         var tilePosition = elementParent.transform.localPosition;
@@ -86,11 +80,12 @@ public class TerrainSpawner : MonoBehaviour
                     Mathf.RoundToInt(perlinMap[x, y] * heightMultiplier),
                     tilePosition.y + y * gridSize), Quaternion.identity);
                 
+                newElement.SetHeightMaterial();
                 var newElementTransform = newElement.transform;
                 newElementTransform.parent = elementParent.transform;
 
                 GridMap.Add(new Vector2Int((int)newElementTransform.position.x, (int)newElementTransform.position.z), newElement);
-                GridMapCoords.Add(new Vector2Int((int)newElementTransform.position.x, (int)newElementTransform.position.z));
+                // GridMapCoords.Add(new Vector2Int((int)newElementTransform.position.x, (int)newElementTransform.position.z));
             }
         }
         
@@ -237,10 +232,12 @@ public class TerrainSpawner : MonoBehaviour
             newGridPosition.x,
             Mathf.RoundToInt(newYHeightValue * heightMultiplier),
             newGridPosition.y);
+        elementToMove.SetHeightMaterial();
+        
         GridMap.Remove(oldElementKey);
-        GridMapCoords.Remove(oldElementKey);
+        // GridMapCoords.Remove(oldElementKey);
         GridMap.Add(newGridPosition, elementToMove);
-        GridMapCoords.Add(newGridPosition);
+        // GridMapCoords.Add(newGridPosition);
     }
 
     private Vector2Int Generate2DOffset()
@@ -266,6 +263,6 @@ public class TerrainSpawner : MonoBehaviour
 
         currentPerlinOffset = Generate2DOffset();
         SetPerlinMap();
-        SetWorldTile();
+        SpawnTerrainElements();
     }
 }

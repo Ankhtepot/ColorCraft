@@ -50,7 +50,7 @@ public class CharacterController : MonoBehaviour
         spawnPosition = position.GetGridPosition(spawnPosition);
        
         var positionElement = terrainSpawner.GridMap
-            .FirstOrDefault(element => element.Key.x == (int) spawnPosition.x && element.Key.y == (int) spawnPosition.z);
+            .FirstOrDefault(element => element.Key.x == spawnPosition.x && element.Key.y == spawnPosition.z);
         
         transform.position = new Vector3(spawnPosition.x, positionElement.Value.transform.position.y + (1 * environment.GridSize), spawnPosition.z);
     }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using HelperClasses;
+using UnityEngine;
 using UnityEngine.Events;
 
 //Fireball Games * * * PetrZavodny.com
@@ -8,12 +9,9 @@ public class Position : MonoBehaviour
 #pragma warning disable 649
     public Vector3Int CurrentGridPosition;
     public Vector3Int OldGridPosition;
-    [SerializeField] public EventVector3Int OnPositionChanged;
+    [SerializeField] public CustomUnityEvents.EventVector3Int OnPositionChanged;
     [SerializeField] EnvironmentControler environment;
 #pragma warning restore 649
-
-    [System.Serializable]
-    public class EventVector3Int : UnityEvent<Vector3Int> {};
 
     private void Start()
     {
