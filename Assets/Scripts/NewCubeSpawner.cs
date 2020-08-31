@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using HelperClasses;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class NewCubeSpawner : MonoBehaviour
     [SerializeField] private BuildPositionProvider buildPositionProvider;
     [SerializeField] private GameObject previewPresenter;
     [SerializeField] private GameObject previewElementPivot;
+    [SerializeField] private Vector3 previewElementScaleFactor = new Vector3(0.9f, 0.9f, 0.9f);
+    [SerializeField] private float previewElementTransparencyFactor = 0.7f;
 #pragma warning restore 649
 
     void Start()
@@ -63,12 +66,15 @@ public class NewCubeSpawner : MonoBehaviour
 
     private void SetPreviewItem(GameObject element)
     {
-        element.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+        element.transform.localScale = previewElementScaleFactor;
 
-        var elementMaterial = element.GetComponentInChildren<Renderer>().sharedMaterials[0];
+        var elementMaterial = element.GetComponentInChildren<Renderer>().material;
         var newColor = elementMaterial.color;
-        newColor.a = 0.9f;
-        elementMaterial.color = newColor;
+        newColor.a = previewElementTransparencyFactor;
+        var newMaterial = new Material(elementMaterial);
+        newMaterial.SetColor(Strings.SetMaterialColorKeyword, newColor);
+
+        element.GetComponentInChildren<Renderer>().material = newMaterial;
 
         element.transform.parent = previewElementPivot.transform;
     }
