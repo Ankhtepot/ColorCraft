@@ -6,6 +6,7 @@ using Models;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.UIElements;
+using Utilities;
 using Image = UnityEngine.UI.Image;
 
 //Fireball Games * * * PetrZavodny.com
@@ -16,6 +17,7 @@ public class BuildStoreController : MonoBehaviour
     [SerializeField] private Sprite[] itemsSprites;
     [SerializeField] private BuildElement[] itemsPrefabs;
     [SerializeField] private Image shownItemImage;
+    [SerializeField] private Animator animator;
     [SerializeField] private int currentItemIndex;
     private readonly List<BuildStoreItem> itemsStore = new List<BuildStoreItem>();
     [SerializeField] private bool inputEnabled = true;
@@ -93,7 +95,15 @@ public class BuildStoreController : MonoBehaviour
     public void OnGameModeChange(GameMode newMode)
     {
         gameMode = newMode;
-        ChangeStoreItem(currentItemIndex);
+        if (newMode == GameMode.Build)
+        {
+            animator.SetBool(Strings.Show, true);
+            ChangeStoreItem(currentItemIndex);
+        }
+        else
+        {
+            animator.SetBool(Strings.Show, false);
+        }
     }
 
     /// <summary>

@@ -1,7 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Extensions;
+using HelperClasses;
 using UnityEngine;
 using UnityEngine.Events;
+using Utilities;
+using Random = UnityEngine.Random;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -19,21 +24,24 @@ public class TerrainSpawner : MonoBehaviour
     [SerializeField] private Transform elementParent;
     [SerializeField] private EnvironmentControler environment;
     [SerializeField] private Position characterPosition;
-
     [Header("Observed properties")] 
     [SerializeField] private int XOffset;
     [SerializeField] private int YOffset;
+    
     private int ratio;
     private float[,] perlinMap;
     public Dictionary<Vector2Int, TerrainElement> GridMap = new Dictionary<Vector2Int, TerrainElement>();
-    // public List<Vector2Int> GridMapCoords = new List<Vector2Int>();
-
+    
+    [SerializeField] public CustomUnityEvents.EventVector3Int OnCoordinateHidden;
+    [SerializeField] public CustomUnityEvents.EventVector3Int OnCoordinateShown;
     public UnityEvent SpawningFinished;
 #pragma warning restore 649
+    
     private readonly Vector2Int ForwardRight = new Vector2Int(1, 1);
     private readonly Vector2Int ForwardLeft = new Vector2Int(-1, 1);
     private readonly Vector2Int BackRight = new Vector2Int(1, -1);
     private readonly Vector2Int BackLeft = new Vector2Int(-1, -1);
+    
     void Start()
     {
         initialize();
@@ -81,6 +89,7 @@ public class TerrainSpawner : MonoBehaviour
                     tilePosition.y + y * gridSize), Quaternion.identity);
                 
                 newElement.SetHeightMaterial();
+                newElement.tag = Strings.BuildAllSides;
                 var newElementTransform = newElement.transform;
                 newElementTransform.parent = elementParent.transform;
 
@@ -228,16 +237,19 @@ public class TerrainSpawner : MonoBehaviour
         float newYHeightValue = GetPerlinNoiseValue(newGridPosition.x, newGridPosition.y);
         var elementToMove = GridMap[oldElementKey];
         
+        OnCoordinateHidden?.Invoke(elementToMove.transform.position.ToVector3Int());
+        
         elementToMove.transform.position = new Vector3(
             newGridPosition.x,
             Mathf.RoundToInt(newYHeightValue * heightMultiplier),
             newGridPosition.y);
         elementToMove.SetHeightMaterial();
         
+        
         GridMap.Remove(oldElementKey);
-        // GridMapCoords.Remove(oldElementKey);
         GridMap.Add(newGridPosition, elementToMove);
-        // GridMapCoords.Add(newGridPosition);
+        
+        OnCoordinateShown?.Invoke(elementToMove.transform.position.ToVector3Int());
     }
 
     private Vector2Int Generate2DOffset()

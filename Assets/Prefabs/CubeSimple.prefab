@@ -103,7 +103,6 @@ GameObject:
   m_Component:
   - component: {fileID: 72301101195940694}
   - component: {fileID: -7987431562744921472}
-  - component: {fileID: 1093720503321736546}
   m_Layer: 9
   m_Name: CubeSimple
   m_TagString: BuildAllSides
@@ -149,16 +148,3 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 25f63811db346ee45b0a83c2f671e99d, type: 2}
   - {fileID: 2100000, guid: a3f6c462a75a2a64cb661ada187aff41, type: 2}
   - {fileID: 2100000, guid: 89946befa9e4d054b89db8133b34bfd5, type: 2}
---- !u!65 &1093720503321736546
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3800918117577122892}
-  m_Material: {fileID: 13400000, guid: a3472a3702210aa4a874b73b44c30506, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}

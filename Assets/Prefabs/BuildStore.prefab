@@ -28,7 +28,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4298888684682826834}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -65,7 +65,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4298888684682826834}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -137,8 +137,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 824511299651673385}
   - {fileID: 2769717608747259387}
+  - {fileID: 824511299651673385}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -170,6 +170,9 @@ MonoBehaviour:
   - {fileID: -104468982814978260, guid: 33473de3a3b40dd4dbf4761d68963cde, type: 3}
   - {fileID: -104468982814978260, guid: f8b375ce222862f4fb8f1db0481cff3a, type: 3}
   shownItemImage: {fileID: 3533017918146871247}
+  currentItemIndex: 0
+  inputEnabled: 1
+  gameMode: 0
   OnStoreItemChanged:
     m_PersistentCalls:
       m_Calls: []

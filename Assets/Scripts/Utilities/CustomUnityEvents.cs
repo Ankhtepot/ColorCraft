@@ -9,6 +9,9 @@ namespace HelperClasses
         public class EventVector3Int : UnityEvent<Vector3Int> { }
         
         [System.Serializable]
+        public class EventVector2Int : UnityEvent<Vector2Int> { }
+        
+        [System.Serializable]
         public class EventBool : UnityEvent<bool> { }
         
         [System.Serializable]

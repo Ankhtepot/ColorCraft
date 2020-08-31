@@ -63,5 +63,8 @@ public class GameController : MonoBehaviour
     private void initialize()
     {
         SetGameMode(GameMode.FreeFlight);
+        SetInputEnabled(true);
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
     }
 }

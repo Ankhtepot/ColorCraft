@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Extensions;
 using HelperClasses;
 using UnityEngine;
 using UnityEngine.Events;
+using Utilities;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -18,6 +20,7 @@ public class BuildPositionProvider : MonoBehaviour
     [SerializeField] public UnityEvent OnNoValidPreviewPosition;
     private Vector3Int previousPreviewPosition;
     private GameMode gameMode;
+    [SerializeField] private string[] buildTags = {Strings.BuildAllSides, Strings.BuildTopOnly,};
     
 #pragma warning restore 649
     
@@ -30,20 +33,14 @@ public class BuildPositionProvider : MonoBehaviour
     {
         if (gameMode != GameMode.Build) return;
         
-        var ray = targetCamera.ScreenPointToRay(Input.mousePosition);
-
         if (Physics.Raycast(targetCamera.transform.position, targetCamera.transform.forward, out var hit))
         {
             var objectHit = hit.transform;
 
-            if (objectHit.CompareTag(Strings.BuildTopOnly) && hit.normal != Vector3.up)
-            {
-                return;
-            }
-            if (objectHit.CompareTag(Strings.BuildAllSides))
-            {
-                return;
-            }
+            if (!buildTags.Contains(objectHit.parent.tag)) return;
+            
+            if (objectHit.parent.CompareTag(Strings.BuildTopOnly) && hit.normal != Vector3.up) return;
+            
             // print($"Hit normal: {hit.normal}");
             previewPosition = (objectHit.position + hit.normal).ToVector3Int();
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Extensions
 {
@@ -11,6 +12,13 @@ namespace Extensions
                 Mathf.RoundToInt(source.y),
                 Mathf.RoundToInt(source.z)
                 );
+        }
+
+        public static Vector2Int Vector2IntXZ(this Vector3 source)
+        {
+            return new Vector2Int(
+                Mathf.RoundToInt(source.x), 
+                Mathf.RoundToInt(source.z));
         }
     }
 }

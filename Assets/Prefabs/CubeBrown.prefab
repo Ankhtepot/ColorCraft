@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 6339764233073433009}
   - component: {fileID: 1884772440460936371}
   - component: {fileID: 8721039598107990478}
-  m_Layer: 2
+  - component: {fileID: 144509151161959348}
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,6 +80,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &144509151161959348
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2686375787985619435}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3800918117577122892
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,9 +102,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 72301101195940694}
-  - component: {fileID: 1093720503321736546}
   - component: {fileID: -104468982814978260}
-  m_Layer: 2
+  m_Layer: 9
   m_Name: CubeBrown
   m_TagString: BuildAllSides
   m_Icon: {fileID: 0}
@@ -112,19 +125,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1093720503321736546
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3800918117577122892}
-  m_Material: {fileID: 13400000, guid: a3472a3702210aa4a874b73b44c30506, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-104468982814978260
 MonoBehaviour:
   m_ObjectHideFlags: 0
