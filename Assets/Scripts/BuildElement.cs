@@ -7,21 +7,8 @@ using UnityEngine;
 public class BuildElement : MonoBehaviour
 {
 #pragma warning disable 649
-    
+    [SerializeField] private string Description;
 #pragma warning restore 649
 
-    void Start()
-    {
-        initialize();
-    }
 
-    void Update()
-    {
-        
-    }
-    
-    private void initialize()
-    {
-       
-    }
 }

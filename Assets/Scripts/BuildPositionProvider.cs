@@ -42,7 +42,7 @@ public class BuildPositionProvider : MonoBehaviour
             if (objectHit.parent.CompareTag(Strings.BuildTopOnly) && hit.normal != Vector3.up) return;
             
             // print($"Hit normal: {hit.normal}");
-            previewPosition = (objectHit.position + hit.normal).ToVector3Int();
+            previewPosition = (objectHit.parent.position + hit.normal).ToVector3Int();
 
             if (previewPosition != previousPreviewPosition)
             {

@@ -19,5 +19,8 @@ namespace HelperClasses
         
         [System.Serializable]
         public class EventBuildElement : UnityEvent<BuildElement> { }
+        
+        [System.Serializable]
+        public class EventGameObject : UnityEvent<GameObject> { }
     }
 }

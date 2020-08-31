@@ -11,8 +11,8 @@ using UnityEngine.Serialization;
 public class GameController : MonoBehaviour
 {
 #pragma warning disable 649
-    [SerializeField] private bool inputEnabled = true;
-    [SerializeField] private GameMode gameMode;
+    public bool InputEnabled = true;
+    public GameMode GameMode;
     [SerializeField] public CustomUnityEvents.EventGameMode OnGameModeChanged;
     [SerializeField] public CustomUnityEvents.EventBool OnInputEnabledChanged;
 #pragma warning restore 649
@@ -24,7 +24,7 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        if (inputEnabled)
+        if (InputEnabled)
         {
             HandleInput();
         }
@@ -34,7 +34,7 @@ public class GameController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            switch (gameMode)
+            switch (GameMode)
             {
                 case GameMode.FreeFlight:
                     SetGameMode(GameMode.Build); break;
@@ -50,13 +50,13 @@ public class GameController : MonoBehaviour
 
     private void SetGameMode(GameMode newMode)
     {
-        gameMode = newMode;
+        GameMode = newMode;
         OnGameModeChanged?.Invoke(newMode);
     }
 
     private void SetInputEnabled(bool isEnabled)
     {
-        inputEnabled = isEnabled;
+        InputEnabled = isEnabled;
         OnInputEnabledChanged?.Invoke(isEnabled);
     }
     
