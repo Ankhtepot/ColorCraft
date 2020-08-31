@@ -6,6 +6,7 @@ TagManager:
   tags:
   - BuildAllSides
   - BuildTopOnly
+  - Harmful
   layers:
   - Default
   - TransparentFX

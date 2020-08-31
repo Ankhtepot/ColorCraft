@@ -9,5 +9,6 @@
         public const string MouseScrollWheel = "Mouse ScrollWheel";
         public const string SetMaterialColorKeyword = "_Color";
         public const string Show = "Show";
+        public const string Harmful = "Harmful";
     }
 }
