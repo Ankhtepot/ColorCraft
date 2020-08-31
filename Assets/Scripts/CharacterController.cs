@@ -11,7 +11,6 @@ public class CharacterController : MonoBehaviour
     
     [SerializeField] float lookSpeedH = 2f;
     [SerializeField] float lookSpeedV = 2f;
-    [SerializeField] float zoomSpeed = 2f;
     [SerializeField] float moveSpeed = 2f;
     [SerializeField] float fastSpeed = 2f;
     [SerializeField] private float heightConstraint;
@@ -94,9 +93,6 @@ public class CharacterController : MonoBehaviour
             MoveCharacter(Vector3.down);
         }
      
-        //Zoom in and out with Mouse Wheel
-        transform.Translate(0, 0, Input.GetAxis("Mouse ScrollWheel") * zoomSpeed, Space.Self);
-        
         rigidBody.velocity = Vector3.zero;
         rigidBody.angularVelocity = Vector3.zero;
     }
