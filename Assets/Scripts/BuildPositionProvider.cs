@@ -16,7 +16,7 @@ public class BuildPositionProvider : MonoBehaviour
     public Camera targetCamera;
     // [SerializeField] private GameController gameController;
     public Vector3Int previewPosition;
-    [SerializeField] public CustomUnityEvents.EventVector3Int OnPreviewPositionChanged;
+    [SerializeField] public CustomUnityEvents.EventVector3IntVector3Int OnPreviewPositionChanged;
     [SerializeField] public UnityEvent OnNoValidPreviewPosition;
     private Vector3Int previousPreviewPosition;
     private GameMode gameMode;
@@ -47,8 +47,7 @@ public class BuildPositionProvider : MonoBehaviour
             if (previewPosition != previousPreviewPosition)
             {
                 previousPreviewPosition = previewPosition;
-                OnPreviewPositionChanged?.Invoke(previewPosition);
-                Debug.DrawLine(targetCamera.transform.position, hit.point, Color.red);
+                OnPreviewPositionChanged?.Invoke(previewPosition, hit.normal.ToVector3Int());
             }
         }
         else

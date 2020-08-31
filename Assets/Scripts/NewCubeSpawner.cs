@@ -15,6 +15,7 @@ public class NewCubeSpawner : MonoBehaviour
     [SerializeField] private float canBuildCooldown = 0.2f;
     [SerializeField] private BuildPositionProvider buildPositionProvider;
     [SerializeField] private BuiltElementsStore store;
+    [SerializeField] private GameObject previewItem;
     [SerializeField] private GameObject previewPresenter;
     [SerializeField] private GameObject previewElementPivot;
     [SerializeField] private Transform builtElementParent;
@@ -42,8 +43,13 @@ public class NewCubeSpawner : MonoBehaviour
         previewPresenter.SetActive(false);
     }
 
-    private void ShowPreviewElement(Vector3Int previewPosition)
+    private void ShowPreviewElement(Vector3Int previewPosition, Vector3Int hitNormal)
     {
+        if (previewItem.CompareTag(Strings.BuildTopOnly) && hitNormal != Vector3Int.up)
+        {
+            return;
+        }
+        
         // print($"New previewCube position: {previewPosition}");
         previewPresenter.transform.position = previewPosition;
         previewPresenter.SetActive(true);
@@ -97,11 +103,11 @@ public class NewCubeSpawner : MonoBehaviour
             Destroy(child.gameObject);
         }
         
-        var previewItem = newElement.gameObject;
+        previewItem = newElement.gameObject;
         elementToBuild = previewItem;
-        previewItem = Instantiate(previewItem, previewElementPivot.transform.position, Quaternion.identity);
+        var newPreviewItem = Instantiate(previewItem, previewElementPivot.transform.position, Quaternion.identity);
 
-        SetPreviewItem(previewItem);
+        SetPreviewItem(newPreviewItem);
     }
 
     private void SetPreviewItem(GameObject element)

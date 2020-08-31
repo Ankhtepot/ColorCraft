@@ -9,9 +9,6 @@ namespace HelperClasses
         public class EventVector3Int : UnityEvent<Vector3Int> { }
         
         [System.Serializable]
-        public class EventVector2Int : UnityEvent<Vector2Int> { }
-        
-        [System.Serializable]
         public class EventBool : UnityEvent<bool> { }
         
         [System.Serializable]
@@ -21,6 +18,6 @@ namespace HelperClasses
         public class EventBuildElement : UnityEvent<BuildElement> { }
         
         [System.Serializable]
-        public class EventGameObject : UnityEvent<GameObject> { }
+        public class EventVector3IntVector3Int : UnityEvent<Vector3Int, Vector3Int> { }
     }
 }

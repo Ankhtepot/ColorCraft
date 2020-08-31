@@ -15,6 +15,7 @@ public class CrossHairController : MonoBehaviour
     [SerializeField] private Sprite DestroySprite;
     [SerializeField] private Image imagePivot;
     [SerializeField] private Animator animator;
+    private GameMode gameMode;
 #pragma warning restore 649
 
     /// <summary>
@@ -23,6 +24,8 @@ public class CrossHairController : MonoBehaviour
     /// <param name="newMode"></param>
     public void SetCrossHair(GameMode newMode)
     {
+        gameMode = newMode;
+        
         switch (newMode)
         {
             case GameMode.FreeFlight:
@@ -60,7 +63,10 @@ public class CrossHairController : MonoBehaviour
     /// </summary>
     private void SetBuildSprite()
     {
-        imagePivot.sprite = BuildSprite;
+        if (gameMode == GameMode.Build)
+        {
+            imagePivot.sprite = BuildSprite;
+        }
     }
 
     private void SetDestroySprite()
