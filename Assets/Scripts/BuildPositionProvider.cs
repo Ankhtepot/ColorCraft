@@ -17,21 +17,10 @@ public class BuildPositionProvider : MonoBehaviour
     [SerializeField] public CustomUnityEvents.EventVector3Int OnPreviewPositionChanged;
     [SerializeField] public UnityEvent OnNoValidPreviewPosition;
     private Vector3Int previousPreviewPosition;
-    private bool isBuildEnabled;
+    private GameMode gameMode;
     
 #pragma warning restore 649
-
-    private void Awake()
-    {
-        // gameController = FindObjectOfType<GameController>();
-        
-    }
-
-    private void Start()
-    {
-        
-    }
-
+    
     void Update()
     {
         GetPreviewPosition();
@@ -39,7 +28,7 @@ public class BuildPositionProvider : MonoBehaviour
 
     private void GetPreviewPosition()
     {
-        if (!isBuildEnabled) return;
+        if (gameMode != GameMode.Build) return;
         
         var ray = targetCamera.ScreenPointToRay(Input.mousePosition);
 
@@ -55,7 +44,7 @@ public class BuildPositionProvider : MonoBehaviour
             {
                 return;
             }
-            print($"Hit normal: {hit.normal}");
+            // print($"Hit normal: {hit.normal}");
             previewPosition = (objectHit.position + hit.normal).ToVector3Int();
 
             if (previewPosition != previousPreviewPosition)
@@ -71,8 +60,8 @@ public class BuildPositionProvider : MonoBehaviour
         }
     }
     
-    public void SetBuildEnabled(bool isEnabled)
+    public void SetGameMode(GameMode newMode)
     {
-        isBuildEnabled = isEnabled;
+        gameMode = newMode;
     }
 }

@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2686375787985619435}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 72301101195940694}
   m_RootOrder: 0
@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ed26a5ed734ad6b41a3775531eb1e073, type: 2}
+  - {fileID: 2100000, guid: f31cb508794149c42a8285083e739802, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -89,8 +89,9 @@ GameObject:
   m_Component:
   - component: {fileID: 72301101195940694}
   - component: {fileID: 1093720503321736546}
+  - component: {fileID: -104468982814978260}
   m_Layer: 2
-  m_Name: CubePreview Red
+  m_Name: CubeBlue
   m_TagString: BuildAllSides
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,3 +125,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-104468982814978260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3800918117577122892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce191361821d11d4dadfc8f0035f4d43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

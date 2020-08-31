@@ -3,34 +3,65 @@ using System.Collections.Generic;
 using HelperClasses;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.PlayerLoop;
+using UnityEngine.Serialization;
 
 //Fireball Games * * * PetrZavodny.com
 
 public class GameController : MonoBehaviour
 {
 #pragma warning disable 649
-    [SerializeField] private bool buildModeEnabled;
-    [SerializeField] public CustomUnityEvents.EventBool OnBuildModeEnabled;
+    [SerializeField] private bool inputEnabled = true;
+    [SerializeField] private GameMode gameMode;
+    [SerializeField] public CustomUnityEvents.EventGameMode OnGameModeChanged;
+    [SerializeField] public CustomUnityEvents.EventBool OnInputEnabledChanged;
 #pragma warning restore 649
 
     void Start()
     {
-        SetBuildMode(true);
+        initialize();
     }
 
-    private void SetBuildMode(bool isEnabled)
+    private void Update()
     {
-        buildModeEnabled = isEnabled;
-        OnBuildModeEnabled?.Invoke(isEnabled);
+        if (inputEnabled)
+        {
+            HandleInput();
+        }
     }
 
-    void Update()
+    private void HandleInput()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            switch (gameMode)
+            {
+                case GameMode.FreeFlight:
+                    SetGameMode(GameMode.Build); break;
+                case GameMode.Build:
+                    SetGameMode(GameMode.Destroy); break;
+                case GameMode.Destroy:
+                    SetGameMode(GameMode.FreeFlight); break;
+            }
+            
+            
+        }
+    }
+
+    private void SetGameMode(GameMode newMode)
+    {
+        gameMode = newMode;
+        OnGameModeChanged?.Invoke(newMode);
+    }
+
+    private void SetInputEnabled(bool isEnabled)
+    {
+        inputEnabled = isEnabled;
+        OnInputEnabledChanged?.Invoke(isEnabled);
     }
     
     private void initialize()
     {
-       
+        SetGameMode(GameMode.FreeFlight);
     }
 }

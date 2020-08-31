@@ -10,5 +10,11 @@ namespace HelperClasses
         
         [System.Serializable]
         public class EventBool : UnityEvent<bool> { }
+        
+        [System.Serializable]
+        public class EventGameMode : UnityEvent<GameMode> { }
+        
+        [System.Serializable]
+        public class EventBuildElement : UnityEvent<BuildElement> { }
     }
 }
