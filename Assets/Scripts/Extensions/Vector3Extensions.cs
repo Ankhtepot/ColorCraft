@@ -14,7 +14,7 @@ namespace Extensions
                 );
         }
 
-        public static Vector2Int Vector2IntXZ(this Vector3 source)
+        public static Vector2Int ToVector2IntXZ(this Vector3 source)
         {
             return new Vector2Int(
                 Mathf.RoundToInt(source.x), 

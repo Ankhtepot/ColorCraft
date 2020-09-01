@@ -61,4 +61,9 @@ public class BuiltElementsStore : MonoBehaviour
    {
        return store.Select(item => item.Value).ToList();
    }
+
+   public Dictionary<Vector3Int, GameObject> GetStoreDictionary()
+   {
+       return store;
+   }
 }

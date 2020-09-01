@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Models;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -89,7 +90,12 @@ public class BuildStoreController : MonoBehaviour
 
         showItemImage.sprite = itemsStore[currentItemIndex].storeSprite;
         OnStoreItemChanged?.Invoke(itemsStore[currentItemIndex].prefab);
-        }
+    }
+
+    public Dictionary<string, BuildElement> GetBuildItemsDictionary()
+    {
+        return itemsPrefabs.ToDictionary(item => item.Description);
+    }
     
     private void initialize()
     {

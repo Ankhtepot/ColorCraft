@@ -7,7 +7,7 @@ using Utilities;
 
 //Fireball Games * * * PetrZavodny.com
 
-public class damageCollisionForwarder : MonoBehaviour
+public class DamageCollisionForwarder : MonoBehaviour
 {
 #pragma warning disable 649
     private Health target;

@@ -46,7 +46,7 @@ namespace Utilities
                 
                 File.WriteAllText(fullPath, content);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -60,7 +60,7 @@ namespace Utilities
             {
                 return File.ReadAllText(fullPath);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

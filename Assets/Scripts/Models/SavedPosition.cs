@@ -10,7 +10,9 @@ namespace Models
         public int GridSize;
         public int WorldTileSide;
         public Vector2Int OriginalOffset;
-        public Vector2Int CurrentOffset;
+        public Vector2Int TraversedOffset;
+        public Vector3 CharacterPosition;
+        public Quaternion CharacterRotation;
         public List<BuiltElementDescription> BuiltElements;
     }
 }

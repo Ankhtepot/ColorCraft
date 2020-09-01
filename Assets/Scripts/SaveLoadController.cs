@@ -46,13 +46,16 @@ public class SaveLoadController : MonoBehaviour
         var environment = FindObjectOfType<EnvironmentControler>();
         var terrain = FindObjectOfType<TerrainSpawner>();
         var store = FindObjectOfType<BuiltElementsStore>();
+        var characterTransform = FindObjectOfType<CharacterController>().transform;
         
         var newSave = new SavedPosition()
         {
             GridSize = environment.GridSize,
             WorldTileSide = environment.WorldTileSideSize,
             OriginalOffset = terrain.InitialWorldOffset,
-            CurrentOffset = terrain.CurrentWorldOffset,
+            TraversedOffset = terrain.TraversedOffset,
+            CharacterPosition = characterTransform.position,
+            CharacterRotation = characterTransform.rotation,
             BuiltElements = GetBuildDescriptions(store.GetBuiltElements())
         };
         
@@ -86,7 +89,7 @@ public class SaveLoadController : MonoBehaviour
         {
             Position = item.transform.position.ToVector3Int(),
             Name = buildElement.Description,
-            Health = health != null ? health.GetCurrentHitpoints() : null as int?
+            Health = (health != null ? health.GetCurrentHitpoints() : 0)
         };
     }
 
@@ -95,7 +98,7 @@ public class SaveLoadController : MonoBehaviour
         var loadedPosition = FileServices.LoadPosition(GetSavePath());
         var isLoadSuccess = loadedPosition != null;
         
-        SendMessage(isLoadSuccess ? "Load Successful" : "Load Failed", isLoadSuccess);
+        ReportMessage(isLoadSuccess ? "Load Successful" : "Load Failed", isLoadSuccess);
         
         if (isLoadSuccess)
         {

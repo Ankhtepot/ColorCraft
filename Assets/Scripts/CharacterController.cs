@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Extensions;
 using UnityEngine;
 
 //Fireball Games * * * PetrZavodny.com
@@ -42,16 +43,20 @@ public class CharacterController : MonoBehaviour
         movementEnabled = state;
     }
 
+    //this method is needed only on new game world generation
     private void FixCharacterPosition()
     {
         float initialGridDimension = environment.GridSize * environment.WorldTileSideSize;
-        var spawnPosition = position.GetGridPosition(new Vector3(initialGridDimension / 2, 20, initialGridDimension / 2));
-        spawnPosition = position.GetGridPosition(spawnPosition);
+        var middleOfElementsVector = new Vector3(initialGridDimension / 2, 20, initialGridDimension / 2);
+        var newPosition = position.GetGridPosition(middleOfElementsVector);
+        newPosition = position.GetGridPosition(newPosition);
        
         var positionElement = terrainSpawner.GridMap
-            .FirstOrDefault(element => element.Key.x == spawnPosition.x && element.Key.y == spawnPosition.z);
+            .FirstOrDefault(element => element.Key.x == newPosition.x && element.Key.y == newPosition.z);
         
-        transform.position = new Vector3(spawnPosition.x, positionElement.Value.transform.position.y + (1 * environment.GridSize), spawnPosition.z);
+        transform.position = new Vector3(newPosition.x, positionElement.Value.transform.position.y + (1 * environment.GridSize), newPosition.z);
+        
+        terrainSpawner.SpawningFinished.RemoveListener(FixCharacterPosition); 
     }
 
     private void Move()

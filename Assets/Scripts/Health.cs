@@ -82,4 +82,9 @@ public class Health : MonoBehaviour
     {
         return hitpoints;
     }
+
+    public void SetHitpoints(int value)
+    {
+        hitpoints = value;
+    }
 }

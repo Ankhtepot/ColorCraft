@@ -8,6 +8,6 @@ namespace Models
     {
         public Vector3Int Position;
         public string Name;
-        public int? Health;
+        public int Health;
     }
 }

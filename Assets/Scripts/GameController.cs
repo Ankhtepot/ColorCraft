@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.PlayerLoop;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 using Utilities;
 
 //Fireball Games * * * PetrZavodny.com
@@ -11,10 +6,16 @@ using Utilities;
 public class GameController : MonoBehaviour
 {
 #pragma warning disable 649
-    public bool InputEnabled = true;
-    public GameMode GameMode;
+    public bool InputEnabled
+    {
+        get => inputEnabled;
+        set => SetInputEnabled(value);
+    }
+
+    public GameMode GameMode { get; private set; }
     [SerializeField] public CustomUnityEvents.EventGameMode OnGameModeChanged;
     [SerializeField] public CustomUnityEvents.EventBool OnInputEnabledChanged;
+    [SerializeField] private bool inputEnabled;
 #pragma warning restore 649
 
     void Start()
@@ -54,14 +55,14 @@ public class GameController : MonoBehaviour
 
     private void SetInputEnabled(bool isEnabled)
     {
-        InputEnabled = isEnabled;
+        inputEnabled = isEnabled;
         OnInputEnabledChanged?.Invoke(isEnabled);
     }
     
     private void initialize()
     {
         SetGameMode(GameMode.FreeFlight);
-        SetInputEnabled(true);
+        InputEnabled = true;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
     }
