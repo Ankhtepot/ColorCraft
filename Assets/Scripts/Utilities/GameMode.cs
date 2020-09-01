@@ -1,4 +1,4 @@
-﻿namespace HelperClasses
+﻿namespace Utilities
 {
     public enum GameMode
     {

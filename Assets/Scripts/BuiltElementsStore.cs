@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Extensions;
+using Models;
 using UnityEngine;
 
 //Fireball Games * * * PetrZavodny.com
@@ -54,5 +55,10 @@ public class BuiltElementsStore : MonoBehaviour
        store.Where(item => item.Key.x == coordinate.x && item.Key.z == coordinate.z)
            .ToList()
            .ForEach(foundItem => foundItem.Value.SetActive(isActive));
+   }
+
+   public List<GameObject> GetBuiltElements()
+   {
+       return store.Select(item => item.Value).ToList();
    }
 }

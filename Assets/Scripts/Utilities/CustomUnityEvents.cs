@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using Models;
+using UnityEngine;
 using UnityEngine.Events;
 
-namespace HelperClasses
+namespace Utilities
 {
     public static class CustomUnityEvents
     {
@@ -10,6 +12,9 @@ namespace HelperClasses
         
         [System.Serializable]
         public class EventBool : UnityEvent<bool> { }
+        
+        [System.Serializable]
+        public class EventSavedPosition : UnityEvent<SavedPosition> { }
         
         [System.Serializable]
         public class EventGameMode : UnityEvent<GameMode> { }

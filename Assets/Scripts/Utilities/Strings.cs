@@ -6,6 +6,8 @@
         public const string BuildAllSides = "BuildAllSides";
         public const string BuildRaycastTarget = "BuildRaycastTarget";
         public const string BuildTopOnly = "BuildTopOnly";
+        public const string HideNext = "HideNext";
+        public const string HidePreview = "HidePreview";
         public const string MouseScrollWheel = "Mouse ScrollWheel";
         public const string SetMaterialColorKeyword = "_Color";
         public const string Show = "Show";

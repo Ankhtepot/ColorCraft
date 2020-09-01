@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,8 +11,31 @@ public class Health : MonoBehaviour
     [SerializeField] private int hitpoints;
     [SerializeField] private float damageableCooldown = 0.25f;
     [SerializeField] private bool isDamageable = true;
+    [SerializeField] private ParticleSystem damageVfx;
     [SerializeField] private ParticleSystem deathVfx;
 #pragma warning restore 649
+
+    private void Start()
+    {
+        SetParticleEffects();
+    }
+
+    private void SetParticleEffects()
+    {
+        var newColor = GetComponentInChildren<Renderer>().material.color;
+        
+        if (damageVfx != null)
+        {
+            var mainModule = damageVfx.main;
+            mainModule.startColor = new ParticleSystem.MinMaxGradient(newColor);
+        }
+        
+        if (deathVfx != null)
+        {
+            var mainModule = deathVfx.main;
+            mainModule.startColor = new ParticleSystem.MinMaxGradient(newColor);
+        }
+    }
 
     public void OnCollisionReceived()
     {
@@ -20,6 +44,11 @@ public class Health : MonoBehaviour
             isDamageable = false;
             
             hitpoints--;
+
+            if (damageVfx != null)
+            {
+                damageVfx.Play();
+            }
 
             StartCoroutine(DamageCooldown());
 
@@ -47,5 +76,10 @@ public class Health : MonoBehaviour
         yield return new WaitForSeconds(damageableCooldown);
 
         isDamageable = true;
+    }
+
+    public int GetCurrentHitpoints()
+    {
+        return hitpoints;
     }
 }

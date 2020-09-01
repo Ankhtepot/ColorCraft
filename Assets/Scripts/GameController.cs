@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using HelperClasses;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.PlayerLoop;
 using UnityEngine.Serialization;
+using Utilities;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -43,8 +43,6 @@ public class GameController : MonoBehaviour
                 case GameMode.Destroy:
                     SetGameMode(GameMode.FreeFlight); break;
             }
-            
-            
         }
     }
 

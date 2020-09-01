@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using HelperClasses;
 using Models;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -16,12 +15,17 @@ public class BuildStoreController : MonoBehaviour
 #pragma warning disable 649
     [SerializeField] private Sprite[] itemsSprites;
     [SerializeField] private BuildElement[] itemsPrefabs;
-    [SerializeField] private Image shownItemImage;
+    [SerializeField] private GameObject previewItem;
+    [SerializeField] private GameObject nextItem;
+    [SerializeField] private Image previewItemImage;
+    [SerializeField] private Image showItemImage;
+    [SerializeField] private Image nextItemImage;
     [SerializeField] private Animator animator;
     [SerializeField] private int currentItemIndex;
     private readonly List<BuildStoreItem> itemsStore = new List<BuildStoreItem>();
     [SerializeField] private bool inputEnabled = true;
     [SerializeField] private GameMode gameMode;
+
     [SerializeField] public CustomUnityEvents.EventBuildElement OnStoreItemChanged;
 #pragma warning restore 649
 
@@ -63,9 +67,29 @@ public class BuildStoreController : MonoBehaviour
         
         currentItemIndex = Mathf.Clamp(itemIndex, 0, itemsStore.Count - 1);
 
-        shownItemImage.sprite = itemsStore[currentItemIndex].storeSprite;
+        if (currentItemIndex > 0)
+        {
+            previewItem.SetActive(true);
+            previewItemImage.sprite = itemsSprites[currentItemIndex - 1];
+        }
+        else
+        {
+            previewItem.SetActive(false);
+        }
+        
+        if (currentItemIndex < itemsSprites.Length - 1)
+        {
+            nextItem.SetActive(true);
+            nextItemImage.sprite = itemsSprites[currentItemIndex + 1];
+        }
+        else
+        {
+            nextItem.SetActive(false);
+        }
+
+        showItemImage.sprite = itemsStore[currentItemIndex].storeSprite;
         OnStoreItemChanged?.Invoke(itemsStore[currentItemIndex].prefab);
-    }
+        }
     
     private void initialize()
     {
@@ -97,12 +121,16 @@ public class BuildStoreController : MonoBehaviour
         gameMode = newMode;
         if (newMode == GameMode.Build)
         {
+            previewItem.SetActive(true);
+            nextItem.SetActive(true);
             animator.SetBool(Strings.Show, true);
             ChangeStoreItem(currentItemIndex);
         }
         else
         {
             animator.SetBool(Strings.Show, false);
+            previewItem.SetActive(false);
+            nextItem.SetActive(false);
         }
     }
 

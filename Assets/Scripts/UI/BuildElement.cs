@@ -7,7 +7,7 @@ using UnityEngine;
 public class BuildElement : MonoBehaviour
 {
 #pragma warning disable 649
-    [SerializeField] private string Description;
+    public string Description;
 #pragma warning restore 649
 
 
