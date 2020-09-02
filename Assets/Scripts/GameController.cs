@@ -6,17 +6,25 @@ using Utilities;
 public class GameController : MonoBehaviour
 {
 #pragma warning disable 649
+    [SerializeField] private bool inputEnabled;
+    [SerializeField] private bool isGameLoopOn;
+    public GameMode GameMode { get; private set; }
+    [SerializeField] public CustomUnityEvents.EventGameMode OnGameModeChanged;
+    [SerializeField] public CustomUnityEvents.EventBool OnInputEnabledChanged;
+    [SerializeField] public CustomUnityEvents.EventBool OnGameLoopStatusChanged;
+#pragma warning restore 649
+    
     public bool InputEnabled
     {
         get => inputEnabled;
         set => SetInputEnabled(value);
     }
 
-    public GameMode GameMode { get; private set; }
-    [SerializeField] public CustomUnityEvents.EventGameMode OnGameModeChanged;
-    [SerializeField] public CustomUnityEvents.EventBool OnInputEnabledChanged;
-    [SerializeField] private bool inputEnabled;
-#pragma warning restore 649
+    public bool IsGameLoopOn 
+    { 
+        get => isGameLoopOn;
+        set => SetGameLoopStatus(value);
+    }
 
     void Start()
     {
@@ -25,25 +33,30 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        if (InputEnabled)
-        {
             HandleInput();
-        }
     }
 
     private void HandleInput()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (InputEnabled)
         {
-            switch (GameMode)
+            if (Input.GetKeyDown(KeyCode.Tab) || Input.GetMouseButtonDown(1))
             {
-                case GameMode.FreeFlight:
-                    SetGameMode(GameMode.Build); break;
-                case GameMode.Build:
-                    SetGameMode(GameMode.Destroy); break;
-                case GameMode.Destroy:
-                    SetGameMode(GameMode.FreeFlight); break;
+                switch (GameMode)
+                {
+                    case GameMode.FreeFlight:
+                        SetGameMode(GameMode.Build); break;
+                    case GameMode.Build:
+                        SetGameMode(GameMode.Destroy); break;
+                    case GameMode.Destroy:
+                        SetGameMode(GameMode.FreeFlight); break;
+                }
             }
+        }
+        
+        if (Input.GetKeyDown(KeyCode.LeftShift) && (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.X)))
+        {
+            Application.Quit();
         }
     }
 
@@ -59,10 +72,17 @@ public class GameController : MonoBehaviour
         OnInputEnabledChanged?.Invoke(isEnabled);
     }
     
+    private void SetGameLoopStatus(bool value)
+    {
+        isGameLoopOn = value;
+        OnGameLoopStatusChanged?.Invoke(value);
+    }
+    
     private void initialize()
     {
         SetGameMode(GameMode.FreeFlight);
         InputEnabled = true;
+        IsGameLoopOn = false;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
     }

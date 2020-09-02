@@ -12,6 +12,9 @@ public class CrossHairController : MonoBehaviour
     [SerializeField] private Sprite freeFlightSprite;
     [SerializeField] private Sprite BuildSprite;
     [SerializeField] private Sprite DestroySprite;
+    [SerializeField] private float freeFlightIconScale = 1f;
+    [SerializeField] private float buildIconScale = 0.8f;
+    [SerializeField] private float destroyIconScale = 0.8f;
     [SerializeField] private Image imagePivot;
     [SerializeField] private Animator animator;
     private GameMode gameMode;
@@ -48,8 +51,8 @@ public class CrossHairController : MonoBehaviour
 
     private void SetFreeFlightSprite()
     {
+        SetImagePivotScale(freeFlightIconScale);
         imagePivot.sprite = freeFlightSprite;
-        
     }
 
     private void SetForBuildMode()
@@ -64,12 +67,19 @@ public class CrossHairController : MonoBehaviour
     {
         if (gameMode == GameMode.Build)
         {
+            SetImagePivotScale(buildIconScale);
             imagePivot.sprite = BuildSprite;
         }
     }
 
     private void SetDestroySprite()
     {
+        SetImagePivotScale(destroyIconScale);
         imagePivot.sprite = DestroySprite;
+    }
+
+    private void SetImagePivotScale(float newScale)
+    {
+        imagePivot.transform.localScale = new Vector3(newScale, newScale, newScale);
     }
 }

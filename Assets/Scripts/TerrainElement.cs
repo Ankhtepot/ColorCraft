@@ -11,11 +11,8 @@ public class TerrainElement : MonoBehaviour
 
     public void SetHeightMaterial()
     {
-        var height = Mathf.RoundToInt(transform.position.y);
+        var height = Mathf.Clamp(Mathf.RoundToInt(transform.position.y), 0, HeightMaterials.Count - 1);
         
-        if (height < HeightMaterials.Count)
-        {
-            GetComponentInChildren<MeshRenderer>().material = HeightMaterials[height];
-        }
+        GetComponentInChildren<MeshRenderer>().material = HeightMaterials[height];
     }
 }

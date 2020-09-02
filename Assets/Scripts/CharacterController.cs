@@ -88,7 +88,8 @@ public class CharacterController : MonoBehaviour
             MoveCharacter(Vector3.back);
         }
         
-        if (position.CurrentGridPosition.y < heightConstraint &&(Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.Space)))
+        if (position.CurrentGridPosition.y < heightConstraint 
+            && (Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.Space)))
         {
             MoveCharacter(Vector3.up);
         }
