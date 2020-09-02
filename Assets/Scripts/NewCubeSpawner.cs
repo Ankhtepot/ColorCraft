@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UI;
 using UnityEngine;
 using Utilities;
 
@@ -47,7 +48,6 @@ public class NewCubeSpawner : MonoBehaviour
             return;
         }
         
-        // print($"New previewCube position: {previewPosition}");
         previewPresenter.transform.position = previewPosition;
         previewPresenter.SetActive(true);
     }

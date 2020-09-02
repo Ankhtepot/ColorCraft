@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Extensions;
 using Models;
+using UI;
 using UnityEngine;
 using UnityEngine.Events;
 using Utilities;
@@ -20,16 +21,15 @@ public class TerrainSpawner : MonoBehaviour
     [SerializeField] private Transform spawnedElementsParent;
     [SerializeField] private EnvironmentControler environment;
     [SerializeField] private Position characterPosition;
-    [Header("Observed properties")] 
-    [SerializeField] private int gridSize;
-    [SerializeField] private int worldTileSideSize;
-    [SerializeField] private int XOffset;
-    [SerializeField] private int YOffset;
     [Header("Events")]
     [SerializeField] public CustomUnityEvents.EventVector3Int OnCoordinateHidden;
     [SerializeField] public CustomUnityEvents.EventVector3Int OnCoordinateShown;
     public UnityEvent SpawningFinished;
     
+    private int gridSize;
+    private int worldTileSideSize;
+    private int XOffset;
+    private int YOffset;
     private int ratio;
     private float[,] perlinMap;
     public Dictionary<Vector2Int, TerrainElement> GridMap = new Dictionary<Vector2Int, TerrainElement>();
@@ -62,8 +62,6 @@ public class TerrainSpawner : MonoBehaviour
     {
         var xCoordinate = (InitialWorldOffset.x + relativeX) / gridSize * sampleScale;
         var yCoordinate = (InitialWorldOffset.y + relativeY) / gridSize * sampleScale;
-        // print($"Perlin Noise unscaled coordinates: x: {currentPerlinOffset.x + relativeX / gridSize}, y: {currentPerlinOffset.y + relativeY / gridSize}");
-        // print($"PerlinNoise Coordinates: [ {xCoordinate} , {yCoordinate} ].");
                 
         return Mathf.PerlinNoise(xCoordinate, yCoordinate);
     }
@@ -83,7 +81,6 @@ public class TerrainSpawner : MonoBehaviour
                     (tilePosition.x + x) * gridSize,
                     Mathf.RoundToInt(perlinMap[x, y] * heightMultiplier),
                     (tilePosition.z + y) * gridSize) 
-                        // + TraversedOffset.ToVector3()
                     , Quaternion.identity);
                 
                 newElement.SetHeightMaterial();
@@ -107,7 +104,6 @@ public class TerrainSpawner : MonoBehaviour
         
         var moveVector3 = newPosition - characterPosition.OldGridPosition;
         var moveVector2Int = new Vector2Int(moveVector3.x, moveVector3.z);
-        // print($"moveVector: {moveVector2Int}");
 
         var offsetsChange = new Vector2Int(moveVector3.x, moveVector3.z);
         var oldWorldOffset = TraversedOffset;
@@ -116,34 +112,29 @@ public class TerrainSpawner : MonoBehaviour
         if (moveVector2Int == Vector2Int.up)
         {
             TraversedOffset += offsetsChange;
-            // print("Moving Front");
             MoveForward(oldWorldOffset);
         }
         else
         if (moveVector2Int == Vector2Int.down)
         {
             TraversedOffset += offsetsChange;
-            // print("Moving Back");
             MoveBack(oldWorldOffset);
         }
         else
         if (moveVector2Int == Vector2Int.right)
         {
             TraversedOffset += offsetsChange;
-            // print("Moving Right");
             MoveRight(oldWorldOffset);
         }
         else
         if (moveVector2Int == Vector2Int.left)
         {
             TraversedOffset += offsetsChange;
-            // print("Moving Left");
             MoveLeft(oldWorldOffset);
         }
         else if (moveVector2Int == ForwardRight)
         {
             TraversedOffset += Vector2Int.up;
-            // print("Moving Forward Right");
             MoveForward(oldWorldOffset);
             TraversedOffset += Vector2Int.right;
             MoveRight(oldWorldOffset + Vector2Int.up);
@@ -151,7 +142,6 @@ public class TerrainSpawner : MonoBehaviour
         else if (moveVector2Int == ForwardLeft)
         {
             TraversedOffset += Vector2Int.up;
-            // print("Moving Forward Left");
             MoveForward(oldWorldOffset);
             TraversedOffset += Vector2Int.left;
             MoveLeft(oldWorldOffset + Vector2Int.up);
@@ -159,7 +149,6 @@ public class TerrainSpawner : MonoBehaviour
         else if (moveVector2Int == BackLeft)
         {
             TraversedOffset += Vector2Int.down;
-            // print("Moving Back Left");
             MoveBack(oldWorldOffset);
             TraversedOffset += Vector2Int.left;
             MoveLeft(oldWorldOffset + Vector2Int.down);
@@ -167,7 +156,6 @@ public class TerrainSpawner : MonoBehaviour
         else if (moveVector2Int == BackRight)
         {
             TraversedOffset += Vector2Int.down;
-            // print("Moving Back Right");
             MoveBack(oldWorldOffset);
             TraversedOffset += Vector2Int.right;
             MoveRight(oldWorldOffset + Vector2Int.down);
@@ -179,9 +167,8 @@ public class TerrainSpawner : MonoBehaviour
         for (int i = 0; i < ratio; i++)
         {
             var oldGridPosition = new Vector2Int(i + oldWorldOffset.x, oldWorldOffset.y);
-            // print($"Old Element key: {oldGridPosition}");
             var newGridPosition = new Vector2Int(i,ratio - 1) + TraversedOffset;
-            // print($"New Element key: {newGridPosition}");
+            
             MoveElement(oldGridPosition, newGridPosition);
         }
     }
@@ -191,9 +178,8 @@ public class TerrainSpawner : MonoBehaviour
         for (int i = 0; i < ratio; i++)
         {
             var oldGridPosition = new Vector2Int(ratio + oldWorldOffset.x - 1, i + oldWorldOffset.y);
-            // print($"Old Element key: {oldGridPosition}");
             var newGridPosition = new Vector2Int(0,i) + TraversedOffset;
-            // print($"New Element key: {newGridPosition}");
+            
             MoveElement(oldGridPosition, newGridPosition);
         }
     }
@@ -203,9 +189,8 @@ public class TerrainSpawner : MonoBehaviour
         for (int i = 0; i < ratio; i++)
         {
             var oldGridPosition = new Vector2Int(oldWorldOffset.x, i + oldWorldOffset.y);
-            // print($"Old Element key: {oldGridPosition}");
             var newGridPosition = new Vector2Int(ratio - 1,i) + TraversedOffset;
-            // print($"New Element key: {newGridPosition}");
+            
             MoveElement(oldGridPosition, newGridPosition);
         }
     }
@@ -215,9 +200,8 @@ public class TerrainSpawner : MonoBehaviour
         for (int i = 0; i < ratio; i++)
         {
             var oldGridPosition = new Vector2Int(i + oldWorldOffset.x, ratio + oldWorldOffset.y - 1);
-            // print($"Old Element key: {oldGridPosition}");
             var newGridPosition = new Vector2Int(i,0) + TraversedOffset;
-            // print($"New Element key: {newGridPosition}");
+            
             MoveElement(oldGridPosition, newGridPosition);
         }
     }
@@ -322,9 +306,11 @@ public class TerrainSpawner : MonoBehaviour
         environment.WorldTileSideSize = data.WorldTileSide;
         InitialWorldOffset = data.OriginalOffset;
         TraversedOffset = data.TraversedOffset;
+        
         FindObjectOfType<CharacterController>().transform.SetPositionAndRotation(
             data.CharacterPosition,
             data.CharacterRotation);
+        
         characterPosition.OldGridPosition = data.CharacterPosition.ToVector3Int();
     }
     
