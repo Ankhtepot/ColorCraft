@@ -152,6 +152,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -6400281290468069383, guid: 5bdafd286267a794ea49be4de992bd4e,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: 82fa6e0308bd32a4b8baa4cd0fecd4b2, type: 2}
     - target: {fileID: 919132149155446097, guid: 5bdafd286267a794ea49be4de992bd4e,
         type: 3}
       propertyPath: m_Name
