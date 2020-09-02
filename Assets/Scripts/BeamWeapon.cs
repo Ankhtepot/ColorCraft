@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Utilities;
 
 //Fireball Games * * * PetrZavodny.com
@@ -29,13 +26,4 @@ public class BeamWeapon : MonoBehaviour
             beamVFX.Stop();
         }
     }
-
-    // /// <summary>
-    // /// Run from GameController OnInputEnabledChanged
-    // /// </summary>
-    // /// <param name="isEnabled"></param>
-    // public void OnInputEnabledChange(bool isEnabled)
-    // {
-    //     isInputEnabled = isEnabled;
-    // }
 }

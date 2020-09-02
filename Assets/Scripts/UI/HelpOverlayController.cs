@@ -1,27 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 //Fireball Games * * * PetrZavodny.com
 
-public class HelpOverlayController : MonoBehaviour
+namespace UI
 {
-#pragma warning disable 649
-    
-#pragma warning restore 649
+    public class HelpOverlayController : MonoBehaviour
+    {
+    #pragma warning disable 649
+        [SerializeField] private GameObject HelpInfo;
+    #pragma warning restore 649
 
-    void Start()
-    {
-        initialize();
-    }
-
-    void Update()
-    {
-        
-    }
-    
-    private void initialize()
-    {
-       
+        /// <summary>
+        /// Run from GameUI.VisibilityController OnVisibilityChanged
+        /// </summary>
+        /// <param name="isVisible"></param>
+        public void OnGameUIVisibilityChanged(bool isVisible)
+        {
+            HelpInfo.SetActive(isVisible);
+        }
     }
 }

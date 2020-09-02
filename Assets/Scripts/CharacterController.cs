@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Extensions;
+﻿using System.Linq;
 using UnityEngine;
 
 //Fireball Games * * * PetrZavodny.com
@@ -65,8 +63,6 @@ public class CharacterController : MonoBehaviour
         pitch -= lookSpeedV * Input.GetAxis("Mouse Y");
  
         transform.eulerAngles = new Vector3(pitch, yaw, 0f);
-     
-        
         
         if (Input.GetKey(KeyCode.A))
         {

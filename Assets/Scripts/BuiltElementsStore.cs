@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Extensions;
-using Models;
 using UnityEngine;
 
 //Fireball Games * * * PetrZavodny.com
@@ -10,7 +8,7 @@ using UnityEngine;
 public class BuiltElementsStore : MonoBehaviour
 {
 #pragma warning disable 649
-    private Dictionary<Vector3Int, GameObject> store = new Dictionary<Vector3Int, GameObject>();
+    private readonly Dictionary<Vector3Int, GameObject> store = new Dictionary<Vector3Int, GameObject>();
 #pragma warning restore 649
 
    public void AddElement(GameObject element)

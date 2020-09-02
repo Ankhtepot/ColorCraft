@@ -2,7 +2,6 @@
 using Extensions;
 using Models;
 using UnityEngine;
-using UnityEngine.Analytics;
 using UnityEngine.Events;
 using Utilities;
 using Random = UnityEngine.Random;

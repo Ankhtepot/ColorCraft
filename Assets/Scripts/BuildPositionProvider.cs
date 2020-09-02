@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Extensions;
 using UnityEngine;
 using UnityEngine.Events;
@@ -13,13 +10,12 @@ public class BuildPositionProvider : MonoBehaviour
 {
 #pragma warning disable 649
     public Camera targetCamera;
-    // [SerializeField] private GameController gameController;
     public Vector3Int previewPosition;
     [SerializeField] public CustomUnityEvents.EventVector3IntVector3Int OnPreviewPositionChanged;
     [SerializeField] public UnityEvent OnNoValidPreviewPosition;
     private Vector3Int previousPreviewPosition;
     private GameMode gameMode;
-    [SerializeField] private string[] buildTags = {Strings.BuildAllSides, Strings.BuildTopOnly,};
+    private readonly string[] buildTags = {Strings.BuildAllSides, Strings.BuildTopOnly,};
     
 #pragma warning restore 649
     

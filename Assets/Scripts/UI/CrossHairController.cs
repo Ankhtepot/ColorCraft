@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using Utilities;
 
@@ -15,6 +13,7 @@ public class CrossHairController : MonoBehaviour
     [SerializeField] private float freeFlightIconScale = 1f;
     [SerializeField] private float buildIconScale = 0.8f;
     [SerializeField] private float destroyIconScale = 0.8f;
+    [SerializeField] private int backgroundColorAlpha;
     [SerializeField] private Image imagePivot;
     [SerializeField] private Animator animator;
     private GameMode gameMode;
@@ -81,5 +80,26 @@ public class CrossHairController : MonoBehaviour
     private void SetImagePivotScale(float newScale)
     {
         imagePivot.transform.localScale = new Vector3(newScale, newScale, newScale);
+    }
+
+    public void SetCrosshairEnabled(bool isEnabled)
+    {
+        var images = GetComponentsInChildren<Image>();
+
+        foreach (var image in images)
+        {
+            image.color = image.name.Contains(Strings.Background) 
+                ? SetAlphaChannel(image.color, isEnabled ? backgroundColorAlpha : 0) 
+                : SetAlphaChannel(image.color, isEnabled ? 255 : 0);
+        }
+    }
+
+    private Color SetAlphaChannel(Color originalColor, int value)
+    {
+        value = Mathf.Clamp(value, 0, 255);
+        
+        var newColor = originalColor;
+        newColor.a = value;
+        return newColor;
     }
 }
