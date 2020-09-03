@@ -38,10 +38,12 @@ public class GameController : MonoBehaviour
     }
 
     /// <summary>
-    /// Run from TerrainSpawner OnTerrainSpawned
+    /// Run from SplashScreen OnStartGameButtonClick
     /// </summary>
-    public void OnNewGameTerrainSpawned()
+    public void OnStartANewGameRequested()
     {
+        SetMouseCursor(false);
+        
         IsGameLoopOn = true;
         GameMode = GameMode.FreeFlight;
         InputEnabled = true;
@@ -100,14 +102,19 @@ public class GameController : MonoBehaviour
         isGameLoopOn = value;
         OnGameLoopStatusChanged?.Invoke(value);
     }
+
+    private void SetMouseCursor(bool isShown)
+    {
+        Cursor.visible = isShown;
+    }
     
     private void initialize()
     {
         GameMode = GameMode.OffGameLoop;
         InputEnabled = false;
         IsGameLoopOn = false;
+        
         Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = false;
         
         InitializeNewGame();
     }

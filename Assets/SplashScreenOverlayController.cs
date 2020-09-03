@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -18,10 +19,18 @@ public class SplashScreenOverlayController : MonoBehaviour
     }
 
     /// <summary>
+    /// Run from TerrainSpawner OnSpawningFinished
+    /// </summary>
+    public void OnSpawingTerrainFinished()
+    {
+        animator.SetTrigger(Strings.Swap); //TODO make animation
+    }
+    
+    /// <summary>
     /// Run from GameController OnGameLoopStarted
     /// </summary>
     public void OnGameLoopStarted()
     {
-        content.SetActive(false);
+        content.SetActive(false); //TODO add animation
     } 
 }
