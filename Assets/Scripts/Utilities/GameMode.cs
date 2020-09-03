@@ -3,7 +3,8 @@
     public enum GameMode
     {
         Build,
-        Destroy,
-        FreeFlight
+        Beam,
+        FreeFlight,
+        OffGameLoop
     }
 }

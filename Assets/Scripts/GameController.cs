@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using Utilities;
 
 //Fireball Games * * * PetrZavodny.com
@@ -8,16 +9,44 @@ public class GameController : MonoBehaviour
 #pragma warning disable 649
     [SerializeField] private bool inputEnabled;
     [SerializeField] private bool isGameLoopOn;
-    public GameMode GameMode { get; private set; }
+    [SerializeField] private GameMode gameMode;
+    [SerializeField] public UnityEvent OnGameInitiated;
+    [SerializeField] public UnityEvent OnGameLoopStarted;
     [SerializeField] public CustomUnityEvents.EventGameMode OnGameModeChanged;
     [SerializeField] public CustomUnityEvents.EventBool OnInputEnabledChanged;
     [SerializeField] public CustomUnityEvents.EventBool OnGameLoopStatusChanged;
 #pragma warning restore 649
-    
+
+    public GameMode GameMode
+    {
+        get => gameMode;
+        private set
+        {
+            gameMode = value;
+            OnGameModeChanged?.Invoke(value);
+        }
+    }
     public bool InputEnabled
     {
         get => inputEnabled;
         set => SetInputEnabled(value);
+    }
+
+    private void InitializeNewGame()
+    {
+        OnGameInitiated?.Invoke();
+    }
+
+    /// <summary>
+    /// Run from TerrainSpawner OnTerrainSpawned
+    /// </summary>
+    public void OnNewGameTerrainSpawned()
+    {
+        IsGameLoopOn = true;
+        GameMode = GameMode.FreeFlight;
+        InputEnabled = true;
+        
+        OnGameLoopStarted?.Invoke();
     }
 
     public bool IsGameLoopOn 
@@ -33,7 +62,7 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-            HandleInput();
+        HandleInput();
     }
 
     private void HandleInput()
@@ -45,11 +74,11 @@ public class GameController : MonoBehaviour
                 switch (GameMode)
                 {
                     case GameMode.FreeFlight:
-                        SetGameMode(GameMode.Build); break;
+                        GameMode = GameMode.Build; break;
                     case GameMode.Build:
-                        SetGameMode(GameMode.Destroy); break;
-                    case GameMode.Destroy:
-                        SetGameMode(GameMode.FreeFlight); break;
+                        GameMode = GameMode.Beam; break;
+                    case GameMode.Beam:
+                        GameMode = GameMode.FreeFlight; break;
                 }
             }
         }
@@ -58,12 +87,6 @@ public class GameController : MonoBehaviour
         {
             Application.Quit();
         }
-    }
-
-    private void SetGameMode(GameMode newMode)
-    {
-        GameMode = newMode;
-        OnGameModeChanged?.Invoke(newMode);
     }
 
     private void SetInputEnabled(bool isEnabled)
@@ -80,10 +103,12 @@ public class GameController : MonoBehaviour
     
     private void initialize()
     {
-        SetGameMode(GameMode.FreeFlight);
-        InputEnabled = true;
+        GameMode = GameMode.OffGameLoop;
+        InputEnabled = false;
         IsGameLoopOn = false;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
+        
+        InitializeNewGame();
     }
 }

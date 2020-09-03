@@ -29,17 +29,26 @@ namespace UI
         {
             gameMode = newMode;
         
+            SetCrosshairEnabled(newMode != GameMode.OffGameLoop);
+            
             switch (newMode)
             {
                 case GameMode.FreeFlight:
                     SetForFreeFlightMode(); break;
                 case GameMode.Build:
                     SetForBuildMode(); break;
-                case GameMode.Destroy:
+                case GameMode.Beam:
                     SetDestroySprite(); break;
-                default: SetFreeFlightSprite();
+                default: SetForFreeFlightMode();
                     break;
             }
+
+            
+        }
+
+        private void SetEmptySprite()
+        {
+            imagePivot.sprite = null;
         }
 
         /// <summary>
@@ -90,9 +99,7 @@ namespace UI
 
             foreach (var image in images)
             {
-                image.color = image.name.Contains(Strings.Background) 
-                    ? SetAlphaChannel(image.color, isEnabled ? backgroundColorAlpha : 0) 
-                    : SetAlphaChannel(image.color, isEnabled ? 255 : 0);
+                image.color = SetAlphaChannel(image.color, isEnabled ? 255 : 0);
             }
         }
 

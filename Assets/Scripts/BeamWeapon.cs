@@ -17,7 +17,7 @@ public class BeamWeapon : MonoBehaviour
 
     private void HandleShooting()
     {
-        if (gameController.InputEnabled && gameController.GameMode == GameMode.Destroy && Input.GetMouseButton(0))
+        if (gameController.InputEnabled && gameController.GameMode == GameMode.Beam && Input.GetMouseButton(0))
         {
             beamVFX.Play();
         }

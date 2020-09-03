@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 //Fireball Games * * * PetrZavodny.com
@@ -23,25 +24,29 @@ public class CharacterController : MonoBehaviour
     [SerializeField] EnvironmentControler environment;
 #pragma warning restore 649
 
-    private void Start()
+    private void Awake()
     {
         terrainSpawner.SpawningFinished.AddListener(FixCharacterPosition);
     }
 
     void FixedUpdate ()
     {
-        if (movementEnabled)
-        {
             Move();
-        }
     }
 
+    /// <summary>
+    /// Run from GameController OnInputEnabledChanged
+    /// </summary>
+    /// <param name="state"></param>
     public void EnableMovement(bool state)
     {
         movementEnabled = state;
     }
 
-    //this method is needed only on new game world generation
+    /// <summary>
+    /// Run from TerrainSpawner OnTerrainSpawned.
+    /// This method is needed only on new game world generation
+    /// </summary>
     private void FixCharacterPosition()
     {
         float initialGridDimension = environment.GridSize * environment.WorldTileSideSize;
@@ -59,6 +64,8 @@ public class CharacterController : MonoBehaviour
 
     private void Move()
     {
+        if (!movementEnabled) return;
+        
         yaw += lookSpeedH * Input.GetAxis("Mouse X");
         pitch -= lookSpeedV * Input.GetAxis("Mouse Y");
  

@@ -24,7 +24,7 @@ public class TerrainSpawner : MonoBehaviour
     [Header("Events")]
     [SerializeField] public CustomUnityEvents.EventVector3Int OnCoordinateHidden;
     [SerializeField] public CustomUnityEvents.EventVector3Int OnCoordinateShown;
-    public UnityEvent SpawningFinished;
+    [SerializeField] public UnityEvent SpawningFinished;
     
     private int gridSize;
     private int worldTileSideSize;
@@ -166,7 +166,7 @@ public class TerrainSpawner : MonoBehaviour
     {
         for (int i = 0; i < ratio; i++)
         {
-            var oldGridPosition = new Vector2Int(i + oldWorldOffset.x, oldWorldOffset.y);
+            var oldGridPosition = new Vector2Int(i, 0) + oldWorldOffset;
             var newGridPosition = new Vector2Int(i,ratio - 1) + TraversedOffset;
             
             MoveElement(oldGridPosition, newGridPosition);
@@ -177,7 +177,7 @@ public class TerrainSpawner : MonoBehaviour
     {
         for (int i = 0; i < ratio; i++)
         {
-            var oldGridPosition = new Vector2Int(ratio + oldWorldOffset.x - 1, i + oldWorldOffset.y);
+            var oldGridPosition = new Vector2Int(ratio - 1, i) + oldWorldOffset;
             var newGridPosition = new Vector2Int(0,i) + TraversedOffset;
             
             MoveElement(oldGridPosition, newGridPosition);
@@ -188,7 +188,7 @@ public class TerrainSpawner : MonoBehaviour
     {
         for (int i = 0; i < ratio; i++)
         {
-            var oldGridPosition = new Vector2Int(oldWorldOffset.x, i + oldWorldOffset.y);
+            var oldGridPosition = new Vector2Int(0, i) + oldWorldOffset;
             var newGridPosition = new Vector2Int(ratio - 1,i) + TraversedOffset;
             
             MoveElement(oldGridPosition, newGridPosition);
@@ -199,7 +199,7 @@ public class TerrainSpawner : MonoBehaviour
     {
         for (int i = 0; i < ratio; i++)
         {
-            var oldGridPosition = new Vector2Int(i + oldWorldOffset.x, ratio + oldWorldOffset.y - 1);
+            var oldGridPosition = new Vector2Int(i, ratio - 1) + oldWorldOffset;
             var newGridPosition = new Vector2Int(i,0) + TraversedOffset;
             
             MoveElement(oldGridPosition, newGridPosition);
@@ -232,31 +232,6 @@ public class TerrainSpawner : MonoBehaviour
         YOffset = Random.Range(0, 1000);
         
         return new Vector2Int(XOffset, YOffset);
-    }
-
-    /// <summary>
-    /// Run from SaveLoadController on successful load
-    /// </summary>
-    /// <param name="data"></param>
-    public void RebuildWorld(SavedPosition data)
-    {
-        characterPosition.OnPositionChanged.RemoveListener(SpawnNewLine);
-        
-        var builtStore = FindObjectOfType<BuiltElementsStore>();
-        var gameController = FindObjectOfType<GameController>();
-
-        gameController.InputEnabled = false;
-
-        ClearElementStores(builtStore);
-
-        SetWorldFromPositionData(data);
-
-        SpawnTerrainElements();
-        
-        InstantiateBuiltElementsFromPosition(data.BuiltElements);
-
-        gameController.InputEnabled = true;
-        characterPosition.OnPositionChanged.AddListener(SpawnNewLine);
     }
 
     private void InstantiateBuiltElementsFromPosition(List<BuiltElementDescription> dataBuiltElements)
@@ -336,12 +311,43 @@ public class TerrainSpawner : MonoBehaviour
 
         ratio = Mathf.RoundToInt(worldTileSideSize / gridSize);
     }
+    
+    /// <summary>
+    /// Run from SaveLoadController on successful load
+    /// </summary>
+    /// <param name="data"></param>
+    public void RebuildWorld(SavedPosition data)
+    {
+        characterPosition.OnPositionChanged.RemoveListener(SpawnNewLine);
+        
+        var builtStore = FindObjectOfType<BuiltElementsStore>();
+        var gameController = FindObjectOfType<GameController>();
+
+        gameController.InputEnabled = false;
+
+        ClearElementStores(builtStore);
+
+        SetWorldFromPositionData(data);
+
+        SpawnTerrainElements();
+        
+        InstantiateBuiltElementsFromPosition(data.BuiltElements);
+
+        gameController.InputEnabled = true;
+        characterPosition.OnPositionChanged.AddListener(SpawnNewLine);
+    }
+
+    /// <summary>
+    /// Run from GameController OnGameInitiated
+    /// </summary>
+    public void SpawnNewWorld()
+    {
+        InitialWorldOffset = Generate2DOffset();
+        SpawnTerrainElements();
+    }
 
     private void initialize()
     {
         characterPosition.OnPositionChanged.AddListener(SpawnNewLine);
-
-        InitialWorldOffset = Generate2DOffset();
-        SpawnTerrainElements();
     }
 }
