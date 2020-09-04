@@ -45,7 +45,7 @@ public class Health : MonoBehaviour
 
             if (damageVfx != null)
             {
-                damageVfx.Play();
+                PopEffect(damageVfx);
             }
 
             StartCoroutine(DamageCooldown());
@@ -57,12 +57,18 @@ public class Health : MonoBehaviour
         }
     }
 
+    private void PopEffect(ParticleSystem effect)
+    {
+        var vfx = Instantiate(damageVfx, transform.position, Quaternion.identity);
+        vfx.transform.parent = transform;
+        vfx.Play();
+    }
+
     private void DestroyElement()
     {
-        print("Element destroyed");
         if (deathVfx != null)
         {
-            Instantiate(deathVfx, transform.position, Quaternion.identity).Play();
+            PopEffect(deathVfx);
         }
         
         FindObjectOfType<BuiltElementsStore>().RemoveElement(gameObject);
