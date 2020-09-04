@@ -21,9 +21,9 @@ public class SplashScreenOverlayController : MonoBehaviour
     /// <summary>
     /// Run from TerrainSpawner OnSpawningFinished
     /// </summary>
-    public void OnSpawingTerrainFinished()
+    public void OnSpawningTerrainFinished()
     {
-        animator.SetTrigger(Strings.Swap); //TODO make animation
+        animator.SetTrigger(Strings.Swap);
     }
     
     /// <summary>
@@ -31,6 +31,6 @@ public class SplashScreenOverlayController : MonoBehaviour
     /// </summary>
     public void OnGameLoopStarted()
     {
-        content.SetActive(false); //TODO add animation
+        animator.SetTrigger(Strings.Hide);
     } 
 }

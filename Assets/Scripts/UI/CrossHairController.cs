@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 using Utilities;
 
@@ -15,21 +17,22 @@ namespace UI
         [SerializeField] private float freeFlightIconScale = 1f;
         [SerializeField] private float buildIconScale = 0.8f;
         [SerializeField] private float destroyIconScale = 0.8f;
-        [SerializeField] private int backgroundColorAlpha;
+        [SerializeField] private float fadeAppearStep = 0.05f;
         [SerializeField] private Image imagePivot;
         [SerializeField] private Animator animator;
         private GameMode gameMode;
+        private bool isUIShown = true;
 #pragma warning restore 649
 
         /// <summary>
-        /// Used in GameController
+        /// Run from GameController OnGameModeChanged
         /// </summary>
         /// <param name="newMode"></param>
         public void SetCrossHair(GameMode newMode)
         {
             gameMode = newMode;
         
-            SetCrosshairEnabled(newMode != GameMode.OffGameLoop);
+            FadeAppearSymbol();
             
             switch (newMode)
             {
@@ -42,8 +45,6 @@ namespace UI
                 default: SetForFreeFlightMode();
                     break;
             }
-
-            
         }
 
         private void SetEmptySprite()
@@ -95,12 +96,19 @@ namespace UI
 
         public void SetCrosshairEnabled(bool isEnabled)
         {
-            var images = GetComponentsInChildren<Image>();
+            isUIShown = isEnabled;
+            FadeAppearSymbol();
+        }
 
-            foreach (var image in images)
+        private void FadeAppearSymbol()
+        {
+            if (isUIShown && gameMode != GameMode.OffGameLoop)
             {
-                image.color = SetAlphaChannel(image.color, isEnabled ? 255 : 0);
+                StartCoroutine(AppearSymbol());
+                return;
             }
+
+            StartCoroutine(FadeSymbol());
         }
 
         private Color SetAlphaChannel(Color originalColor, int value)
@@ -110,6 +118,28 @@ namespace UI
             var newColor = originalColor;
             newColor.a = value;
             return newColor;
+        }
+
+        IEnumerator FadeSymbol()
+        {
+            var newColor = imagePivot.color;
+            while (imagePivot.color.a > 0)
+            {
+                yield return new WaitForFixedUpdate();
+                newColor.a -= fadeAppearStep;
+                imagePivot.color = newColor;
+            }
+        }
+
+        IEnumerator AppearSymbol()
+        {
+            var newColor = imagePivot.color;
+            while (imagePivot.color.a < 1f)
+            {
+                yield return new WaitForFixedUpdate();
+                newColor.a += fadeAppearStep;
+                imagePivot.color = newColor;
+            }
         }
     }
 }

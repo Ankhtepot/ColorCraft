@@ -7,6 +7,7 @@ public class VisibilityController : MonoBehaviour
 {
 #pragma warning disable 649
     [SerializeField] private KeyCode ShortcutKey;
+    [SerializeField] private KeyCode AlternativeShortcutKey;
     [SerializeField] private bool isUIPartShown;
     [SerializeField] private Animator animator;
     [SerializeField] public CustomUnityEvents.EventBool OnVisibilityChanged;
@@ -19,7 +20,7 @@ public class VisibilityController : MonoBehaviour
 
     private void HandleInput()
     {
-        if (Input.GetKeyDown(ShortcutKey))
+        if (Input.GetKeyDown(ShortcutKey) || Input.GetKeyDown(AlternativeShortcutKey))
         {
             isUIPartShown = !isUIPartShown;
             animator.SetBool(Strings.Show, isUIPartShown);
