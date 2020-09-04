@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
+using Components;
 using TMPro;
 using UnityEngine;
+using CharacterController = Controllers.CharacterController;
 
 //Fireball Games * * * PetrZavodny.com
 
