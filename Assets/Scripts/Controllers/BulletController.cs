@@ -6,7 +6,7 @@ using Utilities;
 
 namespace Controllers
 {
-    public class BulletController : DamageForwarderMono
+    public class BulletController : DamageCollisionCollisionForwarderReceiverMono
     {
 #pragma warning disable 649
         [SerializeField] private float bulletLifetime = 0.2f;

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Components
 {
-    public class Health : DamageForwarderMono
+    public class Health : DamageCollisionCollisionForwarderReceiverMono
     {
 #pragma warning disable 649
         [SerializeField] private int hitpoints;

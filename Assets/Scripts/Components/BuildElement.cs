@@ -2,7 +2,7 @@
 
 //Fireball Games * * * PetrZavodny.com
 
-namespace UI
+namespace Components
 {
     public class BuildElement : MonoBehaviour
     {

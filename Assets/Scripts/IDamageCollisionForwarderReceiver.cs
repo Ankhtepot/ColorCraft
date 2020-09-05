@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface IDamageForwarderReceiver
+public interface IDamageCollisionForwarderReceiver
 {
     void OnCollisionReceived(Collision other);
 }

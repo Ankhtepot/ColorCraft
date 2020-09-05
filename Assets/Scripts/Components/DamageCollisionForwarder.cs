@@ -10,7 +10,7 @@ namespace Components
     public class DamageCollisionForwarder : MonoBehaviour
     {
 #pragma warning disable 649
-        [SerializeField] DamageForwarderMono target;
+        [SerializeField] private DamageCollisionCollisionForwarderReceiverMono target;
         [SerializeField] private string acceptedCollisionTag = Strings.Harmful;
 #pragma warning restore 649
 
@@ -31,7 +31,7 @@ namespace Components
         {
             if (target) return;
             
-            target = GetComponentInParent<DamageForwarderMono>();
+            target = GetComponentInParent<DamageCollisionCollisionForwarderReceiverMono>();
                 
             if (!target)
             {
