@@ -6,13 +6,14 @@ using UnityEngine;
 
 namespace Components
 {
-    public class Health : MonoBehaviour
+    public class Health : DamageForwarderMono
     {
 #pragma warning disable 649
         [SerializeField] private int hitpoints;
         [SerializeField] private float damageableCooldown = 0.25f;
         [SerializeField] private bool isDamageable = true;
         [SerializeField] private ParticleSystem damageVfx;
+        [SerializeField] private ParticleSystem pointOfDamage;
         [SerializeField] private ParticleSystem deathVfx;
         private Color mainMaterialColor;
 #pragma warning restore 649
@@ -35,6 +36,41 @@ namespace Components
 
         public void OnCollisionReceived(string otherTag, Vector3 position)
         {
+            if (isDamageable)
+            {
+                isDamageable = false;
+            
+                hitpoints--;
+
+                if (damageVfx != null)
+                {
+                    damageVfx.Play();
+                }
+
+                if (pointOfDamage != null)
+                {
+                    pointOfDamage.transform.position = position;
+                    pointOfDamage.Play();
+                }
+
+                StartCoroutine(DamageCooldown());
+
+                if (hitpoints <= 0)
+                {
+                    DestroyElement();
+                }
+            }
+        }
+
+        public override void OnCollisionReceived(Collision other)
+        {
+            if (pointOfDamage != null)
+            {
+                // print($"{other.GetContact(0).normal}");
+                pointOfDamage.transform.position = other.transform.position;
+                pointOfDamage.Play();
+            }
+            
             if (isDamageable)
             {
                 isDamageable = false;

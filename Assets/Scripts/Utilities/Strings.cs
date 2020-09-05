@@ -11,6 +11,6 @@
         public const string Show = "Show";
         public const string Swap = "Swap";
         public const string Harmful = "Harmful";
-        public const string Background = "Background";
+        public const string Untagged = "Untagged";
     }
 }

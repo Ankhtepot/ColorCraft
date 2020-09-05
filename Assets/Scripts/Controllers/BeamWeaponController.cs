@@ -10,6 +10,7 @@ namespace Controllers
 #pragma warning disable 649
         [SerializeField] private GameController gameController;
         [SerializeField] private ParticleSystem beamVFX;
+        
 #pragma warning restore 649
 
         private void Update()
