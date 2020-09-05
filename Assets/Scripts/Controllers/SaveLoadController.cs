@@ -87,7 +87,7 @@ namespace Controllers
             if (!item.GetComponent<BuildElement>()) return null;
 
             var buildElement = item.GetComponent<BuildElement>();
-            var health = item.GetComponent<Health>();
+            var health = item.GetComponent<BuildElementLifeCycle>();
 
             return new BuiltElementDescription()
             {

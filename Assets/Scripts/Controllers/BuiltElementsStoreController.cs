@@ -2,6 +2,7 @@
 using System.Linq;
 using Extensions;
 using UnityEngine;
+using Utilities;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -10,6 +11,8 @@ namespace Controllers
     public class BuiltElementsStoreController : MonoBehaviour
     {
 #pragma warning disable 649
+        [SerializeField] private DetachedElementsChecker detachChecker;
+        
         private readonly Dictionary<Vector3Int, GameObject> store = new Dictionary<Vector3Int, GameObject>();
 #pragma warning restore 649
 
@@ -20,10 +23,10 @@ namespace Controllers
    
         public void RemoveElement(GameObject element)
         {
-            RemoveElementAt(element.transform.position);
+            RemoveElementWithPosition(element.transform.position);
         }
 
-        private void RemoveElementAt(Vector3 position)
+        public void RemoveElementWithPosition(Vector3 position)
         {
             var key = position.ToVector3Int();
             if (store.ContainsKey(key))
@@ -65,6 +68,11 @@ namespace Controllers
         public Dictionary<Vector3Int, GameObject> GetStoreDictionary()
         {
             return store;
+        }
+
+        public void CheckForDetachedElements(Vector3Int detachedPosition)
+        {
+            detachChecker.CheckForDetachedElements(detachedPosition, store);
         }
     }
 }

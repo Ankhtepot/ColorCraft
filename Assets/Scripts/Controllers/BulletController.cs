@@ -19,9 +19,7 @@ namespace Controllers
 
         public override void OnCollisionReceived(Collision other)
         {
-            print("Bullet Collided");
-            tag = Strings.Untagged;
-            Destroy(transform.GetChild(0).gameObject);
+            // Destroy(transform.GetChild(0).gameObject);
             DestroyBullet();
         }
 

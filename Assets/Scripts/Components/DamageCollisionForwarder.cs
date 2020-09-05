@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEngine;
 using Utilities;
 
 //Fireball Games * * * PetrZavodny.com
@@ -11,7 +9,6 @@ namespace Components
     {
 #pragma warning disable 649
         [SerializeField] private DamageCollisionCollisionForwarderReceiverMono target;
-        [SerializeField] private string acceptedCollisionTag = Strings.Harmful;
 #pragma warning restore 649
 
         private void Start()
@@ -21,10 +18,7 @@ namespace Components
 
         private void OnCollisionEnter(Collision other)
         {
-            if (string.IsNullOrEmpty(acceptedCollisionTag) || other.gameObject.CompareTag(acceptedCollisionTag))
-            {
-                target.OnCollisionReceived(other);
-            }
+            target.OnCollisionReceived(other);
         }
         
         private void Initialize()

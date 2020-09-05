@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -8,8 +9,9 @@ namespace Components
     {
 #pragma warning disable 649
         public string Description;
+       
 #pragma warning restore 649
 
-
+        
     }
 }

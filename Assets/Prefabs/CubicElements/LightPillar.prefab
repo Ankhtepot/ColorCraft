@@ -298,7 +298,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.02, y: 0.02, z: 0.019999996}
+  m_Size: {x: 0.0199, y: 0.0199, z: 0.0199}
   m_Center: {x: 0, y: -1.7763568e-15, z: 0.009000013}
 --- !u!114 &6330527256710705132
 MonoBehaviour:
@@ -313,7 +313,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 5742487010612296318}
-  acceptedCollisionTag: Harmful
 --- !u!1 &4470904905357970976
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,6 +324,7 @@ GameObject:
   - component: {fileID: 4470904905357970979}
   - component: {fileID: 4078691024303648150}
   - component: {fileID: 5742487010612296318}
+  - component: {fileID: 1901402553342983111}
   m_Layer: 0
   m_Name: LightPillar
   m_TagString: BuildTopOnly
@@ -363,6 +363,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Description: LightPillar
+  isDetached: 0
 --- !u!114 &5742487010612296318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,6 +382,24 @@ MonoBehaviour:
   damageVfx: {fileID: 4512403349990880364}
   pointOfDamage: {fileID: 5468805773179910439}
   deathVfx: {fileID: 426560696276268878, guid: 887ae87e5d9fd8341b3ea4f4792b5c6e, type: 3}
+--- !u!114 &1901402553342983111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4470904905357970976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 543f11bbdedc39e4287f68c487c2d46d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentGridPosition: {x: 0, y: 0, z: 0}
+  OldGridPosition: {x: 0, y: 0, z: 0}
+  OnPositionChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  environment: {fileID: 0}
 --- !u!1001 &867458452543737599
 PrefabInstance:
   m_ObjectHideFlags: 0

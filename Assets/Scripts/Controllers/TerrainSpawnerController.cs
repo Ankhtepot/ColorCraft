@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Components;
 using Extensions;
 using Models;
@@ -46,6 +47,11 @@ namespace Controllers
         void Start()
         {
             initialize();
+        }
+
+        public List<Vector3Int> GetGroundElementsPositions()
+        {
+            return GridMap.Select(item => item.Value.transform.position.ToVector3Int()).ToList();
         }
 
         private void SetPerlinMap()
@@ -254,9 +260,9 @@ namespace Controllers
 
                 var newElement = Instantiate(storeItems[item.Name], item.Position, Quaternion.identity);
                 newElement.transform.parent = builtElementStore.transform;
-                newElement.gameObject.SetActive(GridMap.ContainsKey(item.Position.ToVector3Int()));
+                newElement.gameObject.SetActive(GridMap.ContainsKey(item.Position.ToVector2Int()));
 
-                var health = newElement.GetComponent<Health>();
+                var health = newElement.GetComponent<BuildElementLifeCycle>();
                 if (health)
                 {
                     health.SetHitpoints(item.Health);

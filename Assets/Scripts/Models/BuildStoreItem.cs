@@ -1,5 +1,4 @@
 ﻿using Components;
-using UI;
 using UnityEngine;
 
 namespace Models
