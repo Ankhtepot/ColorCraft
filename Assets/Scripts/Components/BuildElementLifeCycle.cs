@@ -4,6 +4,7 @@ using Controllers;
 using Extensions;
 using UnityEngine;
 using Utilities;
+using Utilities.MonoAbstracts;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -14,67 +15,83 @@ namespace Components
 #pragma warning disable 649
         [SerializeField] private int hitpoints;
         [SerializeField] private float damageableCooldown = 0.25f;
-        [SerializeField] private bool isDamageable = true;
-        [SerializeField] private GameObject Body;
+        [SerializeField] private float healingCooldown = 0.25f;
         [SerializeField] private ParticleSystem damageVfx;
         [SerializeField] private ParticleSystem pointOfDamage;
         [SerializeField] private ParticleSystem deathVfx;
-        private Color mainMaterialColor;
-        
-        [SerializeField] private bool isDetached;
         public bool IsDetached
         {
-            get => isDetached;
             set => ManageDetached(value);
         }
+
+        public int Hitpoints
+        {
+            get => hitpoints;
+            set => hitpoints = value;
+        }
+
+        private int originalHitpoints;
+        private bool isDamageable = true;
+        private bool isHealable = true;
+        private bool isDetached;
+        private Color mainMaterialColor;
+        private Rigidbody rigidBody;
+        private Collider elementCollider;
 #pragma warning restore 649
 
         private void Start()
         {
             SetParticleEffects();
+            originalHitpoints = Hitpoints;
         }
-        
+
+        private void OnCollisionEnter(Collision other)
+        {
+            OnCollisionReceived(other);
+        }
+
         public override void OnCollisionReceived(Collision other)
         {
-            print($"Collided with: {other.gameObject.name} | is ground: {other.gameObject.GetComponentInParent<TerrainElement>() != null} | is buildElement: {other.gameObject.GetComponentInParent<BuildElement>() != null}");
-            if (isDamageable && !isDetached && other.gameObject.CompareTag(Strings.Harmful))
-            {
-                if (pointOfDamage != null)
-                {
-                    // print($"{other.GetContact(0).normal}");
-                    pointOfDamage.transform.position = other.transform.position;
-                    pointOfDamage.Play();
-                }
-
-                isDamageable = false;
+            ManageCollisionWithHarmful(other);
             
-                hitpoints--;
+            ManageCollisionWithHealing(other);
+        }
 
-                if (damageVfx != null)
-                {
-                    damageVfx.Play();
-                }
+        private void ManageCollisionWithHealing(Collision other)
+        {
+            if (!isHealable && !other.gameObject.CompareTag(Strings.Healing) || Hitpoints >= originalHitpoints) return;
 
-                StartCoroutine(DamageCooldown());
+            isHealable = false;
+            print("healing placeholder");
 
-                if (hitpoints <= 0)
-                {
-                    DestroyElement();
-                }
-            }
+            StartCoroutine(HealingCooldown());
+        }
 
-            //TODO move collision detection to object itself, not body
-            if (isDetached && (other.gameObject.GetComponentInParent<TerrainElement>() ||
-                               other.gameObject.GetComponentInParent<BuildElement>()))
+        private void ManageCollisionWithHarmful(Collision other)
+        {
+            if (!isDamageable || isDetached || !other.gameObject.CompareTag(Strings.Harmful)) return;
+            
+            if (pointOfDamage != null)
             {
-                // TODO: rework whole body collision forwarding to main object or destroy both collider and rigidbody from main object  
-                Destroy(gameObject.GetComponent<Rigidbody>());
-                var currentPosition = transform.position;
-                transform.position = currentPosition.ToVector3Int();
-                FindObjectOfType<BuiltElementsStoreController>().AddElement(gameObject);
-                
-                isDetached = false;
+                pointOfDamage.transform.position = other.transform.position;
+                pointOfDamage.Play();
             }
+
+            isDamageable = false;
+            
+            hitpoints--;
+
+            if (damageVfx != null)
+            {
+                damageVfx.Play();
+            }
+
+            if (hitpoints <= 0)
+            {
+                DestroyElement();
+            }
+                
+            StartCoroutine(DamageCooldown());
         }
 
         private void SetParticleEffects()
@@ -88,23 +105,57 @@ namespace Components
         }
         
         [SuppressMessage("ReSharper", "BitwiseOperatorOnEnumWithoutFlags")]
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private void ManageDetached(bool detached)
         {
             if (isDetached == detached) return;
 
             if (detached)
             {
-                //TODO add rigidbody and collider (0.99x3!) to object, not body
+                // print($"REMOVING {transform.position} from elementStore.");
                 FindObjectOfType<BuiltElementsStoreController>().RemoveElementWithPosition(transform.position);
-            
-                var cube = GetComponentInChildren<Collider>().gameObject;
-                var rigidBody = cube.AddComponent<Rigidbody>();
+
+                rigidBody = gameObject.AddComponent<Rigidbody>();
                 rigidBody.angularDrag = 0;
                 rigidBody.mass = 50;
                 rigidBody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX |RigidbodyConstraints.FreezePositionZ;
+
+                if (!elementCollider)
+                {
+                    elementCollider = gameObject.AddComponent<BoxCollider>();
+                    var NinetyNinePercentOfCubicScaleDimension = transform.localScale.x - transform.localScale.x / 100f;
+                    ((BoxCollider) elementCollider).size = new Vector3(
+                        NinetyNinePercentOfCubicScaleDimension,
+                        NinetyNinePercentOfCubicScaleDimension,
+                        NinetyNinePercentOfCubicScaleDimension); 
+                }
+
+                elementCollider.enabled = true;
+
+                StartCoroutine(CheckVelocityTillZero());
+            }
+            else
+            {
+                var currentPosition = transform.position;
+                transform.position = currentPosition.ToVector3Int();
+                // print($"ADDING {transform.position} to elementStore.");
+                FindObjectOfType<BuiltElementsStoreController>().AddElement(gameObject);
             }
             
             isDetached = detached;
+        }
+
+        IEnumerator CheckVelocityTillZero()
+        {
+            yield return new WaitForSeconds(0.5f);
+            yield return new WaitWhile(() => rigidBody.velocity != Vector3.zero);
+            
+            // print("element stopped moving");
+            
+            Destroy(rigidBody);
+            elementCollider.enabled = false;
+                
+            IsDetached = false;
         }
 
         private void PopEffect(ParticleSystem effect)
@@ -139,14 +190,11 @@ namespace Components
             isDamageable = true;
         }
 
-        public int GetCurrentHitpoints()
+        IEnumerator HealingCooldown()
         {
-            return hitpoints;
-        }
+            yield return new WaitForSeconds(healingCooldown);
 
-        public void SetHitpoints(int value)
-        {
-            hitpoints = value;
+            isHealable = true;
         }
     }
 }

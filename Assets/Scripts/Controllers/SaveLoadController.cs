@@ -93,7 +93,7 @@ namespace Controllers
             {
                 Position = item.transform.position.ToVector3Int(),
                 Name = buildElement.Description,
-                Health = (health != null ? health.GetCurrentHitpoints() : 0)
+                Health = (health != null ? health.Hitpoints : 0)
             };
         }
 

@@ -167,14 +167,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8483d7fd320161439d6e6ffb8f0aa57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitpoints: 4
+  hitpoints: 3
   damageableCooldown: 0.25
-  isDamageable: 1
-  Body: {fileID: 2686375787985619435}
+  healingCooldown: 0.25
   damageVfx: {fileID: 4787772619412914294}
   pointOfDamage: {fileID: 7451510590686383760}
   deathVfx: {fileID: 426560696276268878, guid: 887ae87e5d9fd8341b3ea4f4792b5c6e, type: 3}
-  isDetached: 0
 --- !u!1001 &2343517066257348936
 PrefabInstance:
   m_ObjectHideFlags: 0

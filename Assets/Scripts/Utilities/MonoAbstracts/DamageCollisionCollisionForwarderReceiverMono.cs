@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using Utilities.Interfaces;
 
-namespace Utilities
+namespace Utilities.MonoAbstracts
 {
     public abstract class DamageCollisionCollisionForwarderReceiverMono : MonoBehaviour, IDamageCollisionForwarderReceiver
     {

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Utilities;
+using Utilities.MonoAbstracts;
 
 //Fireball Games * * * PetrZavodny.com
 

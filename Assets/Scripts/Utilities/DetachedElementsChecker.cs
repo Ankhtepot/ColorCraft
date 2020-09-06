@@ -34,6 +34,12 @@ namespace Utilities
             
             foreach (var position in elementsToCheck)
             {
+                //If is position in detachedElements, it means it was in the path of element on other side.
+                if (detachedElements.Contains(position))
+                {
+                    continue;
+                }
+                
                 var newQueue = new Queue<Vector3Int>();
                 newQueue.Enqueue(position);
                 detachedElements.AddRange(FindGround(newQueue, detachedElements));
@@ -71,7 +77,7 @@ namespace Utilities
                     {
                         positionsOnThePath.Add(position);
                     }
-                    //found positions also needs to be added to eliminate them from queue
+                    //found positions also needs to be added to process them from queue
                     if (!queue.Contains(position) && !exploredPositions.Contains(position))
                     {
                         queue.Enqueue(position);
@@ -87,7 +93,7 @@ namespace Utilities
 
         private List<Vector3Int> GetSurroundingElementsPositions(Vector3Int center)
         {
-            return AllDirections.Select(direction => center + direction)
+            return GetSurroundingPositions(center)
                 .Where(checkedPosition => elementStoreKeys.Contains(checkedPosition))
                 .ToList();
         }
@@ -99,7 +105,8 @@ namespace Utilities
 
         private bool IsAnyPositionAroundGround(Vector3Int center)
         {
-            return GetSurroundingPositions(center).Any(position => groundElementsPositions.Contains(position));
+            return GetSurroundingPositions(center)
+                .Any(position => groundElementsPositions.Contains(position));
         }
     }
 }

@@ -18,7 +18,17 @@ namespace Controllers
 
         public void AddElement(GameObject element)
         {
-            store.Add(element.transform.position.ToVector3Int(), element);
+            var elementPosition = element.transform.position.ToVector3Int();
+            
+            if (!store.ContainsKey(elementPosition))
+            {
+                // print($"ElementStore: adding element with ket: {elementPosition}");
+                store.Add(elementPosition, element);
+            }
+            else
+            {
+                Debug.LogWarning($"ElementStore already had key {elementPosition} assigned");
+            }
         }
    
         public void RemoveElement(GameObject element)
@@ -31,6 +41,7 @@ namespace Controllers
             var key = position.ToVector3Int();
             if (store.ContainsKey(key))
             {
+                // print($"ElementStore: removing element with ket: {key}");
                 store.Remove(key);
             }
         }

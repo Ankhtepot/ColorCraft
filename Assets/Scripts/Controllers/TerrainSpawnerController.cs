@@ -265,7 +265,7 @@ namespace Controllers
                 var health = newElement.GetComponent<BuildElementLifeCycle>();
                 if (health)
                 {
-                    health.SetHitpoints(item.Health);
+                    health.Hitpoints = item.Health;
                 } 
             
                 builtElementStore.AddElement(newElement.gameObject);

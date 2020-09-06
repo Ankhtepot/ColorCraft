@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Utilities
+namespace Utilities.Interfaces
 {
     public interface IDamageCollisionForwarderReceiver
     {

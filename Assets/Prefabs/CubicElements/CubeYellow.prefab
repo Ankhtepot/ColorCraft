@@ -155,7 +155,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Description: CubeYellow
-  isDetached: 0
 --- !u!114 &4980375189013698138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,9 +167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8483d7fd320161439d6e6ffb8f0aa57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitpoints: 8
+  hitpoints: 5
   damageableCooldown: 0.25
-  isDamageable: 1
+  healingCooldown: 0.25
   damageVfx: {fileID: 2787273603227826490}
   pointOfDamage: {fileID: 1895030988999114106}
   deathVfx: {fileID: 426560696276268878, guid: 887ae87e5d9fd8341b3ea4f4792b5c6e, type: 3}
