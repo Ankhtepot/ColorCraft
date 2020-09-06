@@ -66,6 +66,7 @@ MonoBehaviour:
   damageVfx: {fileID: 2174278049319536203}
   pointOfDamage: {fileID: 6966538450966412203}
   deathVfx: {fileID: 426560696276268878, guid: 887ae87e5d9fd8341b3ea4f4792b5c6e, type: 3}
+  AlternativeVfxColor: {r: 0.6509434, g: 0, b: 0, a: 1}
 --- !u!1 &5491333467976937893
 GameObject:
   m_ObjectHideFlags: 0

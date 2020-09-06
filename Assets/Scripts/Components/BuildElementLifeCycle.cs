@@ -19,6 +19,8 @@ namespace Components
         [SerializeField] private ParticleSystem damageVfx;
         [SerializeField] private ParticleSystem pointOfDamage;
         [SerializeField] private ParticleSystem deathVfx;
+        [Header("Black is default, means, will not be used")]
+        public Color AlternativeVfxColor;
         public bool IsDetached
         {
             set => ManageDetached(value);
@@ -96,7 +98,9 @@ namespace Components
 
         private void SetParticleEffects()
         {
-            mainMaterialColor = GetComponentInChildren<Renderer>().material.color;
+            mainMaterialColor = AlternativeVfxColor.a.Equals(0f) 
+                ? GetComponentInChildren<Renderer>().material.color 
+                : AlternativeVfxColor;
 
             if (damageVfx == null) return;
             

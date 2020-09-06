@@ -73,7 +73,7 @@ namespace Controllers
                 var instantiatedElement =
                     Instantiate(elementToBuild, previewPresenter.transform.position, Quaternion.identity);
             
-                instantiatedElement.tag = Strings.BuildAllSides;
+                instantiatedElement.tag = elementToBuild.tag;
                 instantiatedElement.transform.parent = builtElementParent;
             
                 storeController.AddElement(instantiatedElement);
@@ -112,17 +112,31 @@ namespace Controllers
         private void SetPreviewItem(GameObject element)
         {
             element.transform.localScale = previewElementScaleFactor;
-
+            
             var elementMaterial = element.GetComponentInChildren<Renderer>().material;
-            var newColor = elementMaterial.color;
-            newColor.a = previewElementTransparencyFactor;
-            var newMaterial = new Material(elementMaterial);
-            newMaterial.SetColor(Strings.SetMaterialColorKeyword, newColor);
-
-            element.GetComponentInChildren<Renderer>().material = newMaterial;
+            element.GetComponentInChildren<Renderer>().material = CreateTransparentMaterialVariant(elementMaterial);
             element.tag = "Untagged";
 
             element.transform.parent = previewElementPivot.transform;
+        }
+
+        private Material CreateTransparentMaterialVariant(Material originalMaterial)
+        {
+            Material newMaterial = new Material(Shader.Find("Standard"));
+            newMaterial.CopyPropertiesFromMaterial(originalMaterial);
+            newMaterial.SetFloat("_Mode", 2);
+            newMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            newMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            newMaterial.SetInt("_ZWrite", 0);
+            newMaterial.DisableKeyword("_ALPHATEST_ON");
+            newMaterial.EnableKeyword("_ALPHABLEND_ON");
+            newMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            newMaterial.renderQueue = 3000;
+            var newColor = newMaterial.color;
+            newColor.a = previewElementTransparencyFactor;
+            newMaterial.color = newColor;
+
+            return newMaterial;
         }
 
         /// <summary>
