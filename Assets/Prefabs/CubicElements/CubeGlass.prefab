@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 853298254892893524}
   - component: {fileID: 853298254892893525}
   m_Layer: 0
-  m_Name: GlassCube
-  m_TagString: Untagged
+  m_Name: CubeGlass
+  m_TagString: BuildAllSides
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,6 +67,7 @@ MonoBehaviour:
   damageVfx: {fileID: 9145582199694810504}
   pointOfDamage: {fileID: 4389915634625972325}
   deathVfx: {fileID: 426560696276268878, guid: 887ae87e5d9fd8341b3ea4f4792b5c6e, type: 3}
+  AlternativeVfxColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &3746684807982929013
 GameObject:
   m_ObjectHideFlags: 0
