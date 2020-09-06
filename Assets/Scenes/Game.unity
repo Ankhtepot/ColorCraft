@@ -303,7 +303,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 2.3509887e-38, z: -2.306054e+18, w: 2.1175824e-22}
+  m_BoundingSphereOverride: {x: 0, y: 9.404242e-38, z: 2.92008e-40, w: 1.13e-41}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1338,7 +1338,7 @@ PrefabInstance:
         type: 3}
       propertyPath: itemsSprites.Array.data[8]
       value: 
-      objectReference: {fileID: 21300000, guid: 7feb7cd0cf8f39d4c8457c90a49ec32b,
+      objectReference: {fileID: 21300000, guid: d7034ee6fd0923f41af2fd811fc4f4af,
         type: 3}
     - target: {fileID: 6498053885854704679, guid: 0c66efd91c286ed4abb58ab1c2c1f514,
         type: 3}
@@ -1407,6 +1407,12 @@ PrefabInstance:
       propertyPath: m_margin.x
       value: -98.85033
       objectReference: {fileID: 0}
+    - target: {fileID: 2512601886880590183, guid: 4512f75fb25387340adb1ec9770b6a08,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e7bb71f69452634d9fcfec75f04cebf,
+        type: 3}
     - target: {fileID: 4227882442445470734, guid: 4512f75fb25387340adb1ec9770b6a08,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -1576,6 +1582,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8420959801312366662, guid: 4512f75fb25387340adb1ec9770b6a08,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 8420959801312366662, guid: 4512f75fb25387340adb1ec9770b6a08,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 8420959801312366662, guid: 4512f75fb25387340adb1ec9770b6a08,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5274458
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4512f75fb25387340adb1ec9770b6a08, type: 3}

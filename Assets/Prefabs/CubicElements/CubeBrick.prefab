@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Description: CubeBrick
+  storeSprite: {fileID: 21300000, guid: 351327d0b3a7aec4386fc6ea790cc63a, type: 3}
 --- !u!114 &1896283210500516999
 MonoBehaviour:
   m_ObjectHideFlags: 0

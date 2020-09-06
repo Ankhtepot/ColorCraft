@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Description: CubeWooden
+  storeSprite: {fileID: 21300000, guid: 47ade53b77cc7d04ab5cef3292b47e25, type: 3}
 --- !u!114 &8102029078507973198
 MonoBehaviour:
   m_ObjectHideFlags: 0

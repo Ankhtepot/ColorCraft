@@ -362,6 +362,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Description: LightPillar
+  storeSprite: {fileID: 21300000, guid: 96332dd1ed141ff49a887c2ddffe7184, type: 3}
 --- !u!114 &5742487010612296318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,6 +381,7 @@ MonoBehaviour:
   damageVfx: {fileID: 4512403349990880364}
   pointOfDamage: {fileID: 5468805773179910439}
   deathVfx: {fileID: 426560696276268878, guid: 887ae87e5d9fd8341b3ea4f4792b5c6e, type: 3}
+  AlternativeVfxColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1001 &867458452543737599
 PrefabInstance:
   m_ObjectHideFlags: 0

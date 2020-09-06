@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Description: GlassCube
+  storeSprite: {fileID: 21300000, guid: d7034ee6fd0923f41af2fd811fc4f4af, type: 3}
 --- !u!114 &853298254892893525
 MonoBehaviour:
   m_ObjectHideFlags: 0

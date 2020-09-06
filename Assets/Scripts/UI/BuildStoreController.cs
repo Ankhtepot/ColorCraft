@@ -14,20 +14,21 @@ namespace UI
     public class BuildStoreController : MonoBehaviour
     {
 #pragma warning disable 649
-        [SerializeField] private Sprite[] itemsSprites;
-        [SerializeField] private BuildElement[] itemsPrefabs;
+        [SerializeField] private List<BuildElement> itemsPrefabs;
         [SerializeField] private GameObject previewItem;
         [SerializeField] private GameObject nextItem;
         [SerializeField] private Image previewItemImage;
         [SerializeField] private Image showItemImage;
         [SerializeField] private Image nextItemImage;
         [SerializeField] private Animator animator;
-        [SerializeField] private int currentItemIndex;
-        private readonly List<BuildStoreItem> itemsStore = new List<BuildStoreItem>();
-        [SerializeField] private bool inputEnabled = true;
-        [SerializeField] private GameMode gameMode;
 
         [SerializeField] public CustomUnityEvents.EventBuildElement OnStoreItemChanged;
+        
+        private int currentItemIndex;
+        private bool inputEnabled = true;
+        private GameMode gameMode;
+        private readonly List<Sprite> itemsSprites = new List<Sprite>();
+        private readonly List<BuildStoreItem> itemsStore = new List<BuildStoreItem>();
 #pragma warning restore 649
 
         void Start()
@@ -78,7 +79,7 @@ namespace UI
                 previewItem.SetActive(false);
             }
         
-            if (currentItemIndex < itemsSprites.Length - 1)
+            if (currentItemIndex < itemsSprites.Count - 1)
             {
                 nextItem.SetActive(true);
                 nextItemImage.sprite = itemsSprites[currentItemIndex + 1];
@@ -96,16 +97,15 @@ namespace UI
         {
             return itemsPrefabs.ToDictionary(item => item.Description);
         }
-    
-        private void initialize()
+        
+        private bool InitializeStoreList()
         {
-            if (itemsPrefabs.Length != itemsSprites.Length)
+            foreach (var item in itemsPrefabs)
             {
-                Debug.LogError("Items lists in a build store must have same number of sprites as prefabs");
-                return;
+                itemsSprites.Add(item.storeSprite);
             }
 
-            for (int i = 0; i < itemsSprites.Length; i++)
+            for (int i = 0; i < itemsSprites.Count; i++)
             {
                 itemsStore.Add(new BuildStoreItem()
                 {
@@ -114,10 +114,9 @@ namespace UI
                 });
             }
 
-            currentItemIndex = 0;
-            gameMode = GameMode.FreeFlight;
+            return false;
         }
-
+        
         /// <summary>
         /// Run from GameController OnGameModeChangeEvent
         /// </summary>
@@ -147,6 +146,14 @@ namespace UI
         public void OnInputEnabledChanged(bool newState)
         {
             inputEnabled = newState;
+        }
+    
+        private void initialize()
+        {
+            if (!InitializeStoreList()) return;
+
+            currentItemIndex = 0;
+            gameMode = GameMode.FreeFlight;
         }
     }
 }
