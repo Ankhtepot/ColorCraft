@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 4980375189013698138}
   m_Layer: 9
   m_Name: CubeYellow
-  m_TagString: BuildAllSides
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

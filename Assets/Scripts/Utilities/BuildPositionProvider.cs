@@ -19,7 +19,6 @@ namespace Utilities
         [SerializeField] public UnityEvent OnNoValidPreviewPosition;
         private Vector3Int previousPreviewPosition;
         private GameMode gameMode;
-        private readonly string[] buildTags = {Strings.BuildAllSides, Strings.BuildTopOnly,};
     
 #pragma warning restore 649
     
@@ -36,7 +35,7 @@ namespace Utilities
             {
                 var objectHit = hit.transform;
                 
-                var buildPosition = GetBuildPosition(objectHit);
+                var buildPosition = GetBuildPosition(objectHit, true);
 
                 if (buildPosition == BuildPosition.None) return;
             
@@ -57,10 +56,15 @@ namespace Utilities
             }
         }
 
-        private BuildPosition GetBuildPosition(Transform objectHit)
+        public static BuildPosition GetBuildPosition(Transform objectHit, bool inParent = false)
         {
-            var terrainElement = objectHit.parent.GetComponent<TerrainElement>();
-            var buildElement = objectHit.parent.GetComponent<BuildElement>();
+            var terrainElement = inParent 
+                ? objectHit.parent.GetComponent<TerrainElement>() 
+                : objectHit.GetComponent<TerrainElement>();
+            
+            var buildElement = inParent 
+                ? objectHit.parent.GetComponent<BuildElement>() 
+                : objectHit.GetComponent<BuildElement>();
 
             if (!terrainElement && !buildElement)
             {
@@ -69,7 +73,7 @@ namespace Utilities
             
             return terrainElement ? terrainElement.BuildBaseOn : buildElement.BuildBaseOn;
         }
-
+        
         public void SetGameMode(GameMode newMode)
         {
             gameMode = newMode;

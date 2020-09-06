@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8102029078507973198}
   m_Layer: 0
   m_Name: CubeWooden
-  m_TagString: BuildAllSides
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

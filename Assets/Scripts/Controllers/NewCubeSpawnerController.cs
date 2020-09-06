@@ -46,7 +46,7 @@ namespace Controllers
 
         private void ShowPreviewElement(Vector3Int previewPosition, Vector3Int hitNormal)
         {
-            if (previewItem.CompareTag(Strings.BuildTopOnly) && hitNormal != Vector3Int.up)
+            if (BuildPositionProvider.GetBuildPosition(previewItem.transform) == BuildPosition.Top && hitNormal != Vector3Int.up)
             {
                 return;
             }
