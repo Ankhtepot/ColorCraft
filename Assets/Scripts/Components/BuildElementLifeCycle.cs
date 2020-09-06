@@ -59,7 +59,7 @@ namespace Components
 
         private void ManageCollisionWithHealing(Collision other)
         {
-            if (!isHealable && !other.gameObject.CompareTag(Strings.Healing) || Hitpoints >= originalHitpoints) return;
+            if (!isHealable || !other.gameObject.CompareTag(Strings.Healing) || Hitpoints >= originalHitpoints) return;
 
             isHealable = false;
             print("healing placeholder");
