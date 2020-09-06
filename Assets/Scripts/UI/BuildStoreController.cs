@@ -5,6 +5,7 @@ using Components;
 using Models;
 using UnityEngine;
 using Utilities;
+using Utilities.Enumerations;
 using Image = UnityEngine.UI.Image;
 
 //Fireball Games * * * PetrZavodny.com
@@ -102,7 +103,7 @@ namespace UI
         {
             foreach (var item in itemsPrefabs)
             {
-                itemsSprites.Add(item.storeSprite);
+                itemsSprites.Add(item.StoreSprite);
             }
 
             for (int i = 0; i < itemsSprites.Count; i++)

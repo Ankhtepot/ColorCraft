@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Utilities;
+using Utilities.Enumerations;
 
 //Fireball Games * * * PetrZavodny.com
 

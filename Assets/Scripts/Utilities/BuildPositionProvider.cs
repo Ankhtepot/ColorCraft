@@ -1,7 +1,10 @@
 ﻿using System.Linq;
+using Components;
 using Extensions;
 using UnityEngine;
 using UnityEngine.Events;
+using Utilities.Enumerations;
+using Utilities.MonoAbstracts;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -32,10 +35,12 @@ namespace Utilities
             if (Physics.Raycast(targetCamera.transform.position, targetCamera.transform.forward, out var hit))
             {
                 var objectHit = hit.transform;
+                
+                var buildPosition = GetBuildPosition(objectHit);
 
-                if (!buildTags.Contains(objectHit.parent.tag)) return;
+                if (buildPosition == BuildPosition.None) return;
             
-                if (objectHit.parent.CompareTag(Strings.BuildTopOnly) && hit.normal != Vector3.up) return;
+                if (buildPosition == BuildPosition.Top && hit.normal != Vector3.up) return;
             
                 // print($"Hit normal: {hit.normal}");
                 previewPosition = (objectHit.parent.position + hit.normal).ToVector3Int();
@@ -51,7 +56,20 @@ namespace Utilities
                 OnNoValidPreviewPosition?.Invoke();
             }
         }
-    
+
+        private BuildPosition GetBuildPosition(Transform objectHit)
+        {
+            var terrainElement = objectHit.parent.GetComponent<TerrainElement>();
+            var buildElement = objectHit.parent.GetComponent<BuildElement>();
+
+            if (!terrainElement && !buildElement)
+            {
+                return BuildPosition.None;
+            }
+            
+            return terrainElement ? terrainElement.BuildBaseOn : buildElement.BuildBaseOn;
+        }
+
         public void SetGameMode(GameMode newMode)
         {
             gameMode = newMode;

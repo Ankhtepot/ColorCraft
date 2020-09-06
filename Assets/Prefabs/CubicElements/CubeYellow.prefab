@@ -154,8 +154,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce191361821d11d4dadfc8f0035f4d43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanBeBuilt: 0
+  BuildBaseOn: 0
   Description: CubeYellow
-  storeSprite: {fileID: 21300000, guid: 7ca0dbf5a2fdba9489df0f9d460392a3, type: 3}
+  StoreSprite: {fileID: 21300000, guid: 7ca0dbf5a2fdba9489df0f9d460392a3, type: 3}
 --- !u!114 &4980375189013698138
 MonoBehaviour:
   m_ObjectHideFlags: 0

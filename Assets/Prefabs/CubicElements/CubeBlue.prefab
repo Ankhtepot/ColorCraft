@@ -154,8 +154,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce191361821d11d4dadfc8f0035f4d43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanBeBuilt: 0
+  BuildBaseOn: 0
   Description: CubeBlue
-  storeSprite: {fileID: 21300000, guid: 997e9f3b492de764bbcd3a1bb0e039ed, type: 3}
+  StoreSprite: {fileID: 21300000, guid: 997e9f3b492de764bbcd3a1bb0e039ed, type: 3}
 --- !u!114 &4197693166451313762
 MonoBehaviour:
   m_ObjectHideFlags: 0

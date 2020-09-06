@@ -3,6 +3,7 @@ using Components;
 using Models;
 using UnityEngine;
 using UnityEngine.Events;
+using Utilities.Enumerations;
 
 namespace Utilities
 {

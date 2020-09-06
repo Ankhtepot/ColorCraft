@@ -2,6 +2,7 @@
 using Components;
 using UnityEngine;
 using Utilities;
+using Utilities.Enumerations;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -68,20 +69,22 @@ namespace Controllers
 
         private void InstantiateBuildElement()
         {
-            if (Input.GetMouseButton(0) && elementToBuild != null && previewPresenter.activeSelf)
-            {
-                var instantiatedElement =
-                    Instantiate(elementToBuild, previewPresenter.transform.position, Quaternion.identity);
+            if (!Input.GetMouseButton(0) 
+                || elementToBuild == null 
+                || !previewPresenter.activeSelf 
+                || storeController.ContainsKey(previewPresenter.transform.position)) return;
             
-                instantiatedElement.tag = elementToBuild.tag;
-                instantiatedElement.transform.parent = builtElementParent;
+            var instantiatedElement =
+                Instantiate(elementToBuild, previewPresenter.transform.position, Quaternion.identity);
             
-                storeController.AddElement(instantiatedElement);
+            instantiatedElement.tag = elementToBuild.tag;
+            instantiatedElement.transform.parent = builtElementParent;
+            
+            storeController.AddElement(instantiatedElement);
 
-                canBuild = false;
+            canBuild = false;
             
-                StartCoroutine(CooldownCanBuild());
-            }
+            StartCoroutine(CooldownCanBuild());
         }
 
         private IEnumerator CooldownCanBuild()
@@ -115,7 +118,7 @@ namespace Controllers
             
             var elementMaterial = element.GetComponentInChildren<Renderer>().material;
             element.GetComponentInChildren<Renderer>().material = CreateTransparentMaterialVariant(elementMaterial);
-            element.tag = "Untagged";
+            element.GetComponent<BuildElement>().BuildBaseOn = BuildPosition.None;
 
             element.transform.parent = previewElementPivot.transform;
         }

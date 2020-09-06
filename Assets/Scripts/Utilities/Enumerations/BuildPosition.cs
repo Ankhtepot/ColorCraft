@@ -1,10 +1,10 @@
-﻿namespace Utilities
+﻿namespace Utilities.Enumerations
 {
     public enum BuildPosition
     {
         AllSides,
-        OnTop,
-        OnCeiling,
+        Top,
+        Ceiling,
         None
     }
 }

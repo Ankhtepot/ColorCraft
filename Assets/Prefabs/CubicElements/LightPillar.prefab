@@ -361,8 +361,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce191361821d11d4dadfc8f0035f4d43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanBeBuilt: 1
+  BuildBaseOn: 1
   Description: LightPillar
-  storeSprite: {fileID: 21300000, guid: 96332dd1ed141ff49a887c2ddffe7184, type: 3}
+  StoreSprite: {fileID: 21300000, guid: 96332dd1ed141ff49a887c2ddffe7184, type: 3}
 --- !u!114 &5742487010612296318
 MonoBehaviour:
   m_ObjectHideFlags: 0

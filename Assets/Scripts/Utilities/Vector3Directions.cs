@@ -6,7 +6,7 @@ namespace Utilities
 {
     public static class Vector3Directions
     {
-        public static List<Vector3Int> AllDirections;
+        public static readonly List<Vector3Int> AllDirections;
 
         static Vector3Directions()
         {

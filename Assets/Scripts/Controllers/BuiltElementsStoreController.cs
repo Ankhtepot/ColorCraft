@@ -36,6 +36,11 @@ namespace Controllers
             RemoveElementWithPosition(element.transform.position);
         }
 
+        public bool ContainsKey(Vector3 key)
+        {
+            return store.ContainsKey(key.ToVector3Int());
+        }
+
         public void RemoveElementWithPosition(Vector3 position)
         {
             var key = position.ToVector3Int();
