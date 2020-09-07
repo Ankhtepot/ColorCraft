@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 using Utilities;
 using Utilities.Enumerations;
@@ -34,32 +35,7 @@ namespace Controllers
             get => inputEnabled;
             set => SetInputEnabled(value);
         }
-
-        private void InitializeNewGame()
-        {
-            OnGameInitiated?.Invoke();
-        }
-
-        /// <summary>
-        /// Run from SplashScreen OnStartGameButtonClick
-        /// </summary>
-        public void OnStartANewGameRequested()
-        {
-            SetMouseCursor(false);
         
-            IsGameLoopOn = true;
-            GameMode = GameMode.FreeFlight;
-            InputEnabled = true;
-        
-            OnGameLoopStarted?.Invoke();
-        }
-
-        public bool IsGameLoopOn 
-        { 
-            get => isGameLoopOn;
-            set => SetGameLoopStatus(value);
-        }
-
         void Start()
         {
             initialize();
@@ -68,6 +44,17 @@ namespace Controllers
         private void Update()
         {
             HandleInput();
+        }
+
+        private void InitializeNewGame()
+        {
+            OnGameInitiated?.Invoke();
+        }
+
+        private bool IsGameLoopOn 
+        { 
+            get => isGameLoopOn;
+            set => SetGameLoopStatus(value);
         }
 
         private void HandleInput()
@@ -84,11 +71,15 @@ namespace Controllers
                             GameMode = GameMode.Beam; break;
                         case GameMode.Beam:
                             GameMode = GameMode.FreeFlight; break;
+                        case GameMode.OffGameLoop:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
                 }
             }
         
-            if (Input.GetKeyDown(KeyCode.LeftShift) && (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.X)))
+            if (Input.GetKey(KeyCode.LeftShift) && (Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.X)))
             {
                 Application.Quit();
             }
@@ -106,10 +97,7 @@ namespace Controllers
             OnGameLoopStatusChanged?.Invoke(value);
         }
 
-        private void SetMouseCursor(bool isShown)
-        {
-            Cursor.visible = isShown;
-        }
+        
     
         private void initialize()
         {
@@ -117,9 +105,23 @@ namespace Controllers
             InputEnabled = false;
             IsGameLoopOn = false;
         
-            Cursor.lockState = CursorLockMode.Confined;
+            MouseCursorController.LockCursor();
         
             InitializeNewGame();
+        }
+        
+        /// <summary>
+        /// Run from SplashScreen OnStartGameButtonClick
+        /// </summary>
+        public void OnStartANewGameRequested()
+        {
+            MouseCursorController.SetCursorVisibility(false);
+        
+            IsGameLoopOn = true;
+            GameMode = GameMode.FreeFlight;
+            InputEnabled = true;
+        
+            OnGameLoopStarted?.Invoke();
         }
     }
 }

@@ -351,6 +351,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 587ef8932403448479cb84d4dbc08fb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1059858958 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6386708985454287328, guid: 0fd312d6c73fdb34f9dd2776c135ca0a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6386708984291372534}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1059858960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059858958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8580358acf0a8f4690f441cae91d166, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MainCursorImages:
+  - {fileID: 2800000, guid: e3194ab46710c2b41a521b5430df41d8, type: 3}
+  - {fileID: 2800000, guid: 72efd2698ab560646a863d2bdc1f4939, type: 3}
+  - {fileID: 2800000, guid: a38652df4a485f44c95e30e94095a5bf, type: 3}
+  - {fileID: 2800000, guid: 142830f64d416514a8767d63332fd954, type: 3}
+  MainCursorHotSpot: {x: 0, y: 0}
+  MainCursorMode: 0
+  animationStepDelay: 0.3
 --- !u!1001 &1145645465
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -431,7 +457,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 6386708984291372534}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1059858958}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80cfec7019da61649aed480b99f64d05, type: 3}
@@ -1888,6 +1914,11 @@ PrefabInstance:
       propertyPath: OnGameLoopStarted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 6386708985454287329, guid: 0fd312d6c73fdb34f9dd2776c135ca0a,
+        type: 3}
+      propertyPath: cursorController
+      value: 
+      objectReference: {fileID: 1059858960}
     - target: {fileID: 6386708985454287342, guid: 0fd312d6c73fdb34f9dd2776c135ca0a,
         type: 3}
       propertyPath: m_LocalPosition.x
