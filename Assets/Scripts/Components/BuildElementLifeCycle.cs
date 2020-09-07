@@ -19,6 +19,7 @@ namespace Components
         [SerializeField] private ParticleSystem damageVfx;
         [SerializeField] private ParticleSystem pointOfDamage;
         [SerializeField] private ParticleSystem deathVfx;
+        [SerializeField] private SurroundingElementInfo elementInfo;
         [Header("Black is default, means, will not be used")]
         public Color AlternativeVfxColor;
         public bool IsDetached
@@ -35,7 +36,7 @@ namespace Components
         private int originalHitpoints;
         private bool isDamageable = true;
         private bool isHealable = true;
-        private bool isDetached;
+        [SerializeField] private bool isDetached;
         private Color mainMaterialColor;
         private Rigidbody rigidBody;
         private Collider elementCollider;
@@ -136,6 +137,11 @@ namespace Components
 
                 elementCollider.enabled = true;
 
+                if (!elementInfo)
+                {
+                    elementInfo = FindObjectOfType<SurroundingElementInfo>();
+                }
+
                 StartCoroutine(CheckVelocityTillZero());
             }
             else
@@ -152,7 +158,7 @@ namespace Components
         IEnumerator CheckVelocityTillZero()
         {
             yield return new WaitForSeconds(0.5f);
-            yield return new WaitWhile(() => rigidBody.velocity != Vector3.zero);
+            yield return new WaitWhile(() => rigidBody.velocity != Vector3.zero && elementInfo.ElementBellowIsNotDetached(rigidBody.transform.position));
             
             // print("element stopped moving");
             
