@@ -60,7 +60,7 @@ namespace Controllers
                 TraversedOffset = terrain.TraversedOffset,
                 CharacterPosition = characterTransform.position,
                 CharacterRotation = characterTransform.rotation,
-                BuiltElements = GetBuildDescriptions(store.GetBuiltElements())
+                BuiltElements = GetBuildDescriptions(BuiltElementsStoreController.GetBuiltElements())
             };
         
             var saveResult = FileServices.SavePosition(newSave, GetSavePath());

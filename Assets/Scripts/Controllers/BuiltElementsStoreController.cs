@@ -13,10 +13,10 @@ namespace Controllers
 #pragma warning disable 649
         [SerializeField] private DetachedElementsChecker detachChecker;
         
-        private readonly Dictionary<Vector3Int, GameObject> store = new Dictionary<Vector3Int, GameObject>();
+        private static readonly Dictionary<Vector3Int, GameObject> store = new Dictionary<Vector3Int, GameObject>();
 #pragma warning restore 649
 
-        public void AddElement(GameObject element)
+        public static void AddElement(GameObject element)
         {
             var elementPosition = element.transform.position.ToVector3Int();
             
@@ -31,17 +31,22 @@ namespace Controllers
             }
         }
    
-        public void RemoveElement(GameObject element)
+        public static void RemoveElement(GameObject element)
         {
             RemoveElementWithPosition(element.transform.position);
         }
 
-        public bool ContainsKey(Vector3 key)
+        public static bool ContainsKey(Vector3 key)
         {
             return store.ContainsKey(key.ToVector3Int());
         }
 
-        public void RemoveElementWithPosition(Vector3 position)
+        public static List<Vector3Int> GetKeys()
+        {
+            return store.GetKeys();
+        }
+
+        public static void RemoveElementWithPosition(Vector3 position)
         {
             var key = position.ToVector3Int();
             if (store.ContainsKey(key))
@@ -57,7 +62,7 @@ namespace Controllers
         /// <param name="coordinate"></param>
         public void OnCoordinateShown(Vector3Int coordinate)
         {
-            setActiveForStoreItems(coordinate, true);
+            SetActiveForStoreItems(coordinate, true);
         }
    
         /// <summary>
@@ -66,22 +71,22 @@ namespace Controllers
         /// <param name="coordinate"></param>
         public void OnCoordinateHidden(Vector3Int coordinate)
         {
-            setActiveForStoreItems(coordinate, false);
+            SetActiveForStoreItems(coordinate, false);
         }
 
-        private void setActiveForStoreItems(Vector3Int coordinate, bool isActive)
+        private static void SetActiveForStoreItems(Vector3Int coordinate, bool isActive)
         {
             store.Where(item => item.Key.x == coordinate.x && item.Key.z == coordinate.z)
                 .ToList()
                 .ForEach(foundItem => foundItem.Value.SetActive(isActive));
         }
 
-        public List<GameObject> GetBuiltElements()
+        public static List<GameObject> GetBuiltElements()
         {
             return store.Select(item => item.Value).ToList();
         }
 
-        public Dictionary<Vector3Int, GameObject> GetStoreDictionary()
+        public static Dictionary<Vector3Int, GameObject> GetStoreDictionary()
         {
             return store;
         }

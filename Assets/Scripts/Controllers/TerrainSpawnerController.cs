@@ -268,11 +268,11 @@ namespace Controllers
                     health.Hitpoints = item.Health;
                 } 
             
-                builtElementStore.AddElement(newElement.gameObject);
+                BuiltElementsStoreController.AddElement(newElement.gameObject);
             });
         }
 
-        private void ClearElementStores(BuiltElementsStoreController builtStoreController)
+        private void ClearElementStores()
         {
             foreach (Transform item in spawnedElementsParent.transform)
             {
@@ -281,7 +281,7 @@ namespace Controllers
 
             GridMap.Clear();
 
-            ClearAndDestroyGameObjects(builtStoreController.GetStoreDictionary());
+            ClearAndDestroyGameObjects(BuiltElementsStoreController.GetStoreDictionary());
         }
 
         private void SetWorldFromPositionData(SavedPosition data)
@@ -298,7 +298,7 @@ namespace Controllers
             characterPosition.OldGridPosition = data.CharacterPosition.ToVector3Int();
         }
     
-        private void ClearAndDestroyGameObjects<K, V>(IDictionary<K, V> dictionary)
+        private static void ClearAndDestroyGameObjects<K, V>(IDictionary<K, V> dictionary)
         {
             foreach (var item in dictionary)
             {
@@ -329,12 +329,11 @@ namespace Controllers
         {
             characterPosition.OnPositionChanged.RemoveListener(SpawnNewLine);
         
-            var builtStore = FindObjectOfType<BuiltElementsStoreController>();
             var gameController = FindObjectOfType<GameController>();
 
             gameController.InputEnabled = false;
 
-            ClearElementStores(builtStore);
+            ClearElementStores();
 
             SetWorldFromPositionData(data);
 

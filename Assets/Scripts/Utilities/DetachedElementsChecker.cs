@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Components;
-using Controllers;
 using UnityEngine;
-using static Utilities.Vector3Directions;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -12,29 +10,18 @@ namespace Utilities
     public class DetachedElementsChecker : MonoBehaviour
     {
 #pragma warning disable 649
-        [SerializeField] private TerrainSpawnerController terrainSpawner;
         private List<Vector3Int> groundElementsPositions;
-        private Dictionary<Vector3Int, GameObject> elementStore;
-        private List<Vector3Int> elementStoreKeys;
 #pragma warning restore 649
 
         public void CheckForDetachedElements(Vector3Int detachedPosition, Dictionary<Vector3Int, GameObject> store)
         {
-            if (groundElementsPositions == null)
-            {
-                groundElementsPositions = terrainSpawner.GetGroundElementsPositions();
-            }
-            
-            elementStore = store;
-            elementStoreKeys = store.Select(item => item.Key).ToList();
-            
-            var elementsToCheck = GetSurroundingElementsPositions(detachedPosition);
+            var elementsToCheck = SurroundingElementInfo.GetSurroundingElementsPositions(detachedPosition);
             
             var detachedElements = new List<Vector3Int>();
             
             foreach (var position in elementsToCheck)
             {
-                //If is position in detachedElements, it means it was in the path of element on other side.
+                //If is position in detachedElements, it means it was in the path of element on other already checked side.
                 if (detachedElements.Contains(position))
                 {
                     continue;
@@ -47,7 +34,7 @@ namespace Utilities
 
             detachedElements = detachedElements.Distinct().ToList();
 
-            var effectedElements = detachedElements.Select(position => elementStore[position]).ToList();
+            var effectedElements = detachedElements.Select(position => store[position]).ToList();
             effectedElements.ForEach(element => element.GetComponent<BuildElementLifeCycle>().IsDetached = true);
         }
 
@@ -63,12 +50,12 @@ namespace Utilities
                 exploredPositions.Add(exploredPosition);
 
                 //if is ground around, then the path is not detached, return unchanged detachedElements
-                if (IsAnyPositionAroundGround(exploredPosition))
+                if (SurroundingElementInfo.IsAnyPositionAroundGround(exploredPosition))
                 {
                     return detachedElements;
                 }
                 
-                var surroundingPositions = GetSurroundingElementsPositions(exploredPosition);
+                var surroundingPositions = SurroundingElementInfo.GetSurroundingElementsPositions(exploredPosition);
             
                 surroundingPositions.ForEach(position =>
                 {
@@ -89,24 +76,6 @@ namespace Utilities
             //return concatenated detachedElements list then
             detachedElements.AddRange(positionsOnThePath);
             return detachedElements;
-        }
-
-        private List<Vector3Int> GetSurroundingElementsPositions(Vector3Int center)
-        {
-            return GetSurroundingPositions(center)
-                .Where(checkedPosition => elementStoreKeys.Contains(checkedPosition))
-                .ToList();
-        }
-
-        private IEnumerable<Vector3Int> GetSurroundingPositions(Vector3Int center)
-        {
-            return AllDirections.Select(direction => direction + center).ToList();
-        }
-
-        private bool IsAnyPositionAroundGround(Vector3Int center)
-        {
-            return GetSurroundingPositions(center)
-                .Any(position => groundElementsPositions.Contains(position));
         }
     }
 }

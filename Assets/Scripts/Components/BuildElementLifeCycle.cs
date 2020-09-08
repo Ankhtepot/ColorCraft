@@ -118,7 +118,7 @@ namespace Components
             if (detached)
             {
                 // print($"REMOVING {transform.position} from elementStore.");
-                FindObjectOfType<BuiltElementsStoreController>().RemoveElementWithPosition(transform.position);
+                BuiltElementsStoreController.RemoveElementWithPosition(transform.position);
 
                 rigidBody = gameObject.AddComponent<Rigidbody>();
                 rigidBody.angularDrag = 0;
@@ -149,7 +149,7 @@ namespace Components
                 var currentPosition = transform.position;
                 transform.position = currentPosition.ToVector3Int();
                 // print($"ADDING {transform.position} to elementStore.");
-                FindObjectOfType<BuiltElementsStoreController>().AddElement(gameObject);
+                BuiltElementsStoreController.AddElement(gameObject);
             }
             
             isDetached = detached;
@@ -158,7 +158,7 @@ namespace Components
         IEnumerator CheckVelocityTillZero()
         {
             yield return new WaitForSeconds(0.5f);
-            yield return new WaitWhile(() => rigidBody.velocity != Vector3.zero && elementInfo.ElementBellowIsNotDetached(rigidBody.transform.position));
+            yield return new WaitWhile(() => rigidBody.velocity != Vector3.zero && SurroundingElementInfo.ElementBellowIsNotDetached(rigidBody.transform.position));
             
             // print("element stopped moving");
             
@@ -188,7 +188,7 @@ namespace Components
             }
 
             var storeController = FindObjectOfType<BuiltElementsStoreController>();
-            storeController.RemoveElement(gameObject);
+            BuiltElementsStoreController.RemoveElement(gameObject);
             storeController.CheckForDetachedElements(transform.position.ToVector3Int());
             Destroy(gameObject);
         }

@@ -11,7 +11,9 @@ namespace Controllers
         [SerializeField] private Texture2D[] MainCursorImages;
         [SerializeField] private Vector2 MainCursorHotSpot = Vector2.zero;
         [SerializeField] private CursorMode MainCursorMode = CursorMode.Auto;
-        [SerializeField] private float animationStepDelay = 0.3f;
+        [SerializeField] private float idleAnimationStepDelay = 0.3f;
+        [SerializeField] private float onHoverAnimationStepDelay = 0.1f;
+        [SerializeField] private bool isHoverOn;
 #pragma warning restore 649
 
         void Start()
@@ -46,7 +48,7 @@ namespace Controllers
             var currentStep = 0;
             while (Cursor.visible != false)
             {
-                yield return new WaitForSeconds(animationStepDelay);
+                yield return new WaitForSeconds(isHoverOn ? onHoverAnimationStepDelay : idleAnimationStepDelay);
                 currentStep = currentStep < MainCursorImages.Length - 1 ? currentStep += 1 : 0;
                 SetCursor(MainCursorImages[currentStep]);
             }
@@ -55,6 +57,17 @@ namespace Controllers
         private void SetCursor(Texture2D image)
         {
             Cursor.SetCursor(image, MainCursorHotSpot, MainCursorMode);
+        }
+
+        public void OnHoverOn()
+        {
+            
+            isHoverOn = true;
+        }
+
+        public void OnHoverOff()
+        {
+            isHoverOn = false;
         }
     }
 }

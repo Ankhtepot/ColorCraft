@@ -11,8 +11,6 @@ namespace Controllers
     public class NewCubeSpawnerController : MonoBehaviour
     {
 #pragma warning disable 649
-        [SerializeField] private bool inputEnabled = true;
-        [SerializeField] private bool canBuild = true;
         [SerializeField] private float canBuildCooldown = 0.2f;
         [SerializeField] private BuildPositionProvider buildPositionProvider;
         [SerializeField] private BuiltElementsStoreController storeController;
@@ -21,7 +19,10 @@ namespace Controllers
         [SerializeField] private Transform builtElementParent;
         [SerializeField] private Vector3 previewElementScaleFactor = new Vector3(0.9f, 0.9f, 0.9f);
         [SerializeField] private float previewElementTransparencyFactor = 0.7f;
-        [SerializeField] private GameObject elementToBuild;
+        
+        private bool inputEnabled = true;
+        private bool canBuild = true;
+        private GameObject elementToBuild;
         private GameObject previewItem;
 #pragma warning restore 649
 
@@ -72,7 +73,7 @@ namespace Controllers
             if (!Input.GetMouseButton(0) 
                 || elementToBuild == null 
                 || !previewPresenter.activeSelf 
-                || storeController.ContainsKey(previewPresenter.transform.position)) return;
+                || BuiltElementsStoreController.ContainsKey(previewPresenter.transform.position)) return;
             
             var instantiatedElement =
                 Instantiate(elementToBuild, previewPresenter.transform.position, Quaternion.identity);
@@ -80,7 +81,7 @@ namespace Controllers
             instantiatedElement.tag = elementToBuild.tag;
             instantiatedElement.transform.parent = builtElementParent;
             
-            storeController.AddElement(instantiatedElement);
+            BuiltElementsStoreController.AddElement(instantiatedElement);
 
             canBuild = false;
             
