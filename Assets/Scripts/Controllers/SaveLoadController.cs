@@ -93,6 +93,8 @@ namespace Controllers
 
         private void Load()
         {
+            ReportMessage(Strings.LoadingPosition, true);
+            
             var loadedPosition = FileServices.LoadPosition(GetSavePath());
             var isLoadSuccess = loadedPosition != null;
         
@@ -111,7 +113,7 @@ namespace Controllers
                 statusReporter = FindObjectOfType<StatusMessageController>();
             }
         
-            statusReporter.DisplayMessage(text, isSuccessful);
+            statusReporter.RegisterMessage(text, isSuccessful);
         }
     }
 }

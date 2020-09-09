@@ -7,6 +7,7 @@
         public const string Hide = "Hide";
         public const string LoadFailed = "Load Failed";
         public const string LoadSuccessful = "Load Successful";
+        public const string LoadingPosition = "Loading position";
         public const string MouseScrollWheel = "Mouse ScrollWheel";
         public const string Show = "Show";
         public const string Swap = "Swap";
