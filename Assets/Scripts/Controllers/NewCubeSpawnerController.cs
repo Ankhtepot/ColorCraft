@@ -13,7 +13,6 @@ namespace Controllers
     {
 #pragma warning disable 649
         [SerializeField] private float canBuildCooldown = 0.2f;
-        [SerializeField] private BuildPositionProvider buildPositionProvider;
         [SerializeField] private GameObject previewPresenter;
         [SerializeField] private GameObject previewElementPivot;
         [SerializeField] private Transform builtElementParent;
@@ -25,41 +24,18 @@ namespace Controllers
         private GameObject elementToBuild;
         private GameObject previewItem;
 #pragma warning restore 649
-
-        private void Start()
-        {
-            buildPositionProvider.OnPreviewPositionChanged.AddListener(ShowPreviewElement);
-            buildPositionProvider.OnNoValidPreviewPosition.AddListener(HidePreviewElement);
-        }
-
+       
         private void Update()
         {
-            if (inputEnabled && canBuild)
-            {
-                InstantiateBuildElement();
-            }
-        }
-
-        private void HidePreviewElement()
-        {
-            previewPresenter.SetActive(false);
-        }
-
-        private void ShowPreviewElement(Vector3Int previewPosition, Vector3Int hitNormal)
-        {
-            if (BuildPositionProvider.GetBuildPosition(previewItem.transform) == BuildPosition.Top && hitNormal != Vector3Int.up)
-            {
-                return;
-            }
-        
-            previewPresenter.transform.position = previewPosition;
-            previewPresenter.SetActive(true);
+            InstantiateBuildElement();
         }
 
         private void InstantiateBuildElement()
         {
-            if (!Input.GetMouseButton(0) 
-                || elementToBuild == null 
+            if (!canBuild 
+                || !inputEnabled 
+                || !Input.GetMouseButton(0) 
+                || !elementToBuild
                 || !previewPresenter.activeSelf 
                 || BuiltElementsStoreController.ContainsKey(previewPresenter.transform.position)) return;
             
@@ -112,6 +88,28 @@ namespace Controllers
             newMaterial.color = newColor;
 
             return newMaterial;
+        }
+        
+        /// <summary>
+        /// Run from BuildPositionProvider OnNoValidPreviewPosition
+        /// </summary>
+        public void HidePreviewElement()
+        {
+            previewPresenter.SetActive(false);
+        }
+        
+        /// <summary>
+        /// Run from BuildPositionProvider OnPreviewPositionChanged
+        /// </summary>
+        public void ShowPreviewElement(Vector3Int previewPosition, Vector3Int hitNormal)
+        {
+            if (BuildPositionProvider.GetBuildPosition(previewItem.transform) == BuildPosition.Top && hitNormal != Vector3Int.up)
+            {
+                return;
+            }
+        
+            previewPresenter.transform.position = previewPosition;
+            previewPresenter.SetActive(true);
         }
 
         /// <summary>

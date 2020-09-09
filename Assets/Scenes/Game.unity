@@ -303,7 +303,8 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 9.404242e-38, z: 2.92008e-40, w: 1.6322e-41}
+  m_BoundingSphereOverride: {x: 1.2768152e+31, y: 1.8062093e+28, z: 1.5939221e+31,
+    w: 1.1434418e+27}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -2205,9 +2206,69 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
         type: 3}
+      propertyPath: OnPreviewPositionChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
+      propertyPath: OnNoValidPreviewPosition.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
       propertyPath: targetCamera
       value: 
       objectReference: {fileID: 1297889597}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
+      propertyPath: OnPreviewPositionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
+      propertyPath: OnPreviewPositionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
+      propertyPath: OnNoValidPreviewPosition.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
+      propertyPath: OnNoValidPreviewPosition.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
+      propertyPath: OnPreviewPositionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1925154316}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
+      propertyPath: OnNoValidPreviewPosition.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1925154316}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
+      propertyPath: OnNoValidPreviewPosition.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HidePreviewElement
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
+      propertyPath: OnNoValidPreviewPosition.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
+      propertyPath: OnPreviewPositionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowPreviewElement
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
+      propertyPath: OnPreviewPositionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6645047832331538021, guid: 9bfd119eeaec408418eaafe9730df2a4,
         type: 3}
       propertyPath: builtElementParent
