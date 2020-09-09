@@ -155,7 +155,7 @@ namespace Components
             isDetached = detached;
         }
 
-        IEnumerator CheckVelocityTillZero()
+        private IEnumerator CheckVelocityTillZero()
         {
             yield return new WaitForSeconds(0.5f);
             yield return new WaitWhile(() => rigidBody.velocity != Vector3.zero && SurroundingElementInfo.ElementBellowIsNotDetached(rigidBody.transform.position));
@@ -193,14 +193,14 @@ namespace Components
             Destroy(gameObject);
         }
 
-        IEnumerator DamageCooldown()
+        private IEnumerator DamageCooldown()
         {
             yield return new WaitForSeconds(damageableCooldown);
 
             isDamageable = true;
         }
 
-        IEnumerator HealingCooldown()
+        private IEnumerator HealingCooldown()
         {
             yield return new WaitForSeconds(healingCooldown);
 

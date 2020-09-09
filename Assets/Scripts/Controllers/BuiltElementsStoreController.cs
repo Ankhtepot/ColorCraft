@@ -56,24 +56,6 @@ namespace Controllers
             }
         }
 
-        /// <summary>
-        /// Run from TerrainSpawner OnCoordinate Shown
-        /// </summary>
-        /// <param name="coordinate"></param>
-        public void OnCoordinateShown(Vector3Int coordinate)
-        {
-            SetActiveForStoreItems(coordinate, true);
-        }
-   
-        /// <summary>
-        /// Run from TerrainSpawner OnCoordinate Hidden
-        /// </summary>
-        /// <param name="coordinate"></param>
-        public void OnCoordinateHidden(Vector3Int coordinate)
-        {
-            SetActiveForStoreItems(coordinate, false);
-        }
-
         private static void SetActiveForStoreItems(Vector3Int coordinate, bool isActive)
         {
             store.Where(item => item.Key.x == coordinate.x && item.Key.z == coordinate.z)
@@ -94,6 +76,24 @@ namespace Controllers
         public void CheckForDetachedElements(Vector3Int detachedPosition)
         {
             detachChecker.CheckForDetachedElements(detachedPosition, store);
+        }
+        
+        /// <summary>
+        /// Run from TerrainSpawner OnCoordinate Shown
+        /// </summary>
+        /// <param name="coordinate"></param>
+        public void OnCoordinateShown(Vector3Int coordinate)
+        {
+            SetActiveForStoreItems(coordinate, true);
+        }
+   
+        /// <summary>
+        /// Run from TerrainSpawner OnCoordinate Hidden
+        /// </summary>
+        /// <param name="coordinate"></param>
+        public void OnCoordinateHidden(Vector3Int coordinate)
+        {
+            SetActiveForStoreItems(coordinate, false);
         }
     }
 }

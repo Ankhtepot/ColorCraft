@@ -15,7 +15,7 @@ namespace Controllers
         [SerializeField] public CustomUnityEvents.EventBool OnVisibilityChanged;
 #pragma warning restore 649
 
-        void Update()
+        private void Update()
         {
             HandleInput();
         }

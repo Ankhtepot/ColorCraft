@@ -35,7 +35,7 @@ namespace Controllers
             }
         }
 
-        IEnumerator CanShootCooldown()
+        private IEnumerator CanShootCooldown()
         {
             yield return new WaitForSeconds(canShootDelay);
 

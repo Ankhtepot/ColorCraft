@@ -4,7 +4,7 @@
 
 namespace Controllers
 {
-    public class EnvironmentControler : MonoBehaviour
+    public class EnvironmentController : MonoBehaviour
     {
 #pragma warning disable 649
         public int GridSize = 1;

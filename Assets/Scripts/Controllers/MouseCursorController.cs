@@ -16,7 +16,7 @@ namespace Controllers
         [SerializeField] private bool isHoverOn;
 #pragma warning restore 649
 
-        void Start()
+        private void Start()
         {
             initialize();
         }
@@ -43,7 +43,7 @@ namespace Controllers
             }
         }
 
-        IEnumerator AnimateCursor()
+        private IEnumerator AnimateCursor()
         {
             var currentStep = 0;
             while (Cursor.visible != false)
@@ -59,12 +59,18 @@ namespace Controllers
             Cursor.SetCursor(image, MainCursorHotSpot, MainCursorMode);
         }
 
+        /// <summary>
+        /// Run from events
+        /// </summary>
         public void OnHoverOn()
         {
             
             isHoverOn = true;
         }
 
+        /// <summary>
+        /// Run from events
+        /// </summary>
         public void OnHoverOff()
         {
             isHoverOn = false;

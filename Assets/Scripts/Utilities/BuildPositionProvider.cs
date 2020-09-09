@@ -17,13 +17,13 @@ namespace Utilities
         public float canPreviewInvalidationPeriod = 0.01f;
         [SerializeField] public CustomUnityEvents.EventVector3IntVector3Int OnPreviewPositionChanged;
         [SerializeField] public UnityEvent OnNoValidPreviewPosition;
+        
         private Vector3Int previousPreviewPosition;
         private GameMode gameMode;
         private bool canPreview = true;
-    
 #pragma warning restore 649
-    
-        void Update()
+
+        private void Update()
         {
             GetPreviewPosition();
         }
@@ -47,7 +47,6 @@ namespace Utilities
                     return;
                 }
             
-                // print($"Hit normal: {hit.normal}");
                 previewPosition = (objectHit.parent.position + hit.normal).ToVector3Int();
 
                 if (previewPosition != previousPreviewPosition)
@@ -85,7 +84,7 @@ namespace Utilities
             gameMode = newMode;
         }
 
-        IEnumerator CanPreviewCooldown()
+        private IEnumerator CanPreviewCooldown()
         {
             yield return new WaitForSeconds(canPreviewInvalidationPeriod);
             canPreview = true;

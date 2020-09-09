@@ -12,18 +12,17 @@ namespace Controllers
         [SerializeField] private float bulletLifetime = 0.2f;
 #pragma warning restore 649
 
-        void Start()
+        private void Start()
         {
             StartCoroutine(DestroyBulletAfterInterval());
         }
 
         public override void OnCollisionReceived(Collision other)
         {
-            // Destroy(transform.GetChild(0).gameObject);
             DestroyBullet();
         }
 
-        IEnumerator DestroyBulletAfterInterval()
+        private IEnumerator DestroyBulletAfterInterval()
         {
             yield return new WaitForSeconds(bulletLifetime);
             

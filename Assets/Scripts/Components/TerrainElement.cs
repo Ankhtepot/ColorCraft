@@ -10,7 +10,7 @@ namespace Components
     {
 #pragma warning disable 649
         public BuildPosition BuildBaseOn = BuildPosition.AllSides;
-        [SerializeField] List<Material> HeightMaterials;
+        [SerializeField] private List<Material> HeightMaterials;
 #pragma warning restore 649
 
         public void SetHeightMaterial()

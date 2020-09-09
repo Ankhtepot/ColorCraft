@@ -11,19 +11,18 @@ namespace Controllers
 #pragma warning disable 649
         [SerializeField] private bool movementEnabled;
     
-        [SerializeField] float lookSpeedH = 2f;
-        [SerializeField] float lookSpeedV = 2f;
-        [SerializeField] float moveSpeed = 2f;
-        [SerializeField] float fastSpeed = 2f;
+        [SerializeField] private float lookSpeedH = 2f;
+        [SerializeField] private float lookSpeedV = 2f;
+        [SerializeField] private float moveSpeed = 2f;
+        [SerializeField] private float fastSpeed = 2f;
         [SerializeField] private float heightConstraint;
-    
         [SerializeField] private Rigidbody rigidBody;
      
         private float yaw = 1f;
         private float pitch = 1f;
-        [SerializeField] Position position;
-        [SerializeField] TerrainSpawnerController terrainSpawnerController;
-        [SerializeField] EnvironmentControler environment;
+        [SerializeField] private Position position;
+        [SerializeField] private TerrainSpawnerController terrainSpawnerController;
+        [SerializeField] private EnvironmentController environment;
 #pragma warning restore 649
 
         private void Awake()
@@ -31,37 +30,9 @@ namespace Controllers
             terrainSpawnerController.SpawningFinished.AddListener(FixCharacterPosition);
         }
 
-        void FixedUpdate ()
+        private void FixedUpdate ()
         {
             Move();
-        }
-
-        /// <summary>
-        /// Run from GameController OnInputEnabledChanged
-        /// </summary>
-        /// <param name="state"></param>
-        public void EnableMovement(bool state)
-        {
-            movementEnabled = state;
-        }
-
-        /// <summary>
-        /// Run from TerrainSpawner OnTerrainSpawned.
-        /// This method is needed only on new game world generation
-        /// </summary>
-        private void FixCharacterPosition()
-        {
-            float initialGridDimension = environment.GridSize * environment.WorldTileSideSize;
-            var middleOfElementsVector = new Vector3(initialGridDimension / 2, 20, initialGridDimension / 2);
-            var newPosition = position.GetGridPosition(middleOfElementsVector);
-            newPosition = position.GetGridPosition(newPosition);
-       
-            var positionElement = terrainSpawnerController.GridMap
-                .FirstOrDefault(element => element.Key.x == newPosition.x && element.Key.y == newPosition.z);
-        
-            transform.position = new Vector3(newPosition.x, positionElement.Value.transform.position.y + (1 * environment.GridSize), newPosition.z);
-        
-            terrainSpawnerController.SpawningFinished.RemoveListener(FixCharacterPosition); 
         }
 
         private void Move()
@@ -112,6 +83,34 @@ namespace Controllers
         {
             var moveMultiplier = Time.deltaTime * (Input.GetKey(KeyCode.LeftShift) ? fastSpeed : moveSpeed);
             transform.Translate(direction * moveMultiplier);
+        }
+        
+        /// <summary>
+        /// Run from GameController OnInputEnabledChanged
+        /// </summary>
+        /// <param name="state"></param>
+        public void EnableMovement(bool state)
+        {
+            movementEnabled = state;
+        }
+
+        /// <summary>
+        /// Run from TerrainSpawner OnTerrainSpawned.
+        /// This method is needed only on new game world generation
+        /// </summary>
+        private void FixCharacterPosition()
+        {
+            float initialGridDimension = environment.GridSize * environment.WorldTileSideSize;
+            var middleOfElementsVector = new Vector3(initialGridDimension / 2, 20, initialGridDimension / 2);
+            var newPosition = position.GetGridPosition(middleOfElementsVector);
+            newPosition = position.GetGridPosition(newPosition);
+       
+            var positionElement = terrainSpawnerController.GridMap
+                .FirstOrDefault(element => element.Key.x == newPosition.x && element.Key.y == newPosition.z);
+        
+            transform.position = new Vector3(newPosition.x, positionElement.Value.transform.position.y + (1 * environment.GridSize), newPosition.z);
+        
+            terrainSpawnerController.SpawningFinished.RemoveListener(FixCharacterPosition); 
         }
     }
 }

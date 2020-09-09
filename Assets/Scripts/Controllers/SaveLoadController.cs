@@ -23,12 +23,7 @@ namespace Controllers
         private StatusMessageController statusReporter;
 #pragma warning restore 649
 
-        void Start()
-        {
-            initialize();
-        }
-
-        void Update()
+        private void Update()
         {
             ManageInput();
         }
@@ -47,9 +42,8 @@ namespace Controllers
 
         private void Save()
         {
-            var environment = FindObjectOfType<EnvironmentControler>();
+            var environment = FindObjectOfType<EnvironmentController>();
             var terrain = FindObjectOfType<TerrainSpawnerController>();
-            var store = FindObjectOfType<BuiltElementsStoreController>();
             var characterTransform = FindObjectOfType<CharacterController>().transform;
         
             var newSave = new SavedPosition()
@@ -93,7 +87,7 @@ namespace Controllers
             {
                 Position = item.transform.position.ToVector3Int(),
                 Name = buildElement.Description,
-                Health = (health != null ? health.Hitpoints : 0)
+                Health = (health ? health.Hitpoints : 0)
             };
         }
 
@@ -102,7 +96,7 @@ namespace Controllers
             var loadedPosition = FileServices.LoadPosition(GetSavePath());
             var isLoadSuccess = loadedPosition != null;
         
-            ReportMessage(isLoadSuccess ? "Load Successful" : "Load Failed", isLoadSuccess);
+            ReportMessage(isLoadSuccess ? Strings.LoadSuccessful : Strings.LoadFailed, isLoadSuccess);
         
             if (isLoadSuccess)
             {
@@ -112,17 +106,12 @@ namespace Controllers
 
         private void ReportMessage(string text, bool isSuccessful)
         {
-            if (statusReporter == null)
+            if (!statusReporter)
             {
                 statusReporter = FindObjectOfType<StatusMessageController>();
             }
         
             statusReporter.DisplayMessage(text, isSuccessful);
-        }
-
-        private void initialize()
-        {
-       
         }
     }
 }

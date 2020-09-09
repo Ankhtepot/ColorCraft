@@ -35,8 +35,8 @@ namespace Controllers
             get => inputEnabled;
             set => SetInputEnabled(value);
         }
-        
-        void Start()
+
+        private void Start()
         {
             initialize();
         }
@@ -96,8 +96,6 @@ namespace Controllers
             isGameLoopOn = value;
             OnGameLoopStatusChanged?.Invoke(value);
         }
-
-        
     
         private void initialize()
         {

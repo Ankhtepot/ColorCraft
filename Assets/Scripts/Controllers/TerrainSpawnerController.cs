@@ -23,7 +23,7 @@ namespace Controllers
         [Header("Assignable")]
         [SerializeField] private TerrainElement element;
         [SerializeField] private Transform spawnedElementsParent;
-        [SerializeField] private EnvironmentControler environment;
+        [SerializeField] private EnvironmentController environment;
         [SerializeField] private Position characterPosition;
         [Header("Events")]
         [SerializeField] public CustomUnityEvents.EventVector3Int OnCoordinateHidden;
@@ -43,8 +43,8 @@ namespace Controllers
         private readonly Vector2Int ForwardLeft = new Vector2Int(-1, 1);
         private readonly Vector2Int BackRight = new Vector2Int(1, -1);
         private readonly Vector2Int BackLeft = new Vector2Int(-1, -1);
-    
-        void Start()
+
+        private void Start()
         {
             initialize();
         }
@@ -93,7 +93,6 @@ namespace Controllers
                         , Quaternion.identity);
                 
                     newElement.SetHeightMaterial();
-                    newElement.tag = Strings.BuildAllSides;
                     var newElementTransform = newElement.transform;
                     newElementTransform.parent = spawnedElementsParent.transform;
 
@@ -112,57 +111,55 @@ namespace Controllers
             }
         
             var moveVector3 = newPosition - characterPosition.OldGridPosition;
-            var moveVector2Int = new Vector2Int(moveVector3.x, moveVector3.z);
-
-            var offsetsChange = new Vector2Int(moveVector3.x, moveVector3.z);
+            var offsetsChange = moveVector3.ToVector2Int();
             var oldWorldOffset = TraversedOffset;
         
         
-            if (moveVector2Int == Vector2Int.up)
+            if (offsetsChange == Vector2Int.up)
             {
                 TraversedOffset += offsetsChange;
                 MoveForward(oldWorldOffset);
             }
             else
-            if (moveVector2Int == Vector2Int.down)
+            if (offsetsChange == Vector2Int.down)
             {
                 TraversedOffset += offsetsChange;
                 MoveBack(oldWorldOffset);
             }
             else
-            if (moveVector2Int == Vector2Int.right)
+            if (offsetsChange == Vector2Int.right)
             {
                 TraversedOffset += offsetsChange;
                 MoveRight(oldWorldOffset);
             }
             else
-            if (moveVector2Int == Vector2Int.left)
+            if (offsetsChange == Vector2Int.left)
             {
                 TraversedOffset += offsetsChange;
                 MoveLeft(oldWorldOffset);
             }
-            else if (moveVector2Int == ForwardRight)
+            else if (offsetsChange == ForwardRight)
             {
                 TraversedOffset += Vector2Int.up;
                 MoveForward(oldWorldOffset);
                 TraversedOffset += Vector2Int.right;
                 MoveRight(oldWorldOffset + Vector2Int.up);
             }
-            else if (moveVector2Int == ForwardLeft)
+            else if (offsetsChange == ForwardLeft)
             {
                 TraversedOffset += Vector2Int.up;
                 MoveForward(oldWorldOffset);
                 TraversedOffset += Vector2Int.left;
                 MoveLeft(oldWorldOffset + Vector2Int.up);
             }
-            else if (moveVector2Int == BackLeft)
+            else if (offsetsChange == BackLeft)
             {
                 TraversedOffset += Vector2Int.down;
                 MoveBack(oldWorldOffset);
                 TraversedOffset += Vector2Int.left;
                 MoveLeft(oldWorldOffset + Vector2Int.down);
             }
-            else if (moveVector2Int == BackRight)
+            else if (offsetsChange == BackRight)
             {
                 TraversedOffset += Vector2Int.down;
                 MoveBack(oldWorldOffset);

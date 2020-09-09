@@ -24,63 +24,9 @@ namespace UI
         private bool isUIShown = true;
 #pragma warning restore 649
 
-        /// <summary>
-        /// Run from GameController OnGameModeChanged
-        /// </summary>
-        /// <param name="newMode"></param>
-        public void SetCrossHair(GameMode newMode)
-        {
-            gameMode = newMode;
-        
-            FadeAppearSymbol();
-            
-            switch (newMode)
-            {
-                case GameMode.FreeFlight:
-                    SetForFreeFlightMode(); break;
-                case GameMode.Build:
-                    SetForBuildMode(); break;
-                case GameMode.Beam:
-                    SetDestroySprite(); break;
-                default: SetForFreeFlightMode();
-                    break;
-            }
-        }
-
-        private void SetEmptySprite()
-        {
-            imagePivot.sprite = null;
-        }
-
-        /// <summary>
-        /// Run from animator
-        /// </summary>
-        private void SetForFreeFlightMode()
-        {
-            animator.SetBool(Strings.AtTheTop, true);
-        }
-
-        private void SetFreeFlightSprite()
-        {
-            SetImagePivotScale(freeFlightIconScale);
-            imagePivot.sprite = freeFlightSprite;
-        }
-
         private void SetForBuildMode()
         {
             animator.SetBool(Strings.AtTheTop, false);
-        }
-
-        /// <summary>
-        /// Run from animator
-        /// </summary>
-        private void SetBuildSprite()
-        {
-            if (gameMode == GameMode.Build)
-            {
-                SetImagePivotScale(buildIconScale);
-                imagePivot.sprite = BuildSprite;
-            }
         }
 
         private void SetDestroySprite()
@@ -120,7 +66,7 @@ namespace UI
             return newColor;
         }
 
-        IEnumerator FadeSymbol()
+        private IEnumerator FadeSymbol()
         {
             var newColor = imagePivot.color;
             while (imagePivot.color.a > 0)
@@ -131,7 +77,7 @@ namespace UI
             }
         }
 
-        IEnumerator AppearSymbol()
+        private IEnumerator AppearSymbol()
         {
             var newColor = imagePivot.color;
             while (imagePivot.color.a < 1f)
@@ -139,6 +85,59 @@ namespace UI
                 yield return new WaitForFixedUpdate();
                 newColor.a += fadeAppearStep;
                 imagePivot.color = newColor;
+            }
+        }
+        
+        /// <summary>
+        /// Run from animator
+        /// </summary>
+        private void SetForFreeFlightMode()
+        {
+            animator.SetBool(Strings.AtTheTop, true);
+        }
+        
+        /// <summary>
+        /// Run from animator
+        /// </summary>
+        private void SetBuildSprite()
+        {
+            if (gameMode != GameMode.Build) return;
+            
+            SetImagePivotScale(buildIconScale);
+            imagePivot.sprite = BuildSprite;
+        }
+        
+        /// <summary>
+        /// Run from animator
+        /// </summary>
+        private void SetFreeFlightSprite()
+        {
+            SetImagePivotScale(freeFlightIconScale);
+            imagePivot.sprite = freeFlightSprite;
+        }
+        
+        /// <summary>
+        /// Run from GameController OnGameModeChanged
+        /// </summary>
+        /// <param name="newMode"></param>
+        public void SetCrossHair(GameMode newMode)
+        {
+            gameMode = newMode;
+        
+            FadeAppearSymbol();
+            
+            switch (newMode)
+            {
+                case GameMode.FreeFlight:
+                    SetForFreeFlightMode(); break;
+                case GameMode.Build:
+                    SetForBuildMode(); break;
+                case GameMode.Beam:
+                    SetDestroySprite(); break;
+                case GameMode.OffGameLoop:
+                    break;
+                default: SetForFreeFlightMode();
+                    break;
             }
         }
     }

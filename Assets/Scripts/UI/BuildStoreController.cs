@@ -32,7 +32,7 @@ namespace UI
         private readonly List<BuildStoreItem> itemsStore = new List<BuildStoreItem>();
 #pragma warning restore 649
 
-        void Start()
+        private void Start()
         {
             initialize();
         }

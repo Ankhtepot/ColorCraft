@@ -12,7 +12,7 @@ namespace Components
         public Vector3Int CurrentGridPosition;
         public Vector3Int OldGridPosition;
         [SerializeField] public CustomUnityEvents.EventVector3Int OnPositionChanged;
-        [SerializeField] EnvironmentControler environment;
+        [SerializeField] private EnvironmentController environment;
 #pragma warning restore 649
 
         private void Start()
@@ -21,7 +21,7 @@ namespace Components
             OldGridPosition = CurrentGridPosition;
         }
 
-        void Update()
+        private void Update()
         {
             ManagePositionChange();
         }

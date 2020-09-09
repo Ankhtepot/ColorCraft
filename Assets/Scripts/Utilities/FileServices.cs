@@ -18,12 +18,9 @@ namespace Utilities
 
         public static SavedPosition LoadPosition(string fullPath)
         {
-            if (File.Exists(fullPath))
-            {
-                return JsonService.DeserializeToString(LoadJson(fullPath));
-            }
-
-            return null;
+            return File.Exists(fullPath) 
+                ? JsonService.DeserializeToString(LoadJson(fullPath)) 
+                : null;
         }
 
         private static bool SaveFile(string fullPath, string content)

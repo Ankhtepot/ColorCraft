@@ -11,14 +11,14 @@ namespace UI
         [SerializeField] private GameObject rotationPivot;
 #pragma warning restore 649
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             RotatePivot();
         }
 
         private void RotatePivot()
         {
-            Vector3 eulerRotation = new Vector3(0,0, -sourceOfAngle.transform.eulerAngles.y);
+            var eulerRotation = new Vector3(0,0, -sourceOfAngle.transform.eulerAngles.y);
             rotationPivot.transform.rotation = Quaternion.Euler(eulerRotation);
         }
     }

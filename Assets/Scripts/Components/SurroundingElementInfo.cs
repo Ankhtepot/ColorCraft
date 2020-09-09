@@ -11,14 +11,12 @@ namespace Components
     {
 #pragma warning disable 649
         private static TerrainSpawnerController terrainSpawner;
-        private static BuiltElementsStoreController builtStore;
         private static List<Vector3Int> groundElementsPositions;
 #pragma warning restore 649
 
         private void Start()
         {
             terrainSpawner = FindObjectOfType<TerrainSpawnerController>();
-            builtStore = FindObjectOfType<BuiltElementsStoreController>();
         }
 
         public static bool ElementBellowIsNotDetached(Vector3 transformPosition)

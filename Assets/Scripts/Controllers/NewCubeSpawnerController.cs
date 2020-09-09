@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using Components;
 using UnityEngine;
 using Utilities;
@@ -13,7 +14,6 @@ namespace Controllers
 #pragma warning disable 649
         [SerializeField] private float canBuildCooldown = 0.2f;
         [SerializeField] private BuildPositionProvider buildPositionProvider;
-        [SerializeField] private BuiltElementsStoreController storeController;
         [SerializeField] private GameObject previewPresenter;
         [SerializeField] private GameObject previewElementPivot;
         [SerializeField] private Transform builtElementParent;
@@ -26,7 +26,7 @@ namespace Controllers
         private GameObject previewItem;
 #pragma warning restore 649
 
-        void Start()
+        private void Start()
         {
             buildPositionProvider.OnPreviewPositionChanged.AddListener(ShowPreviewElement);
             buildPositionProvider.OnNoValidPreviewPosition.AddListener(HidePreviewElement);
@@ -56,18 +56,6 @@ namespace Controllers
             previewPresenter.SetActive(true);
         }
 
-        /// <summary>
-        /// Run from GameController gameModeChange event
-        /// </summary>
-        /// <param name="newMode"></param>
-        public void ShowHidePreviewElementBasedOnGameMode(GameMode newMode)
-        {
-            if (newMode != GameMode.Build)
-            {
-                previewPresenter.SetActive(false);
-            }
-        }
-
         private void InstantiateBuildElement()
         {
             if (!Input.GetMouseButton(0) 
@@ -94,25 +82,6 @@ namespace Controllers
             canBuild = true;
         }
 
-        /// <summary>
-        /// Run from BuildStoreController OnStoreItemChange
-        /// </summary>
-        /// <param name="newElement"></param>
-        public void SetPreviewElement(BuildElement newElement)
-        {
-            if (newElement == null) return;
-
-            foreach (Transform child in previewElementPivot.transform) {
-                Destroy(child.gameObject);
-            }
-        
-            previewItem = newElement.gameObject;
-            elementToBuild = previewItem;
-            var newPreviewItem = Instantiate(previewItem, previewElementPivot.transform.position, Quaternion.identity);
-
-            SetPreviewItem(newPreviewItem);
-        }
-
         private void SetPreviewItem(GameObject element)
         {
             element.transform.localScale = previewElementScaleFactor;
@@ -124,9 +93,11 @@ namespace Controllers
             element.transform.parent = previewElementPivot.transform;
         }
 
+        [SuppressMessage("ReSharper", "Unity.PreferAddressByIdToGraphicsParams")]
+        [SuppressMessage("ReSharper", "StringLiteralTypo")]
         private Material CreateTransparentMaterialVariant(Material originalMaterial)
         {
-            Material newMaterial = new Material(Shader.Find("Standard"));
+            var newMaterial = new Material(Shader.Find("Standard"));
             newMaterial.CopyPropertiesFromMaterial(originalMaterial);
             newMaterial.SetFloat("_Mode", 2);
             newMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
@@ -150,6 +121,37 @@ namespace Controllers
         public void OnInputEnabledChanged(bool isEnabled)
         {
             inputEnabled = isEnabled;
+        }
+        
+        /// <summary>
+        /// Run from GameController gameModeChange event
+        /// </summary>
+        /// <param name="newMode"></param>
+        public void ShowHidePreviewElementBasedOnGameMode(GameMode newMode)
+        {
+            if (newMode != GameMode.Build)
+            {
+                previewPresenter.SetActive(false);
+            }
+        }
+        
+        /// <summary>
+        /// Run from BuildStoreController OnStoreItemChange
+        /// </summary>
+        /// <param name="newElement"></param>
+        public void SetPreviewElement(BuildElement newElement)
+        {
+            if (newElement == null) return;
+
+            foreach (Transform child in previewElementPivot.transform) {
+                Destroy(child.gameObject);
+            }
+        
+            previewItem = newElement.gameObject;
+            elementToBuild = previewItem;
+            var newPreviewItem = Instantiate(previewItem, previewElementPivot.transform.position, Quaternion.identity);
+
+            SetPreviewItem(newPreviewItem);
         }
     }
 }
