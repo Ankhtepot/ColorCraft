@@ -14,9 +14,11 @@ namespace UI
         [SerializeField] private Sprite freeFlightSprite;
         [SerializeField] private Sprite BuildSprite;
         [SerializeField] private Sprite DestroySprite;
+        [SerializeField] private Sprite ReplaceSprite;
         [SerializeField] private float freeFlightIconScale = 1f;
         [SerializeField] private float buildIconScale = 0.8f;
         [SerializeField] private float destroyIconScale = 0.8f;
+        [SerializeField] private float replaceIconScale = 0.8f;
         [SerializeField] private float fadeAppearStep = 0.05f;
         [SerializeField] private Image imagePivot;
         [SerializeField] private Animator animator;
@@ -115,6 +117,12 @@ namespace UI
             SetImagePivotScale(freeFlightIconScale);
             imagePivot.sprite = freeFlightSprite;
         }
+
+        private void SetReplaceSprite()
+        {
+            SetImagePivotScale(replaceIconScale);
+            imagePivot.sprite = ReplaceSprite;
+        }
         
         /// <summary>
         /// Run from GameController OnGameModeChanged
@@ -135,6 +143,10 @@ namespace UI
                 case GameMode.Beam:
                     SetDestroySprite(); break;
                 case GameMode.OffGameLoop:
+                    break;
+                case GameMode.Replace:
+                    SetReplaceSprite(); break;
+                case GameMode.Move:
                     break;
                 default: SetForFreeFlightMode();
                     break;

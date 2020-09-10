@@ -68,10 +68,14 @@ namespace Controllers
                         case GameMode.FreeFlight:
                             GameMode = GameMode.Build; break;
                         case GameMode.Build:
-                            GameMode = GameMode.Beam; break;
+                            GameMode = GameMode.Replace; break;
                         case GameMode.Beam:
                             GameMode = GameMode.FreeFlight; break;
                         case GameMode.OffGameLoop:
+                            break;
+                        case GameMode.Replace:
+                            GameMode = GameMode.Beam; break;
+                        case GameMode.Move:
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();

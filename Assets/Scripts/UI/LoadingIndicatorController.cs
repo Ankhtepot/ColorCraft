@@ -2,7 +2,7 @@
 
 //Fireball Games * * * PetrZavodny.com
 
-namespace Controllers
+namespace UI
 {
     public class LoadingIndicatorController : MonoBehaviour
     {

@@ -5,6 +5,8 @@
         Build,
         Beam,
         FreeFlight,
+        Replace,
+        Move,
         OffGameLoop
     }
 }
