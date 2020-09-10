@@ -54,6 +54,12 @@ namespace Controllers
             return GridMap.Select(item => item.Value.transform.position.ToVector3Int()).ToList();
         }
 
+        public bool IsGroundAtPosition(Vector3 position)
+        {
+            var position2D = position.ToVector2IntXZ();
+            return GridMap.ContainsKey(position2D) && GridMap[position2D].transform.position == position;
+        }
+
         private void SetPerlinMap()
         {
             perlinMap = new float[ratio,ratio];

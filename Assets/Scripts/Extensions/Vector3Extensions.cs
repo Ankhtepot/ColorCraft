@@ -12,7 +12,7 @@ namespace Extensions
                 Mathf.RoundToInt(source.z)
                 );
         }
-
+        
         public static Vector2Int ToVector2IntXZ(this Vector3 source)
         {
             return new Vector2Int(

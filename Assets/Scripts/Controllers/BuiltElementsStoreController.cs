@@ -22,7 +22,7 @@ namespace Controllers
             
             if (!store.ContainsKey(elementPosition))
             {
-                // print($"ElementStore: adding element with ket: {elementPosition}");
+                print($"ElementStore: adding element with ket: {elementPosition}");
                 store.Add(elementPosition, element);
             }
             else
@@ -46,11 +46,27 @@ namespace Controllers
             return store.GetKeys();
         }
 
+        public static GameObject GetElementAtPosition(Vector3Int position)
+        {
+            return store[position];
+        }
+
         public static void RemoveElementWithPosition(Vector3 position)
         {
             var key = position.ToVector3Int();
             if (store.ContainsKey(key))
             {
+                // print($"ElementStore: removing element with ket: {key}");
+                store.Remove(key);
+            }
+        }
+        
+        public static void RemoveAndDestroyElementWithPosition(Vector3 position)
+        {
+            var key = position.ToVector3Int();
+            if (store.ContainsKey(key))
+            {
+                Destroy(store[key].gameObject);
                 // print($"ElementStore: removing element with ket: {key}");
                 store.Remove(key);
             }
@@ -73,9 +89,9 @@ namespace Controllers
             return store;
         }
 
-        public void CheckForDetachedElements(Vector3Int detachedPosition)
+        public static void CheckForDetachedElements(Vector3Int detachedPosition, List<Vector3Int> directions)
         {
-            detachChecker.CheckForDetachedElements(detachedPosition, store);
+            DetachedElementsChecker.CheckForDetachedElements(detachedPosition, directions);
         }
         
         /// <summary>

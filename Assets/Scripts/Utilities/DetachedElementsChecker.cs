@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Components;
+using Controllers;
 using UnityEngine;
 
 //Fireball Games * * * PetrZavodny.com
@@ -10,12 +11,13 @@ namespace Utilities
     public class DetachedElementsChecker : MonoBehaviour
     {
 #pragma warning disable 649
-        private List<Vector3Int> groundElementsPositions;
+        private static List<Vector3Int> groundElementsPositions;
 #pragma warning restore 649
 
-        public void CheckForDetachedElements(Vector3Int detachedPosition, Dictionary<Vector3Int, GameObject> store)
+        public static void CheckForDetachedElements(Vector3Int detachedPosition, List<Vector3Int> directions)
         {
-            var elementsToCheck = SurroundingElementInfo.GetSurroundingElementsPositions(detachedPosition);
+            var store = BuiltElementsStoreController.GetStoreDictionary();
+            var elementsToCheck = SurroundingElementInfo.GetSurroundingElementsPositions(detachedPosition, directions);
             
             var detachedElements = new List<Vector3Int>();
             
@@ -38,7 +40,7 @@ namespace Utilities
             effectedElements.ForEach(element => element.GetComponent<BuildElementLifeCycle>().IsDetached = true);
         }
 
-        private IEnumerable<Vector3Int> FindGround(Queue<Vector3Int> queue, List<Vector3Int> detachedElements)
+        private static IEnumerable<Vector3Int> FindGround(Queue<Vector3Int> queue, List<Vector3Int> detachedElements, List<Vector3Int> directions = null)
         {
             var positionsOnThePath = new List<Vector3Int>();
             var exploredPositions = new List<Vector3Int>();
@@ -55,7 +57,7 @@ namespace Utilities
                     return detachedElements;
                 }
                 
-                var surroundingPositions = SurroundingElementInfo.GetSurroundingElementsPositions(exploredPosition);
+                var surroundingPositions = SurroundingElementInfo.GetSurroundingElementsPositions(exploredPosition, directions ?? Vector3Directions.AllDirections);
             
                 surroundingPositions.ForEach(position =>
                 {

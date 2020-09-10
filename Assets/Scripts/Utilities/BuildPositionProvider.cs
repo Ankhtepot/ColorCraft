@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Components;
 using Extensions;
 using UnityEngine;
@@ -58,11 +57,10 @@ namespace Utilities
             
                 previewPosition = (objectHit.parent.position + hit.normal).ToVector3Int();
 
-                if (previewPosition != previousPreviewPosition)
-                {
-                    previousPreviewPosition = previewPosition;
-                    OnPreviewPositionChanged?.Invoke(previewPosition, hit.normal.ToVector3Int());
-                }
+                if (previewPosition == previousPreviewPosition) return;
+                
+                previousPreviewPosition = previewPosition;
+                OnPreviewPositionChanged?.Invoke(previewPosition, hit.normal.ToVector3Int());
             }
             else
             {
@@ -78,7 +76,10 @@ namespace Utilities
 
                 previewPosition = (objectHit.parent.position).ToVector3Int();
 
-                if (previewPosition == previousPreviewPosition || !objectHit.GetComponentInParent<BuildElement>()) return;
+                if (previewPosition == previousPreviewPosition || !objectHit.GetComponentInParent<BuildElement>())
+                {
+                    return;
+                }
                 
                 previousPreviewPosition = previewPosition;
                 OnReplacePreviewPositionChanged?.Invoke(previewPosition);

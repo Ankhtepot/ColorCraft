@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using Components;
+using Extensions;
 using UnityEngine;
 using Utilities;
 using Utilities.Enumerations;
@@ -9,7 +10,7 @@ using Utilities.Enumerations;
 
 namespace Controllers
 {
-    public class NewCubeSpawnerController : MonoBehaviour
+    public class BuildElementManipulationController : MonoBehaviour
     {
 #pragma warning disable 649
         [SerializeField] private float canBuildCooldown = 0.2f;
@@ -18,9 +19,11 @@ namespace Controllers
         [SerializeField] private Transform builtElementParent;
         [SerializeField] private Vector3 previewElementScaleFactor = new Vector3(0.9f, 0.9f, 0.9f);
         [SerializeField] private float previewElementTransparencyFactor = 0.7f;
-        
+
         private bool inputEnabled = true;
         private bool canBuild = true;
+        private GameMode gameMode;
+        private GameObject replacedElement;
         private GameObject elementToBuild;
         private GameObject previewItem;
 #pragma warning restore 649
@@ -32,20 +35,32 @@ namespace Controllers
 
         private void InstantiateBuildElement()
         {
+            var previewPosition = previewPresenter.transform.position;
+            
             if (!canBuild 
                 || !inputEnabled 
                 || !Input.GetMouseButton(0) 
                 || !elementToBuild
-                || !previewPresenter.activeSelf 
-                || BuiltElementsStoreController.ContainsKey(previewPresenter.transform.position)) return;
+                || !previewPresenter.activeSelf) return;
             
             var instantiatedElement =
-                Instantiate(elementToBuild, previewPresenter.transform.position, Quaternion.identity);
+                Instantiate(elementToBuild, previewPosition, Quaternion.identity);
             
             instantiatedElement.tag = elementToBuild.tag;
             instantiatedElement.transform.parent = builtElementParent;
+
+            if (gameMode == GameMode.Replace)
+            {
+                replacedElement = null;
+                BuiltElementsStoreController.RemoveAndDestroyElementWithPosition(previewPosition);
+            }
             
             BuiltElementsStoreController.AddElement(instantiatedElement);
+
+            if (instantiatedElement.GetComponent<BuildElement>().BuildBaseOn != BuildPosition.AllSides)
+            {
+                DetachedElementsChecker.CheckForDetachedElements(previewPosition.ToVector3Int(), Vector3Directions.HorizontalDirections);
+            }
 
             canBuild = false;
             
@@ -95,6 +110,11 @@ namespace Controllers
         /// </summary>
         public void HidePreviewElement()
         {
+            if (replacedElement != null)
+            {
+                replacedElement.SetActive(true);
+                replacedElement = null;
+            }
             previewPresenter.SetActive(false);
         }
         
@@ -108,6 +128,34 @@ namespace Controllers
                 return;
             }
         
+            DisplayPreviewElement(previewPosition);
+        }
+
+        /// <summary>
+        /// Run from BuildPositionProvider OnReplacePreviewPositionChanged
+        /// </summary>
+        /// <param name="previewPosition"></param>
+        public void ShowPreviewElement(Vector3Int previewPosition)
+        {
+            if (replacedElement != null)
+            {
+                replacedElement.SetActive(true);
+            }
+
+            replacedElement = BuiltElementsStoreController.GetElementAtPosition(previewPosition);
+
+            if (previewItem.GetComponent<BuildElement>().CanBeBuilt == BuildPosition.Top &&
+                !SurroundingElementInfo.IsGroundOrBuiltElementBellow(previewPosition))
+            {
+                return;
+            }
+            
+            replacedElement.SetActive(false);
+            DisplayPreviewElement(previewPosition);
+        }
+
+        private void DisplayPreviewElement(Vector3Int previewPosition)
+        {
             previewPresenter.transform.position = previewPosition;
             previewPresenter.SetActive(true);
         }
@@ -127,8 +175,15 @@ namespace Controllers
         /// <param name="newMode"></param>
         public void ShowHidePreviewElementBasedOnGameMode(GameMode newMode)
         {
-            if (newMode != GameMode.Build)
+            gameMode = newMode;
+            
+            if (newMode != GameMode.Build || newMode != GameMode.Replace)
             {
+                if (replacedElement != null)
+                {
+                    replacedElement.SetActive(true);
+                    replacedElement = null;
+                }
                 previewPresenter.SetActive(false);
             }
         }

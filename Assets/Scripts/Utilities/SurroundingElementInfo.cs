@@ -5,7 +5,7 @@ using Extensions;
 using UnityEngine;
 using static Utilities.Vector3Directions;
 
-namespace Components
+namespace Utilities
 {
     public class SurroundingElementInfo : MonoBehaviour
     {
@@ -24,17 +24,25 @@ namespace Components
             return terrainSpawner.GridMap.ContainsKey(transformPosition.ToVector2IntXZ()) 
                    || BuiltElementsStoreController.ContainsKey(transformPosition);
         }
-        
-        public static List<Vector3Int> GetSurroundingElementsPositions(Vector3Int center)
+
+        public static bool IsGroundOrBuiltElementBellow(Vector3 position)
         {
-            return GetSurroundingPositions(center)
-                .Where(checkedPosition => BuiltElementsStoreController.GetKeys().Contains(checkedPosition))
+            var positionBellow = position + Vector3.down;
+            
+            return terrainSpawner.IsGroundAtPosition(positionBellow) ||
+                   BuiltElementsStoreController.ContainsKey(positionBellow);
+        }
+        
+        public static List<Vector3Int> GetSurroundingElementsPositions(Vector3Int center, List<Vector3Int> directions = null)
+        {
+            return GetSurroundingPositions(center, directions ?? AllDirections)
+                .Where(checkedPosition => BuiltElementsStoreController.ContainsKey(checkedPosition))
                 .ToList();
         }
         
-        private static IEnumerable<Vector3Int> GetSurroundingPositions(Vector3Int center)
+        private static IEnumerable<Vector3Int> GetSurroundingPositions(Vector3Int center, List<Vector3Int> directions)
         {
-            return AllDirections.Select(direction => direction + center).ToList();
+            return directions.Select(direction => direction + center).ToList();
         }
 
         public static bool IsAnyPositionAroundGround(Vector3Int center)
@@ -44,7 +52,7 @@ namespace Components
                 groundElementsPositions = terrainSpawner.GetGroundElementsPositions();
             }
             
-            return GetSurroundingPositions(center)
+            return GetSurroundingPositions(center, AllDirections)
                 .Any(position => groundElementsPositions.Contains(position));
         }
     }

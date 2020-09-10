@@ -49,7 +49,7 @@ namespace UI
         {
             var delta = Input.GetAxis(Strings.MouseScrollWheel);
 
-            if (gameMode == GameMode.Build && Math.Abs(delta) > float.Epsilon)
+            if ((gameMode == GameMode.Build || gameMode == GameMode.Replace) && Math.Abs(delta) > float.Epsilon)
             {
                 if (delta > 0f)
                 {
@@ -125,7 +125,7 @@ namespace UI
         public void OnGameModeChange(GameMode newMode)
         {
             gameMode = newMode;
-            if (newMode == GameMode.Build)
+            if (newMode == GameMode.Build || newMode == GameMode.Replace)
             {
                 previewItem.SetActive(true);
                 nextItem.SetActive(true);

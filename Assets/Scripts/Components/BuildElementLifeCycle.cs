@@ -189,7 +189,7 @@ namespace Components
 
             var storeController = FindObjectOfType<BuiltElementsStoreController>();
             BuiltElementsStoreController.RemoveElement(gameObject);
-            storeController.CheckForDetachedElements(transform.position.ToVector3Int());
+            BuiltElementsStoreController.CheckForDetachedElements(transform.position.ToVector3Int(), Vector3Directions.AllDirections);
             Destroy(gameObject);
         }
 

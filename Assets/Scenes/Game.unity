@@ -2556,6 +2556,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
         type: 3}
+      propertyPath: OnReplacePreviewPositionChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
       propertyPath: targetCamera
       value: 
       objectReference: {fileID: 1297889597}
@@ -2607,6 +2612,31 @@ PrefabInstance:
     - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
         type: 3}
       propertyPath: OnPreviewPositionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
+      propertyPath: OnReplacePreviewPositionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
+      propertyPath: OnReplacePreviewPositionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
+      propertyPath: OnReplacePreviewPositionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1925154316}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
+      propertyPath: OnReplacePreviewPositionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowPreviewElement
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645047832331538019, guid: 9bfd119eeaec408418eaafe9730df2a4,
+        type: 3}
+      propertyPath: OnReplacePreviewPositionChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6645047832331538021, guid: 9bfd119eeaec408418eaafe9730df2a4,
