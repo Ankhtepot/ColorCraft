@@ -30,11 +30,12 @@ namespace Controllers
 
         private void ManageInput()
         {
-            if (gameController.InputEnabled && Input.GetKeyDown(KeyCode.F5))
-            {
-                Save();
-            }
-            else if (Input.GetKeyDown(KeyCode.F9))
+            // if (gameController.InputEnabled && Input.GetKeyDown(KeyCode.F5))
+            // {
+            //     Save();
+            // }
+            // else
+            if (Input.GetKeyDown(KeyCode.F9))
             {
                 Load();
             }

@@ -48,7 +48,8 @@ namespace Utilities
 
                 if (buildPosition == BuildPosition.None) return;
             
-                if (buildPosition == BuildPosition.Top && hit.normal != Vector3.up)
+                if ((buildPosition == BuildPosition.Top && hit.normal != Vector3.up) 
+                    || (buildPosition == BuildPosition.Vertically && !Vector3Directions.VerticalDirections.Contains(hit.normal.ToVector3Int())))
                 {
                     canPreview = false;
                     StartCoroutine(CanPreviewCooldown());
