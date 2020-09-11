@@ -2,7 +2,6 @@
 using System.Linq;
 using Extensions;
 using UnityEngine;
-using Utilities;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -11,8 +10,6 @@ namespace Controllers
     public class BuiltElementsStoreController : MonoBehaviour
     {
 #pragma warning disable 649
-        [SerializeField] private DetachedElementsChecker detachChecker;
-        
         private static readonly Dictionary<Vector3Int, GameObject> store = new Dictionary<Vector3Int, GameObject>();
 #pragma warning restore 649
 
@@ -22,7 +19,7 @@ namespace Controllers
             
             if (!store.ContainsKey(elementPosition))
             {
-                print($"ElementStore: adding element with ket: {elementPosition}");
+                // print($"ElementStore: adding element with ket: {elementPosition}");
                 store.Add(elementPosition, element);
             }
             else
@@ -39,11 +36,6 @@ namespace Controllers
         public static bool ContainsKey(Vector3 key)
         {
             return store.ContainsKey(key.ToVector3Int());
-        }
-
-        public static List<Vector3Int> GetKeys()
-        {
-            return store.GetKeys();
         }
 
         public static GameObject GetElementAtPosition(Vector3Int position)
@@ -89,11 +81,6 @@ namespace Controllers
             return store;
         }
 
-        public static void CheckForDetachedElements(Vector3Int detachedPosition, List<Vector3Int> directions)
-        {
-            DetachedElementsChecker.CheckForDetachedElements(detachedPosition, directions);
-        }
-        
         /// <summary>
         /// Run from TerrainSpawner OnCoordinate Shown
         /// </summary>

@@ -5,6 +5,7 @@ using Extensions;
 using UnityEngine;
 using Utilities;
 using Utilities.MonoAbstracts;
+using static Utilities.SurroundingElementInfo;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -158,7 +159,7 @@ namespace Components
         private IEnumerator CheckVelocityTillZero()
         {
             yield return new WaitForSeconds(0.5f);
-            yield return new WaitWhile(() => rigidBody.velocity != Vector3.zero && SurroundingElementInfo.ElementBellowIsNotDetached(rigidBody.transform.position));
+            yield return new WaitWhile(() => rigidBody.velocity != Vector3.zero && ElementBellowIsNotDetached(rigidBody.transform.position));
             
             // print("element stopped moving");
             
@@ -187,9 +188,11 @@ namespace Components
                 PopEffect(deathVfx);
             }
 
-            var storeController = FindObjectOfType<BuiltElementsStoreController>();
             BuiltElementsStoreController.RemoveElement(gameObject);
-            BuiltElementsStoreController.CheckForDetachedElements(transform.position.ToVector3Int(), Vector3Directions.AllDirections);
+
+            var buildBaseFor = GetComponent<BuildElement>().BuildBaseOn;
+            
+            DetachedElementsChecker.CheckForDetachedElements(transform.position.ToVector3Int(), ResolveDirectionsValidForBuildBasePosition(buildBaseFor));
             Destroy(gameObject);
         }
 

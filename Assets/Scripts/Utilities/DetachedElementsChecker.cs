@@ -17,7 +17,7 @@ namespace Utilities
         public static void CheckForDetachedElements(Vector3Int detachedPosition, List<Vector3Int> directions)
         {
             var store = BuiltElementsStoreController.GetStoreDictionary();
-            var elementsToCheck = SurroundingElementInfo.GetSurroundingElementsPositions(detachedPosition, directions);
+            var elementsToCheck = SurroundingElementInfo.GetConnectedElementsPositions(detachedPosition, directions);
             
             var detachedElements = new List<Vector3Int>();
             
@@ -31,7 +31,7 @@ namespace Utilities
                 
                 var newQueue = new Queue<Vector3Int>();
                 newQueue.Enqueue(position);
-                detachedElements.AddRange(FindGround(newQueue, detachedElements));
+                detachedElements.AddRange(FindDetachedGroupOfElements(newQueue, detachedElements));
             }
 
             detachedElements = detachedElements.Distinct().ToList();
@@ -40,7 +40,7 @@ namespace Utilities
             effectedElements.ForEach(element => element.GetComponent<BuildElementLifeCycle>().IsDetached = true);
         }
 
-        private static IEnumerable<Vector3Int> FindGround(Queue<Vector3Int> queue, List<Vector3Int> detachedElements, List<Vector3Int> directions = null)
+        private static IEnumerable<Vector3Int> FindDetachedGroupOfElements(Queue<Vector3Int> queue, List<Vector3Int> detachedElements)
         {
             var positionsOnThePath = new List<Vector3Int>();
             var exploredPositions = new List<Vector3Int>();
@@ -57,7 +57,7 @@ namespace Utilities
                     return detachedElements;
                 }
                 
-                var surroundingPositions = SurroundingElementInfo.GetSurroundingElementsPositions(exploredPosition, directions ?? Vector3Directions.AllDirections);
+                var surroundingPositions = SurroundingElementInfo.GetConnectedElementsPositions(exploredPosition, Vector3Directions.AllDirections);
             
                 surroundingPositions.ForEach(position =>
                 {

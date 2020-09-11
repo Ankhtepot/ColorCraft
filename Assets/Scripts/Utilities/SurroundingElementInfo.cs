@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Components;
 using Controllers;
 using Extensions;
 using UnityEngine;
+using Utilities.Enumerations;
 using static Utilities.Vector3Directions;
 
 namespace Utilities
@@ -10,12 +13,14 @@ namespace Utilities
     public class SurroundingElementInfo : MonoBehaviour
     {
 #pragma warning disable 649
+        private static GameController gameController;
         private static TerrainSpawnerController terrainSpawner;
         private static List<Vector3Int> groundElementsPositions;
 #pragma warning restore 649
 
         private void Start()
         {
+            gameController = FindObjectOfType<GameController>();
             terrainSpawner = FindObjectOfType<TerrainSpawnerController>();
         }
 
@@ -33,13 +38,56 @@ namespace Utilities
                    BuiltElementsStoreController.ContainsKey(positionBellow);
         }
         
-        public static List<Vector3Int> GetSurroundingElementsPositions(Vector3Int center, List<Vector3Int> directions = null)
+        public static List<Vector3Int> GetConnectedElementsPositions(Vector3Int center, List<Vector3Int> directions = null)
         {
-            return GetSurroundingPositions(center, directions ?? AllDirections)
-                .Where(checkedPosition => BuiltElementsStoreController.ContainsKey(checkedPosition))
-                .ToList();
+            var elements = new List<Vector3Int>();
+
+            var validDirections = AllDirections;
+
+            if (gameController.GameMode != GameMode.Replace && BuiltElementsStoreController.ContainsKey(center))
+            {
+                var buildPositionFor = BuiltElementsStoreController.GetElementAtPosition(center).GetComponent<BuildElement>().BuildBaseOn;
+                validDirections = ResolveDirectionsValidForBuildBasePosition(buildPositionFor);
+            }
+
+            foreach (var direction in validDirections)
+            {
+                var position = direction + center;
+
+                if (BuiltElementsStoreController.ContainsKey(position))
+                {
+                    var buildBaseFor = BuiltElementsStoreController.GetElementAtPosition(position).GetComponent<BuildElement>().BuildBaseOn;
+                    
+                    if (HorizontalDirections.Contains(direction) 
+                        && buildBaseFor == BuildPosition.Top)
+                    {
+                        continue;
+                    }
+                    
+                    elements.Add(position);
+                }
+            }
+
+            return elements;
         }
         
+        public static List<Vector3Int> ResolveDirectionsValidForBuildBasePosition(BuildPosition buildPosition)
+        {
+            switch (buildPosition)
+            {
+                case BuildPosition.AllSides:
+                    return AllDirections;
+                case BuildPosition.Top:
+                    return VerticalDirections;
+                case BuildPosition.Ceiling:
+                    return new List<Vector3Int>() {Vector3Int.up};
+                case BuildPosition.None:
+                    return new List<Vector3Int>();
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(buildPosition), buildPosition, null);
+            }
+        }
+
         private static IEnumerable<Vector3Int> GetSurroundingPositions(Vector3Int center, List<Vector3Int> directions)
         {
             return directions.Select(direction => direction + center).ToList();

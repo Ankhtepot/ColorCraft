@@ -8,6 +8,7 @@ namespace Utilities
     {
         public static readonly List<Vector3Int> AllDirections;
         public static readonly List<Vector3Int> HorizontalDirections;
+        public static readonly List<Vector3Int> VerticalDirections;
 
         static Vector3Directions()
         {
@@ -27,6 +28,12 @@ namespace Utilities
                 Vector3.right.ToVector3Int(),
                 Vector3.forward.ToVector3Int(),
                 Vector3.back.ToVector3Int(),
+            };
+            
+            VerticalDirections = new List<Vector3Int>()
+            {
+                Vector3.up.ToVector3Int(),
+                Vector3.down.ToVector3Int(),
             };
         }
     }
