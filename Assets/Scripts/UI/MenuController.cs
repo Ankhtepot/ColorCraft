@@ -1,5 +1,6 @@
 ﻿using Controllers;
 using UnityEngine;
+using UnityEngine.UI;
 using Utilities;
 
 //Fireball Games * * * PetrZavodny.com
@@ -12,24 +13,17 @@ namespace UI
         [SerializeField] private GameObject content;
         [SerializeField] private Animator animator;
         [SerializeField] private GameController gameController;
+        [SerializeField] private Button SaveButton;
         private bool isShown = false;
 #pragma warning restore 649
 
         private void Awake()
         {
             content.SetActive(true);
+            SaveButton.interactable = false;
         }
 
-        /// <summary>
-        /// Run from GameController OnMenuRequested
-        /// </summary>
-        public void OnMenuRequested()
-        {
-            isShown = !isShown;
-            ShowHideMenu(isShown);
-        }
-
-        public void ShowHideMenu(bool show)
+        private void ShowHideMenu(bool show)
         {
             isShown = show;
             animator.SetBool(Strings.Show, show);
@@ -48,20 +42,22 @@ namespace UI
             }
         }
 
-        // /// <summary>
-        // /// Run from TerrainSpawner OnSpawningFinished
-        // /// </summary>
-        // public void OnSpawningTerrainFinished()
-        // {
-        //     animator.SetTrigger(Strings.Swap);
-        // }
-    
         /// <summary>
         /// Run from GameController OnGameLoopStarted
         /// </summary>
         public void OnGameLoopStarted()
         {
+            SaveButton.interactable = true;
             animator.SetTrigger(Strings.Hide);
         } 
+        
+        /// <summary>
+        /// Run from GameController OnMenuRequested
+        /// </summary>
+        public void OnMenuRequested()
+        {
+            isShown = !isShown;
+            ShowHideMenu(isShown);
+        }
     }
 }

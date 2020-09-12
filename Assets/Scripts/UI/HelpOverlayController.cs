@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Controllers;
+using UnityEngine;
 
 //Fireball Games * * * PetrZavodny.com
 
@@ -8,6 +9,7 @@ namespace UI
     {
     #pragma warning disable 649
         [SerializeField] private GameObject HelpInfo;
+        [SerializeField] private VisibilityController visibilityController;
     #pragma warning restore 649
 
         /// <summary>
@@ -17,6 +19,11 @@ namespace UI
         public void OnGameUIVisibilityChanged(bool isVisible)
         {
             HelpInfo.SetActive(isVisible);
+        }
+
+        public void OnInputEnabledChanged(bool isEnabled)
+        {
+            visibilityController.isEnabled = isEnabled;
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Controllers
         [SerializeField] private KeyCode AlternativeShortcutKey;
         [SerializeField] private bool isUIPartShown;
         [SerializeField] private Animator animator;
+        public bool isEnabled = true;
         [SerializeField] public CustomUnityEvents.EventBool OnVisibilityChanged;
 #pragma warning restore 649
 
@@ -25,7 +26,7 @@ namespace Controllers
 
         private void HandleInput()
         {
-            if (!IsShortcutKeyDown()) return;
+            if (!isEnabled || !IsShortcutKeyDown()) return;
 
             switch (acceptKey)
             {
@@ -59,7 +60,7 @@ namespace Controllers
             isUIPartShown = !isUIPartShown;
             animator.SetBool(Strings.Show, isUIPartShown);
             
-            OnVisibilityChanged?.Invoke(!isUIPartShown);
+            OnVisibilityChanged?.Invoke(isUIPartShown);
         }
 
         /// <summary>

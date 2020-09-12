@@ -88,14 +88,19 @@ namespace Controllers
         
             if (Input.GetKey(KeyCode.LeftShift) && (Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.X)))
             {
-                Application.Quit();
+                ExitGame();
             }
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                LastScreenshotPath = screenshotService.TakeScreenShot("tempScreenshot");
+                
                 OnMenuRequested?.Invoke();
             }
+        }
+
+        public void ExitGame()
+        {
+            Application.Quit();
         }
 
         public void SetInputEnabled(bool isEnabled)

@@ -26,7 +26,17 @@ namespace Controllers
         [SerializeField] public CustomUnityEvents.EventBool OnFileSave;
         [SerializeField] public CustomUnityEvents.EventSavedPosition OnFileLoad;
         private StatusMessageController statusReporter;
+        private TerrainSpawnerController terrain;
+        private EnvironmentController environment;
+        private Transform characterTransform;
 #pragma warning restore 649
+
+        private void Start()
+        {
+            environment = FindObjectOfType<EnvironmentController>();
+            terrain = FindObjectOfType<TerrainSpawnerController>();
+            characterTransform = FindObjectOfType<CharacterController>().transform;
+        }
 
         private void Update()
         {
@@ -51,13 +61,29 @@ namespace Controllers
             Save(SavedPositionType.QuickSave);
         }
 
-        private void Save(SavedPositionType positionType)
+        public void RegularSave(string filePrefix, byte[] screenshotBytes)
         {
-            var environment = FindObjectOfType<EnvironmentController>();
-            var terrain = FindObjectOfType<TerrainSpawnerController>();
-            var characterTransform = FindObjectOfType<CharacterController>().transform;
-            var newSaveFilePath = GetSavePath(positionType);
-        
+            Save(SavedPositionType.Regular, filePrefix, screenshotBytes);
+        }
+
+        private void Save(SavedPositionType positionType, string filePrefix = null, byte[] screenshotBytes = null)
+        {
+            var newSaveFilePath = GetSavePath(positionType, filePrefix);
+            var screenshotFile = screenshotBytes == null 
+                ? screenShotService.CaptureScreenshotFile(newSaveFilePath)
+                : ScreenShotService.WriteScreenshotBytesToPng(newSaveFilePath, screenshotBytes);
+            //TODO: screenshot file is not saved
+            if (string.IsNullOrEmpty(screenshotFile))
+            {
+                ReportMessage(Strings.SaveFailed, false);
+                return;
+            }
+            
+            CreateSaveFile(positionType, screenshotFile, newSaveFilePath);
+        }
+
+        private void CreateSaveFile(SavedPositionType positionType, string screenshotFile, string newSaveFilePath)
+        {
             var newSave = new SavedPosition()
             {
                 GridSize = environment.GridSize,
@@ -67,21 +93,21 @@ namespace Controllers
                 TraversedOffset = terrain.TraversedOffset,
                 CharacterPosition = characterTransform.position,
                 CharacterRotation = characterTransform.rotation,
-                ScreenShotFileName = screenShotService.TakeScreenShot(newSaveFilePath),
+                ScreenShotFileName = screenshotFile,
                 DateTimeTicks = DateTime.Now.Ticks,
                 BuiltElements = GetBuildDescriptions(BuiltElementsStoreController.GetBuiltElements())
             };
-        
+
             var saveResult = FileServices.SavePosition(newSave, newSaveFilePath);
-        
+
             ReportMessage(saveResult ? Strings.SaveSuccessful : Strings.SaveFailed, saveResult);
-        
+
             OnFileSave?.Invoke(saveResult);
         }
 
-        private string GetSavePath(SavedPositionType positionType)
+        private string GetSavePath(SavedPositionType positionType, string filePrefix = null)
         {
-            return Path.Combine(GetSaveFolderPath(), GetUniqueSaveName(positionType));
+            return Path.Combine(GetSaveFolderPath(), GetUniqueSaveName(positionType, filePrefix));
         }
 
         private string GetSaveFolderPath()
@@ -129,12 +155,14 @@ namespace Controllers
         private SavedPosition GetLatestQuickSave()
         {
             CheckSaveFolderPath();
+            
             var quickSaves = Directory.GetFiles(GetSaveFolderPath())
                 .Where(file => file.Contains(quickSaveFilePrefix) && file.Contains(saveFileExtension))
                 .Select(FileServices.LoadPosition)
+                .OrderByDescending(position => position.DateTimeTicks)
                 .ToList();
 
-            return quickSaves.OrderByDescending(position => position.DateTimeTicks).ToList()[0];
+            return quickSaves[0];
         }
 
         private void ReportMessage(string text, bool isSuccessful)
@@ -147,11 +175,13 @@ namespace Controllers
             statusReporter.RegisterMessage(text, isSuccessful);
         }
 
-        public string GetUniqueSaveName(SavedPositionType positionType)
+        public string GetUniqueSaveName(SavedPositionType positionType, string filePrefix = null)
         {
             CheckSaveFolderPath();
 
-            var nameBase = positionType == SavedPositionType.QuickSave ? quickSaveFilePrefix : saveFilePrefix;
+            var regularSaveFileName = string.IsNullOrEmpty(filePrefix) ? saveFilePrefix : filePrefix;
+            
+            var nameBase = positionType == SavedPositionType.QuickSave ? quickSaveFilePrefix : regularSaveFileName;
             
             var existingSaves = Directory.GetFiles(GetSaveFolderPath()).Where(file => file.Contains(nameBase) && file.EndsWith(saveFileExtension)).ToList();
             var counterSuffix = existingSaves.Count <= 0 ? "" : (existingSaves.Count).ToString(); 
