@@ -354,6 +354,8 @@ namespace Controllers
         public void SpawnNewWorld()
         {
             InitialWorldOffset = Generate2DOffset();
+            TraversedOffset = Vector2Int.zero;
+            ClearElementStores();
             SpawnTerrainElements();
         }
 

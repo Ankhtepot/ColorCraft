@@ -14,11 +14,14 @@ namespace Controllers
         [SerializeField] private bool inputEnabled;
         [SerializeField] private bool isGameLoopOn;
         [SerializeField] private GameMode gameMode;
+        [SerializeField] private ScreenShotService screenshotService;
         [SerializeField] public UnityEvent OnGameInitiated;
         [SerializeField] public UnityEvent OnGameLoopStarted;
+        [SerializeField] public UnityEvent OnMenuRequested;
         [SerializeField] public CustomUnityEvents.EventGameMode OnGameModeChanged;
         [SerializeField] public CustomUnityEvents.EventBool OnInputEnabledChanged;
         [SerializeField] public CustomUnityEvents.EventBool OnGameLoopStatusChanged;
+        [HideInInspector] public string LastScreenshotPath;
 #pragma warning restore 649
 
         public GameMode GameMode
@@ -87,9 +90,15 @@ namespace Controllers
             {
                 Application.Quit();
             }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                LastScreenshotPath = screenshotService.TakeScreenShot("tempScreenshot");
+                OnMenuRequested?.Invoke();
+            }
         }
 
-        private void SetInputEnabled(bool isEnabled)
+        public void SetInputEnabled(bool isEnabled)
         {
             inputEnabled = isEnabled;
             OnInputEnabledChanged?.Invoke(isEnabled);
@@ -108,8 +117,6 @@ namespace Controllers
             IsGameLoopOn = false;
         
             MouseCursorController.LockCursor();
-        
-            InitializeNewGame();
         }
         
         /// <summary>
@@ -117,6 +124,8 @@ namespace Controllers
         /// </summary>
         public void OnStartANewGameRequested()
         {
+            InitializeNewGame();
+            
             MouseCursorController.SetCursorVisibility(false);
         
             IsGameLoopOn = true;

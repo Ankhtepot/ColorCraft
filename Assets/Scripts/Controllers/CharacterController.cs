@@ -98,7 +98,7 @@ namespace Controllers
         /// Run from TerrainSpawner OnTerrainSpawned.
         /// This method is needed only on new game world generation
         /// </summary>
-        private void FixCharacterPosition()
+        public void FixCharacterPosition()
         {
             float initialGridDimension = environment.GridSize * environment.WorldTileSideSize;
             var middleOfElementsVector = new Vector3(initialGridDimension / 2, 20, initialGridDimension / 2);

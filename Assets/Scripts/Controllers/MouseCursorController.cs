@@ -18,7 +18,7 @@ namespace Controllers
 
         private void Start()
         {
-            initialize();
+            StartCursorAnimation();
         }
 
         public static void SetCursorVisibility(bool isShown)
@@ -30,9 +30,16 @@ namespace Controllers
         {
             Cursor.lockState = CursorLockMode.Confined;
         }
-    
-        private void initialize()
+        
+        public static void UnlockCursor()
         {
+            Cursor.lockState = CursorLockMode.None;
+        }
+    
+        private void StartCursorAnimation()
+        {
+            StopAllCoroutines();
+            
             if (MainCursorImages.Length == 0) return;
             
             SetCursor(MainCursorImages[0]);
@@ -64,7 +71,7 @@ namespace Controllers
         /// </summary>
         public void OnHoverOn()
         {
-            
+            StartCursorAnimation();
             isHoverOn = true;
         }
 
