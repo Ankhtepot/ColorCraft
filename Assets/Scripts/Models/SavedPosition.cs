@@ -16,7 +16,7 @@ namespace Models
         public Vector3 CharacterPosition;
         public Quaternion CharacterRotation;
         public string ScreenShotFileName;
-        public double DateTimeTicks;
+        public long DateTimeTicks;
         public List<BuiltElementDescription> BuiltElements;
     }
 }

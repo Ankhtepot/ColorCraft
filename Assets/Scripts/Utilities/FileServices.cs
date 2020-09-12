@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Extensions;
 using Models;
 
@@ -61,6 +63,19 @@ namespace Utilities
             {
                 return null;
             }
+        }
+
+        public static string ExtractPositionTitleFromScreenshotPath(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath)) return null;
+            
+            var extension = Path.GetExtension(filePath);
+            var fileName = Path.GetFileName(filePath).Replace($"{Strings.Screenshot}{extension}", "");
+            var words = Regex.Matches(fileName, @"([A-Z][a-z]+)")
+                    .Cast<Match>()
+                    .Select(m => m.Value);
+
+            return string.Join(" ", words);
         }
     }
 }

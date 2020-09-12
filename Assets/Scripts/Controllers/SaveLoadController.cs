@@ -72,7 +72,7 @@ namespace Controllers
             var screenshotFile = screenshotBytes == null 
                 ? screenShotService.CaptureScreenshotFile(newSaveFilePath)
                 : ScreenShotService.WriteScreenshotBytesToPng(newSaveFilePath, screenshotBytes);
-            //TODO: screenshot file is not saved
+            
             if (string.IsNullOrEmpty(screenshotFile))
             {
                 ReportMessage(Strings.SaveFailed, false);
@@ -206,6 +206,16 @@ namespace Controllers
             {
                 Directory.CreateDirectory(GetSaveFolderPath());
             }
+        }
+
+        public IEnumerable<SavedPosition> LoadAllPositions()
+        {
+            CheckSaveFolderPath();
+            
+            return Directory.GetFiles(GetSaveFolderPath())
+                .Where(file => file.Contains(saveFileExtension))
+                .Select(FileServices.LoadPosition)
+                .OrderByDescending(position => position.DateTimeTicks);
         }
     }
 }

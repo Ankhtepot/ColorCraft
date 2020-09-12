@@ -27,12 +27,13 @@ namespace Utilities
             return null;
         }
 
-        public static string WriteScreenshotBytesToPng(string filename, byte[] bytes)
+        public static string WriteScreenshotBytesToPng(string fileName, byte[] bytes)
         {
+            var screenshotFileName = GetScreenshotFileName(fileName);
             
-            File.WriteAllBytes(GetScreenshotFileName(filename), bytes);
+            File.WriteAllBytes(screenshotFileName, bytes);
 
-            return filename;
+            return screenshotFileName;
         }
 
         public byte[] GetCurrentScreenshotBytes()
@@ -55,7 +56,9 @@ namespace Utilities
 
         private static string GetScreenshotFileName(string positionFileName)
         {
-            return positionFileName.Replace(".json", "Screenshot.png");
+            var extension = Path.GetExtension(positionFileName);
+            var screenShotFileName = positionFileName.Replace($"{extension}", $"{Strings.Screenshot}.png");
+            return screenShotFileName;
         }
         
         public Texture2D LoadScreenshot(string filePath) 

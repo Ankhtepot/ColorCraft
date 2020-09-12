@@ -11,9 +11,8 @@
         public const string MouseScrollWheel = "Mouse ScrollWheel";
         public const string SaveFailed = "Save failed";
         public const string SaveSuccessful = "Save Successful";
-        public const string SavingToFile = "SavingToFile";
+        public const string Screenshot = "Screenshot";
         public const string Show = "Show";
-        public const string Swap = "Swap";
         public const string Harmful = "Harmful";
     }
 }

@@ -49,7 +49,19 @@ namespace UI
         {
             SaveButton.interactable = true;
             animator.SetTrigger(Strings.Hide);
-        } 
+        }
+
+        public void HideMenu()
+        {
+            if (!SaveButton.IsInteractable())
+            {
+                OnGameLoopStarted();
+            }
+            else
+            {
+                ShowHideMenu(false);
+            }
+        }
         
         /// <summary>
         /// Run from GameController OnMenuRequested
