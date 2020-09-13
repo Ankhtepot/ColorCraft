@@ -64,7 +64,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10/12/2020 23:12
+  m_text: 10 September 2020 23:12
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 89f98ea60bc2dcd4a93335eedb410f94, type: 2}
   m_sharedMaterial: {fileID: -1215916483137906005, guid: 89f98ea60bc2dcd4a93335eedb410f94,
@@ -131,12 +131,12 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -151.39526, w: 0}
   m_textInfo:
     textComponent: {fileID: 4804188838901178142}
-    characterCount: 16
+    characterCount: 23
     spriteCount: 0
-    spaceCount: 1
+    spaceCount: 3
     wordCount: 5
     linkCount: 0
     lineCount: 1
@@ -557,7 +557,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 363.4, y: -17.4}
+  m_AnchoredPosition: {x: 423.6, y: -18.9}
   m_SizeDelta: {x: 127.48169, y: 26.399994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5681255890002098449

@@ -84,7 +84,10 @@ namespace UI
         {
             if (loadedPositions == null) return;
             
-            startIndex = Mathf.Clamp(startIndex, 0, loadedPositions.Count);
+            startIndex = loadedPositions.Count > 3 
+                ? Mathf.Clamp(startIndex, 0, loadedPositions.Count - 3) 
+                : 0;
+            
             currentStartIndex = startIndex;
             
             for (int i = 0; i < Mathf.Min(loadedPositions.Count,3); i++)

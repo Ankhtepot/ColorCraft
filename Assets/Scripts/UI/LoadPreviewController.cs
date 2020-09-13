@@ -33,7 +33,7 @@ namespace UI
             
             Image.texture = previewImage;
             TitleMesh.text = title;
-            TimeStampMesh.text = new DateTime(position.DateTimeTicks).ToShortTimeString();
+            TimeStampMesh.text = new DateTime(position.DateTimeTicks).ToString("d MMMM yyyy hh:mm");
             QuickSaveIndicator.SetActive(position.positionType == SavedPositionType.QuickSave);
         }
         

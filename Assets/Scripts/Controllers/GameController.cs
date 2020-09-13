@@ -123,13 +123,13 @@ namespace Controllers
         
             MouseCursorController.LockCursor();
         }
-        
+
         /// <summary>
-        /// Run from SplashScreen OnStartGameButtonClick
+        /// Run also from Loading from menu
         /// </summary>
-        public void OnStartANewGameRequested()
+        public void InitializeGameLoop()
         {
-            InitializeNewGame();
+            if (isGameLoopOn) return;
             
             MouseCursorController.SetCursorVisibility(false);
         
@@ -138,6 +138,16 @@ namespace Controllers
             InputEnabled = true;
         
             OnGameLoopStarted?.Invoke();
+        } 
+        
+        /// <summary>
+        /// Run from SplashScreen OnStartGameButtonClick
+        /// </summary>
+        public void OnStartANewGameRequested()
+        {
+            InitializeNewGame();
+            
+            InitializeGameLoop();
         }
     }
 }
