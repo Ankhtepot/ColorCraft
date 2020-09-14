@@ -162,8 +162,6 @@ namespace Components
             yield return new WaitForSeconds(0.5f);
             yield return new WaitWhile(() => rigidBody.velocity != Vector3.zero && ElementBellowIsNotDetached(rigidBody.transform.position));
             
-            // print("element stopped moving");
-            
             Destroy(rigidBody);
             elementCollider.enabled = false;
                 
@@ -200,7 +198,7 @@ namespace Components
             var buildBaseFor = ownBuildElement.BuildBaseOn;
             
             
-            DetachedElementsChecker.CheckForDetachedElements(ownBuildElement, ResolveDirectionsValidForBuildBasePosition(buildBaseFor));
+            DetachedElementsChecker.CheckForDetachedElements(ownBuildElement);
             Destroy(gameObject);
         }
 

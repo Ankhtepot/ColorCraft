@@ -13,10 +13,9 @@ namespace Utilities
         private static List<Vector3Int> groundElementsPositions;
 #pragma warning restore 649
 
-        public static void CheckForDetachedElements(BuildElement origin, List<Vector3Int> directions)
+        public static void CheckForDetachedElements(BuildElement origin)
         {
-            // var store = BuiltElementsStoreController.GetStoreDictionary();
-            var elementsToCheck = origin.ConnectedTo;//;SurroundingElementInfo.GetConnectedElementsPositions(detachedPosition, directions);
+            var elementsToCheck = SurroundingElementInfo.GetSurroundingElements(origin);
             
             var detachedElements = new List<BuildElement>();
             

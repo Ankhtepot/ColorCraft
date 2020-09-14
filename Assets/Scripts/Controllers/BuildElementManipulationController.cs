@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using Components;
+using Extensions;
 using UnityEngine;
 using Utilities;
 using Utilities.Enumerations;
@@ -62,14 +63,22 @@ namespace Controllers
             
             BuiltElementsStoreController.AddElement(instantiatedElement);
 
+            UpdateSurroundingElementsConnections(instantiatedElement);
+            
             if (instantiatedElement.BuildBaseOn != BuildPosition.AllSides)
-            {
-                DetachedElementsChecker.CheckForDetachedElements(GetComponent<BuildElement>(), Vector3Directions.HorizontalDirections);
+            { //TODO: Here it would need to be tuned for variants of BuildPositions
+                DetachedElementsChecker.CheckForDetachedElements(instantiatedElement);
             }
 
             canBuild = false;
             
             StartCoroutine(CooldownCanBuild());
+        }
+
+        private void UpdateSurroundingElementsConnections(BuildElement element)
+        {
+            SurroundingElementInfo.GetSurroundingElements(element)
+                .ForEach(item => item.SetConnections());
         }
 
         private IEnumerator CooldownCanBuild()

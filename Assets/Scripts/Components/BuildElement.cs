@@ -76,14 +76,16 @@ namespace Components
         {
             ConnectedTo.Clear();
             
-            ConnectedTo = SurroundingElementInfo.GetConnectedBuildElements(transform.position.ToVector3Int()).ToList();
+            ConnectedTo = SurroundingElementInfo.GetConnectedElements(
+                transform.position.ToVector3Int(),
+                SurroundingElementInfo.ResolveDirectionsValidForBuildBasePosition(BuildBaseOn)).ToList();
             
             ConnectedTo.ForEach(RegisterToNeighbourElement);
         }
 
         private void RegisterToNeighbourElement(BuildElement element)
         {
-            if(!element.ConnectedTo.Contains(this))
+            if(element && !element.ConnectedTo.Contains(this))
             {
                 element.ConnectedTo.Add(this);
             };

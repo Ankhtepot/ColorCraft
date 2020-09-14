@@ -37,17 +37,22 @@ namespace Utilities
                    BuiltElementsStoreController.ContainsKey(positionBellow);
         }
 
-        public static IEnumerable<BuildElement> GetConnectedBuildElements(Vector3Int center)
+        public static List<BuildElement> GetSurroundingElements(BuildElement origin)
         {
-            return GetConnectedElementsPositions(center)
-                .Select(position => BuiltElementsStoreController.GetElementAtPosition(position).GetComponent<BuildElement>());
+            return (from direction 
+                in AllDirections 
+                select direction + origin.transform.position 
+                into checkedPosition 
+                where BuiltElementsStoreController.ContainsKey(checkedPosition) 
+                select BuiltElementsStoreController.GetElementAtPosition(checkedPosition.ToVector3Int()))
+                .ToList();
         }
-        
-        public static List<Vector3Int> GetConnectedElementsPositions(Vector3Int center, List<Vector3Int> directions = null)
-        {
-            var elements = new List<Vector3Int>();
 
-            var validDirections = AllDirections;
+        public static List<BuildElement> GetConnectedElements(Vector3Int center, List<Vector3Int> directions = null)
+        {
+            var elements = new List<BuildElement>();
+
+            var validDirections = directions ?? AllDirections;
 
             if (gameController.GameMode != GameMode.Replace && BuiltElementsStoreController.ContainsKey(center))
             {
@@ -69,7 +74,7 @@ namespace Utilities
                         continue;
                     }
                     
-                    elements.Add(position);
+                    elements.Add(BuiltElementsStoreController.GetElementAtPosition(position));
                 }
             }
 
