@@ -15,7 +15,6 @@ namespace Utilities
 #pragma warning disable 649
         private static GameController gameController;
         private static TerrainSpawnerController terrainSpawner;
-        private static List<Vector3Int> groundElementsPositions;
 #pragma warning restore 649
 
         private void Start()
@@ -36,6 +35,12 @@ namespace Utilities
             
             return terrainSpawner.IsGroundAtPosition(positionBellow) ||
                    BuiltElementsStoreController.ContainsKey(positionBellow);
+        }
+
+        public static IEnumerable<BuildElement> GetConnectedBuildElements(Vector3Int center)
+        {
+            return GetConnectedElementsPositions(center)
+                .Select(position => BuiltElementsStoreController.GetElementAtPosition(position).GetComponent<BuildElement>());
         }
         
         public static List<Vector3Int> GetConnectedElementsPositions(Vector3Int center, List<Vector3Int> directions = null)
@@ -95,10 +100,7 @@ namespace Utilities
 
         public static bool IsAnyPositionAroundGround(Vector3Int center)
         {
-            if (groundElementsPositions == null)
-            {
-                groundElementsPositions = terrainSpawner.GetGroundElementsPositions();
-            }
+            var groundElementsPositions = terrainSpawner.GetGroundElementsPositions();
             
             return GetSurroundingPositions(center, AllDirections)
                 .Any(position => groundElementsPositions.Contains(position));

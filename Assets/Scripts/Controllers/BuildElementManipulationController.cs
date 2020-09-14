@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using Components;
-using Extensions;
 using UnityEngine;
 using Utilities;
 using Utilities.Enumerations;
@@ -23,11 +22,17 @@ namespace Controllers
         private bool inputEnabled = true;
         private bool canBuild = true;
         private GameMode gameMode;
-        private GameObject replacedElement;
-        private GameObject elementToBuild;
-        private GameObject previewItem;
+        private BuildElement replacedElement;
+        private BuildElement elementToBuild;
+        private BuildElement previewItem;
+        public BuildElement self;
 #pragma warning restore 649
-       
+
+        private void Start()
+        {
+            self = GetComponent<BuildElement>();
+        }
+
         private void Update()
         {
             InstantiateBuildElement();
@@ -57,9 +62,9 @@ namespace Controllers
             
             BuiltElementsStoreController.AddElement(instantiatedElement);
 
-            if (instantiatedElement.GetComponent<BuildElement>().BuildBaseOn != BuildPosition.AllSides)
+            if (instantiatedElement.BuildBaseOn != BuildPosition.AllSides)
             {
-                DetachedElementsChecker.CheckForDetachedElements(previewPosition.ToVector3Int(), Vector3Directions.HorizontalDirections);
+                DetachedElementsChecker.CheckForDetachedElements(GetComponent<BuildElement>(), Vector3Directions.HorizontalDirections);
             }
 
             canBuild = false;
@@ -73,7 +78,7 @@ namespace Controllers
             canBuild = true;
         }
 
-        private void SetPreviewItem(GameObject element)
+        private void SetPreviewItem(BuildElement element)
         {
             element.transform.localScale = previewElementScaleFactor;
             
@@ -139,18 +144,18 @@ namespace Controllers
         {
             if (replacedElement != null)
             {
-                replacedElement.SetActive(true);
+                replacedElement.gameObject.SetActive(true);
             }
 
             replacedElement = BuiltElementsStoreController.GetElementAtPosition(previewPosition);
 
-            if (previewItem.GetComponent<BuildElement>().CanBeBuilt == BuildPosition.Top &&
+            if (previewItem.CanBeBuilt == BuildPosition.Top &&
                 !SurroundingElementInfo.IsGroundOrBuiltElementBellow(previewPosition))
             {
                 return;
             }
             
-            replacedElement.SetActive(false);
+            replacedElement.gameObject.SetActive(false);
             DisplayPreviewElement(previewPosition);
         }
 
@@ -200,7 +205,7 @@ namespace Controllers
                 Destroy(child.gameObject);
             }
         
-            previewItem = newElement.gameObject;
+            previewItem = newElement;
             elementToBuild = previewItem;
             var newPreviewItem = Instantiate(previewItem, previewElementPivot.transform.position, Quaternion.identity);
 

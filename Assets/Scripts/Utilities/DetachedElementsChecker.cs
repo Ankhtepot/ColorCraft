@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Components;
-using Controllers;
 using UnityEngine;
 
 //Fireball Games * * * PetrZavodny.com
@@ -14,69 +13,66 @@ namespace Utilities
         private static List<Vector3Int> groundElementsPositions;
 #pragma warning restore 649
 
-        public static void CheckForDetachedElements(Vector3Int detachedPosition, List<Vector3Int> directions)
+        public static void CheckForDetachedElements(BuildElement origin, List<Vector3Int> directions)
         {
-            var store = BuiltElementsStoreController.GetStoreDictionary();
-            var elementsToCheck = SurroundingElementInfo.GetConnectedElementsPositions(detachedPosition, directions);
+            // var store = BuiltElementsStoreController.GetStoreDictionary();
+            var elementsToCheck = origin.ConnectedTo;//;SurroundingElementInfo.GetConnectedElementsPositions(detachedPosition, directions);
             
-            var detachedElements = new List<Vector3Int>();
+            var detachedElements = new List<BuildElement>();
             
-            foreach (var position in elementsToCheck)
+            foreach (var element in elementsToCheck)
             {
-                //If is position in detachedElements, it means it was in the path of element on other already checked side.
-                if (detachedElements.Contains(position))
+                //If is element in detachedElements, it means it was in the path of element on other already checked side.
+                if (detachedElements.Contains(element))
                 {
                     continue;
                 }
                 
-                var newQueue = new Queue<Vector3Int>();
-                newQueue.Enqueue(position);
+                var newQueue = new Queue<BuildElement>();
+                newQueue.Enqueue(element);
                 detachedElements.AddRange(FindDetachedGroupOfElements(newQueue, detachedElements));
             }
 
             detachedElements = detachedElements.Distinct().ToList();
 
-            var effectedElements = detachedElements.Select(position => store[position]).ToList();
-            effectedElements.ForEach(element => element.GetComponent<BuildElementLifeCycle>().IsDetached = true);
+            detachedElements.ForEach(element => element.SetDetached());
         }
 
-        private static IEnumerable<Vector3Int> FindDetachedGroupOfElements(Queue<Vector3Int> queue, List<Vector3Int> detachedElements)
+        private static IEnumerable<BuildElement> FindDetachedGroupOfElements(Queue<BuildElement> queue, List<BuildElement> detachedElements)
         {
-            var positionsOnThePath = new List<Vector3Int>();
-            var exploredPositions = new List<Vector3Int>();
+            var elementsOnThePath = new List<BuildElement>();
+            var exploredElements = new List<BuildElement>();
             
             while (queue.Count > 0)
             {
-                var exploredPosition = queue.Dequeue();
-                positionsOnThePath.Add(exploredPosition);
-                exploredPositions.Add(exploredPosition);
+                var exploredElement = queue.Dequeue();
+                elementsOnThePath.Add(exploredElement);
+                exploredElements.Add(exploredElement);
 
                 //if is ground around, then the path is not detached, return unchanged detachedElements
-                if (SurroundingElementInfo.IsAnyPositionAroundGround(exploredPosition))
+                if (exploredElement.IsGrounded)
                 {
                     return detachedElements;
                 }
                 
-                var surroundingPositions = SurroundingElementInfo.GetConnectedElementsPositions(exploredPosition, Vector3Directions.AllDirections);
-            
-                surroundingPositions.ForEach(position =>
+                exploredElement.ConnectedTo.ForEach(element =>
                 {
                     //if is not position already in the list, add it
-                    if (!positionsOnThePath.Contains(position))
+                    if (!elementsOnThePath.Contains(element))
                     {
-                        positionsOnThePath.Add(position);
+                        elementsOnThePath.Add(element);
                     }
                     //found positions also needs to be added to process them from queue
-                    if (!queue.Contains(position) && !exploredPositions.Contains(position))
+                    if (!queue.Contains(element) && !exploredElements.Contains(element))
                     {
-                        queue.Enqueue(position);
+                        queue.Enqueue(element);
                     }
                 });
             }
             
             //if code gets here, it means, that all elements on the path are no grounded,
             //return concatenated detachedElements list then
-            detachedElements.AddRange(positionsOnThePath);
+            detachedElements.AddRange(elementsOnThePath);
             return detachedElements;
         }
     }
