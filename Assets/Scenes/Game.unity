@@ -3478,6 +3478,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 1594793945, guid: 4069bd2e89cac8249b12f58b3366a507, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1818
+      objectReference: {fileID: 0}
     - target: {fileID: 1608289558, guid: 4069bd2e89cac8249b12f58b3366a507, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -3485,6 +3489,16 @@ PrefabInstance:
     - target: {fileID: 1608289558, guid: 4069bd2e89cac8249b12f58b3366a507, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnOutsideTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 1558514907254331955, guid: 4069bd2e89cac8249b12f58b3366a507,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1782
+      objectReference: {fileID: 0}
+    - target: {fileID: 2058249307221609342, guid: 4069bd2e89cac8249b12f58b3366a507,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 38
       objectReference: {fileID: 0}
     - target: {fileID: 2058249307346735424, guid: 4069bd2e89cac8249b12f58b3366a507,
         type: 3}
@@ -3611,6 +3625,21 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1195350023}
+    - target: {fileID: 2058249307823531677, guid: 4069bd2e89cac8249b12f58b3366a507,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 95.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2058249307823531677, guid: 4069bd2e89cac8249b12f58b3366a507,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 386.54724
+      objectReference: {fileID: 0}
+    - target: {fileID: 2058249308550353549, guid: 4069bd2e89cac8249b12f58b3366a507,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 150
+      objectReference: {fileID: 0}
     - target: {fileID: 2058249308703294361, guid: 4069bd2e89cac8249b12f58b3366a507,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
