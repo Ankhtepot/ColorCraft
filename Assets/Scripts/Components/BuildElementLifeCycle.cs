@@ -40,6 +40,7 @@ namespace Components
         private Color mainMaterialColor;
         private Rigidbody rigidBody;
         private Collider elementCollider;
+        private Collider bodyCollider;
         [HideInInspector] public BuildElement ownBuildElement;
 #pragma warning restore 649
 
@@ -47,6 +48,7 @@ namespace Components
         {
             SetParticleEffects();
             originalHitpoints = Hitpoints;
+            bodyCollider = GetComponentInChildren<Collider>();
         }
 
         private void OnCollisionEnter(Collision other)
@@ -137,6 +139,9 @@ namespace Components
                 }
 
                 elementCollider.enabled = true;
+                
+                //Disable body collider for falling
+                bodyCollider.enabled = false;
 
                 StartCoroutine(CheckVelocityTillZero());
             }
@@ -156,6 +161,8 @@ namespace Components
             
             isDetached = detached;
         }
+        
+        
 
         private IEnumerator CheckVelocityTillZero()
         {
@@ -164,6 +171,7 @@ namespace Components
             
             Destroy(rigidBody);
             elementCollider.enabled = false;
+            bodyCollider.enabled = true;
                 
             IsDetached = false;
         }

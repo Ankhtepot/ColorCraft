@@ -49,6 +49,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanBeBuilt: 0
   BuildBaseOn: 0
+  ConnectedTo: []
+  IsGrounded: 0
   Description: CubeBrick
   StoreSprite: {fileID: 21300000, guid: 351327d0b3a7aec4386fc6ea790cc63a, type: 3}
 --- !u!114 &1896283210500516999
@@ -70,6 +72,8 @@ MonoBehaviour:
   pointOfDamage: {fileID: 6966538450966412203}
   deathVfx: {fileID: 426560696276268878, guid: 887ae87e5d9fd8341b3ea4f4792b5c6e, type: 3}
   AlternativeVfxColor: {r: 0.6509434, g: 0, b: 0, a: 1}
+  isDetached: 0
+  ownBuildElement: {fileID: 0}
 --- !u!1 &5491333467976937893
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,7 +179,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.96, y: 3.96, z: 3.96}
+  m_Size: {x: 4, y: 4, z: 4}
   m_Center: {x: -2, y: 4, z: -2}
 --- !u!1001 &2001820265078485253
 PrefabInstance:

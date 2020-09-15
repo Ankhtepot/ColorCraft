@@ -92,7 +92,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.99, y: 0.99, z: 0.99}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &365183085710697339
 MonoBehaviour:
@@ -156,6 +156,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanBeBuilt: 0
   BuildBaseOn: 0
+  ConnectedTo: []
+  IsGrounded: 0
   Description: CubeRed
   StoreSprite: {fileID: 21300000, guid: 45f8fb9db3ec3194d8ecc21f03b667c6, type: 3}
 --- !u!114 &716500589235025696
@@ -177,6 +179,8 @@ MonoBehaviour:
   pointOfDamage: {fileID: 2154536922289533293}
   deathVfx: {fileID: 426560696276268878, guid: 887ae87e5d9fd8341b3ea4f4792b5c6e, type: 3}
   AlternativeVfxColor: {r: 0, g: 0, b: 0, a: 0}
+  isDetached: 0
+  ownBuildElement: {fileID: 0}
 --- !u!1001 &6488208046261405365
 PrefabInstance:
   m_ObjectHideFlags: 0

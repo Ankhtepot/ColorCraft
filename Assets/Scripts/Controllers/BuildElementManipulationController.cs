@@ -208,6 +208,8 @@ namespace Controllers
         /// <param name="newElement"></param>
         public void SetPreviewElement(BuildElement newElement)
         {
+            HidePreviewElement();
+            
             if (newElement == null) return;
 
             foreach (Transform child in previewElementPivot.transform) {

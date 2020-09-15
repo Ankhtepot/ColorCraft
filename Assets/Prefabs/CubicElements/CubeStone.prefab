@@ -105,7 +105,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.99, y: 0.99, z: 0.99}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: -0.5, y: 1, z: -0.5}
 --- !u!1 &4470904905357970976
 GameObject:
@@ -156,6 +156,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanBeBuilt: 0
   BuildBaseOn: 0
+  ConnectedTo: []
+  IsGrounded: 0
   Description: CubeStone
   StoreSprite: {fileID: 21300000, guid: 92e80e63c1d8606468979aa12c029ca0, type: 3}
 --- !u!114 &5742487010612296318
@@ -177,6 +179,8 @@ MonoBehaviour:
   pointOfDamage: {fileID: 5478144456922621059}
   deathVfx: {fileID: 426560696276268878, guid: 887ae87e5d9fd8341b3ea4f4792b5c6e, type: 3}
   AlternativeVfxColor: {r: 0, g: 0, b: 0, a: 0}
+  isDetached: 0
+  ownBuildElement: {fileID: 0}
 --- !u!1001 &858650850088457051
 PrefabInstance:
   m_ObjectHideFlags: 0

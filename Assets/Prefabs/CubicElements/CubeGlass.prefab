@@ -50,6 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanBeBuilt: 0
   BuildBaseOn: 0
+  ConnectedTo: []
+  IsGrounded: 0
   Description: GlassCube
   StoreSprite: {fileID: 21300000, guid: d7034ee6fd0923f41af2fd811fc4f4af, type: 3}
 --- !u!114 &853298254892893525
@@ -71,6 +73,8 @@ MonoBehaviour:
   pointOfDamage: {fileID: 4389915634625972325}
   deathVfx: {fileID: 426560696276268878, guid: 887ae87e5d9fd8341b3ea4f4792b5c6e, type: 3}
   AlternativeVfxColor: {r: 0, g: 0, b: 0, a: 0}
+  isDetached: 0
+  ownBuildElement: {fileID: 0}
 --- !u!1 &3746684807982929013
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,7 +246,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.99, y: 0.99, z: 0.099}
+  m_Size: {x: 1, y: 1, z: 0.1}
   m_Center: {x: -0.44999993, y: 0.44999993, z: 0.0000000018626451}
 --- !u!114 &7780292255893247203
 MonoBehaviour:

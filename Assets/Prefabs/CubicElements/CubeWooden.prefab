@@ -49,6 +49,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanBeBuilt: 0
   BuildBaseOn: 0
+  ConnectedTo: []
+  IsGrounded: 0
   Description: CubeWooden
   StoreSprite: {fileID: 21300000, guid: 47ade53b77cc7d04ab5cef3292b47e25, type: 3}
 --- !u!114 &8102029078507973198
@@ -70,6 +72,8 @@ MonoBehaviour:
   pointOfDamage: {fileID: 760790314574298466}
   deathVfx: {fileID: 426560696276268878, guid: 887ae87e5d9fd8341b3ea4f4792b5c6e, type: 3}
   AlternativeVfxColor: {r: 0.6320754, g: 0.2114116, b: 0.0029814949, a: 1}
+  isDetached: 0
+  ownBuildElement: {fileID: 0}
 --- !u!1 &2744347749528598380
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,7 +179,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.96, y: 3.96, z: 3.96}
+  m_Size: {x: 4, y: 4, z: 4}
   m_Center: {x: -2, y: 4, z: -2}
 --- !u!1001 &5576041276026636986
 PrefabInstance:
