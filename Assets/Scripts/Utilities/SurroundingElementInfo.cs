@@ -15,7 +15,6 @@ namespace Utilities
 #pragma warning disable 649
         private static GameController gameController;
         private static TerrainSpawnerController terrainSpawner;
-        private static List<Vector3Int> groundElementsPositions;
 #pragma warning restore 649
 
         private void Start()
@@ -37,12 +36,23 @@ namespace Utilities
             return terrainSpawner.IsGroundAtPosition(positionBellow) ||
                    BuiltElementsStoreController.ContainsKey(positionBellow);
         }
-        
-        public static List<Vector3Int> GetConnectedElementsPositions(Vector3Int center, List<Vector3Int> directions = null)
-        {
-            var elements = new List<Vector3Int>();
 
-            var validDirections = AllDirections;
+        public static List<BuildElement> GetSurroundingElements(BuildElement origin)
+        {
+            return (from direction 
+                in AllDirections 
+                select direction + origin.transform.position 
+                into checkedPosition 
+                where BuiltElementsStoreController.ContainsKey(checkedPosition) 
+                select BuiltElementsStoreController.GetElementAtPosition(checkedPosition.ToVector3Int()))
+                .ToList();
+        }
+
+        public static List<BuildElement> GetConnectedElements(Vector3Int center, List<Vector3Int> directions = null)
+        {
+            var elements = new List<BuildElement>();
+
+            var validDirections = directions ?? AllDirections;
 
             if (gameController.GameMode != GameMode.Replace && BuiltElementsStoreController.ContainsKey(center))
             {
@@ -64,7 +74,7 @@ namespace Utilities
                         continue;
                     }
                     
-                    elements.Add(position);
+                    elements.Add(BuiltElementsStoreController.GetElementAtPosition(position));
                 }
             }
 
@@ -95,10 +105,7 @@ namespace Utilities
 
         public static bool IsAnyPositionAroundGround(Vector3Int center)
         {
-            if (groundElementsPositions == null)
-            {
-                groundElementsPositions = terrainSpawner.GetGroundElementsPositions();
-            }
+            var groundElementsPositions = terrainSpawner.GetGroundElementsPositions();
             
             return GetSurroundingPositions(center, AllDirections)
                 .Any(position => groundElementsPositions.Contains(position));

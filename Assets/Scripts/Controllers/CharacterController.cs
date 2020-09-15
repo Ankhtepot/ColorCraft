@@ -98,8 +98,10 @@ namespace Controllers
         /// Run from TerrainSpawner OnTerrainSpawned.
         /// This method is needed only on new game world generation
         /// </summary>
-        public void FixCharacterPosition()
+        private void FixCharacterPosition(bool isNewMap)
         {
+            if (!isNewMap) return;
+            
             float initialGridDimension = environment.GridSize * environment.WorldTileSideSize;
             var middleOfElementsVector = new Vector3(initialGridDimension / 2, 20, initialGridDimension / 2);
             var newPosition = position.GetGridPosition(middleOfElementsVector);
@@ -109,8 +111,6 @@ namespace Controllers
                 .FirstOrDefault(element => element.Key.x == newPosition.x && element.Key.y == newPosition.z);
         
             transform.position = new Vector3(newPosition.x, positionElement.Value.transform.position.y + (1 * environment.GridSize), newPosition.z);
-        
-            terrainSpawnerController.SpawningFinished.RemoveListener(FixCharacterPosition); 
         }
     }
 }

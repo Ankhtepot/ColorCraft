@@ -5,7 +5,6 @@ using Controllers;
 using Models;
 using UnityEngine;
 using Utilities;
-using Utilities.Enumerations;
 
 //Fireball Games * * * PetrZavodny.com
 

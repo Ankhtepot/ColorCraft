@@ -20,7 +20,6 @@ namespace Components
         [SerializeField] private ParticleSystem damageVfx;
         [SerializeField] private ParticleSystem pointOfDamage;
         [SerializeField] private ParticleSystem deathVfx;
-        [SerializeField] private SurroundingElementInfo elementInfo;
         [Header("Black is default, means, will not be used")]
         public Color AlternativeVfxColor;
         public bool IsDetached
@@ -41,12 +40,15 @@ namespace Components
         private Color mainMaterialColor;
         private Rigidbody rigidBody;
         private Collider elementCollider;
+        private Collider bodyCollider;
+        [HideInInspector] public BuildElement ownBuildElement;
 #pragma warning restore 649
 
         private void Start()
         {
             SetParticleEffects();
             originalHitpoints = Hitpoints;
+            bodyCollider = GetComponentInChildren<Collider>();
         }
 
         private void OnCollisionEnter(Collision other)
@@ -137,34 +139,39 @@ namespace Components
                 }
 
                 elementCollider.enabled = true;
-
-                if (!elementInfo)
-                {
-                    elementInfo = FindObjectOfType<SurroundingElementInfo>();
-                }
+                
+                //Disable body collider for falling
+                bodyCollider.enabled = false;
 
                 StartCoroutine(CheckVelocityTillZero());
             }
             else
             {
+                if (!ownBuildElement)
+                {
+                    ownBuildElement = GetComponent<BuildElement>();
+                }
+                
                 var currentPosition = transform.position;
                 transform.position = currentPosition.ToVector3Int();
                 // print($"ADDING {transform.position} to elementStore.");
-                BuiltElementsStoreController.AddElement(gameObject);
+                BuiltElementsStoreController.AddElement(ownBuildElement);
+                ownBuildElement.SetConnections();
             }
             
             isDetached = detached;
         }
+        
+        
 
         private IEnumerator CheckVelocityTillZero()
         {
             yield return new WaitForSeconds(0.5f);
             yield return new WaitWhile(() => rigidBody.velocity != Vector3.zero && ElementBellowIsNotDetached(rigidBody.transform.position));
             
-            // print("element stopped moving");
-            
             Destroy(rigidBody);
             elementCollider.enabled = false;
+            bodyCollider.enabled = true;
                 
             IsDetached = false;
         }
@@ -188,11 +195,18 @@ namespace Components
                 PopEffect(deathVfx);
             }
 
-            BuiltElementsStoreController.RemoveElement(gameObject);
-
-            var buildBaseFor = GetComponent<BuildElement>().BuildBaseOn;
+            if (!ownBuildElement)
+            {
+                ownBuildElement = GetComponent<BuildElement>();
+            }
             
-            DetachedElementsChecker.CheckForDetachedElements(transform.position.ToVector3Int(), ResolveDirectionsValidForBuildBasePosition(buildBaseFor));
+            BuiltElementsStoreController.RemoveElement(ownBuildElement);
+            ownBuildElement.Disconnect();
+
+            var buildBaseFor = ownBuildElement.BuildBaseOn;
+            
+            
+            DetachedElementsChecker.CheckForDetachedElements(ownBuildElement);
             Destroy(gameObject);
         }
 

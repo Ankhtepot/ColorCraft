@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Components;
 using Extensions;
 using UnityEngine;
 
@@ -10,10 +11,10 @@ namespace Controllers
     public class BuiltElementsStoreController : MonoBehaviour
     {
 #pragma warning disable 649
-        private static readonly Dictionary<Vector3Int, GameObject> store = new Dictionary<Vector3Int, GameObject>();
+        private static readonly Dictionary<Vector3Int, BuildElement> store = new Dictionary<Vector3Int, BuildElement>();
 #pragma warning restore 649
 
-        public static void AddElement(GameObject element)
+        public static void AddElement(BuildElement element)
         {
             var elementPosition = element.transform.position.ToVector3Int();
             
@@ -28,7 +29,7 @@ namespace Controllers
             }
         }
    
-        public static void RemoveElement(GameObject element)
+        public static void RemoveElement(BuildElement element)
         {
             RemoveElementWithPosition(element.transform.position);
         }
@@ -38,7 +39,7 @@ namespace Controllers
             return store.ContainsKey(key.ToVector3Int());
         }
 
-        public static GameObject GetElementAtPosition(Vector3Int position)
+        public static BuildElement GetElementAtPosition(Vector3Int position)
         {
             return store[position];
         }
@@ -68,15 +69,20 @@ namespace Controllers
         {
             store.Where(item => item.Key.x == coordinate.x && item.Key.z == coordinate.z)
                 .ToList()
-                .ForEach(foundItem => foundItem.Value.SetActive(isActive));
+                .ForEach(foundItem => SetElementActiveOnShow(isActive, foundItem.Value));
         }
 
-        public static List<GameObject> GetBuiltElements()
+        private static void SetElementActiveOnShow(bool isActive, BuildElement foundItem)
+        {
+            foundItem.gameObject.SetActive(isActive);
+        }
+
+        public static List<BuildElement> GetBuiltElements()
         {
             return store.Select(item => item.Value).ToList();
         }
 
-        public static Dictionary<Vector3Int, GameObject> GetStoreDictionary()
+        public static Dictionary<Vector3Int, BuildElement> GetStoreDictionary()
         {
             return store;
         }

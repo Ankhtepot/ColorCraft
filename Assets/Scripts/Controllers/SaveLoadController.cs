@@ -40,7 +40,7 @@ namespace Controllers
 
         private void Update()
         {
-            ManageInput();
+            // ManageInput();
         }
 
         private void ManageInput()
@@ -115,24 +115,21 @@ namespace Controllers
             return Path.Combine(Application.persistentDataPath, saveFolder);
         }
 
-        private List<BuiltElementDescription> GetBuildDescriptions(List<GameObject> list)
+        private List<BuiltElementDescription> GetBuildDescriptions(List<BuildElement> list)
         {
-            return list.Select(GameObjectToBuiltElementDescription)
+            return list.Select(ElementToBuiltElementDescription)
                 .Where(item => item != null)
                 .ToList();
         }
     
-        private static BuiltElementDescription GameObjectToBuiltElementDescription(GameObject item)
+        private static BuiltElementDescription ElementToBuiltElementDescription(BuildElement item)
         {
-            if (!item.GetComponent<BuildElement>()) return null;
-
-            var buildElement = item.GetComponent<BuildElement>();
             var health = item.GetComponent<BuildElementLifeCycle>();
 
             return new BuiltElementDescription()
             {
                 Position = item.transform.position.ToVector3Int(),
-                Name = buildElement.Description,
+                Name = item.Description,
                 Health = (health ? health.Hitpoints : 0)
             };
         }

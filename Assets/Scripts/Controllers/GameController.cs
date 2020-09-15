@@ -14,14 +14,12 @@ namespace Controllers
         [SerializeField] private bool inputEnabled;
         [SerializeField] private bool isGameLoopOn;
         [SerializeField] private GameMode gameMode;
-        [SerializeField] private ScreenShotService screenshotService;
         [SerializeField] public UnityEvent OnGameInitiated;
         [SerializeField] public UnityEvent OnGameLoopStarted;
         [SerializeField] public UnityEvent OnMenuRequested;
         [SerializeField] public CustomUnityEvents.EventGameMode OnGameModeChanged;
         [SerializeField] public CustomUnityEvents.EventBool OnInputEnabledChanged;
         [SerializeField] public CustomUnityEvents.EventBool OnGameLoopStatusChanged;
-        [HideInInspector] public string LastScreenshotPath;
 #pragma warning restore 649
 
         public GameMode GameMode
@@ -55,8 +53,7 @@ namespace Controllers
         }
 
         private bool IsGameLoopOn 
-        { 
-            get => isGameLoopOn;
+        {
             set => SetGameLoopStatus(value);
         }
 

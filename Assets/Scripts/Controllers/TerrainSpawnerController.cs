@@ -5,7 +5,6 @@ using Extensions;
 using Models;
 using UI;
 using UnityEngine;
-using UnityEngine.Events;
 using Utilities;
 using Random = UnityEngine.Random;
 
@@ -28,7 +27,7 @@ namespace Controllers
         [Header("Events")]
         [SerializeField] public CustomUnityEvents.EventVector3Int OnCoordinateHidden;
         [SerializeField] public CustomUnityEvents.EventVector3Int OnCoordinateShown;
-        [SerializeField] public UnityEvent SpawningFinished;
+        [SerializeField] public CustomUnityEvents.EventBool SpawningFinished;
     
         private int gridSize;
         private int worldTileSideSize;
@@ -81,7 +80,7 @@ namespace Controllers
             return Mathf.PerlinNoise(xCoordinate, yCoordinate);
         }
 
-        private void SpawnTerrainElements()
+        private void SpawnTerrainElements(bool isNewGame)
         {
             RefreshWorldVariables();
             SetPerlinMap();
@@ -106,7 +105,7 @@ namespace Controllers
                 }
             }
         
-            SpawningFinished?.Invoke();
+            SpawningFinished?.Invoke(isNewGame);
         }
 
         private void SpawnNewLine(Vector3Int newPosition)
@@ -222,20 +221,23 @@ namespace Controllers
         {
             float newYHeightValue = GetPerlinNoiseValue(newGridPosition.x, newGridPosition.y);
             var elementToMove = GridMap[oldElementKey];
+            var movedTransform = elementToMove.transform;
+            var movedPosition = movedTransform.position;
+            
+            OnCoordinateHidden?.Invoke(movedPosition.ToVector3Int());
         
-            OnCoordinateHidden?.Invoke(elementToMove.transform.position.ToVector3Int());
-        
-            elementToMove.transform.position = new Vector3(
+            movedPosition = new Vector3(
                 newGridPosition.x,
                 Mathf.RoundToInt(newYHeightValue * heightMultiplier),
                 newGridPosition.y);
+            movedTransform.position = movedPosition;
             elementToMove.SetHeightMaterial();
         
         
             GridMap.Remove(oldElementKey);
             GridMap.Add(newGridPosition, elementToMove);
         
-            OnCoordinateShown?.Invoke(elementToMove.transform.position.ToVector3Int());
+            OnCoordinateShown?.Invoke(movedPosition.ToVector3Int());
         }
 
         private Vector2Int Generate2DOffset()
@@ -271,18 +273,13 @@ namespace Controllers
                     health.Hitpoints = item.Health;
                 } 
             
-                BuiltElementsStoreController.AddElement(newElement.gameObject);
+                BuiltElementsStoreController.AddElement(newElement);
             });
         }
 
         private void ClearElementStores()
         {
-            foreach (Transform item in spawnedElementsParent.transform)
-            {
-                Destroy(item.gameObject);
-            }
-
-            GridMap.Clear();
+            ClearAndDestroyGameObjects(GridMap);
 
             ClearAndDestroyGameObjects(BuiltElementsStoreController.GetStoreDictionary());
         }
@@ -301,11 +298,11 @@ namespace Controllers
             characterPosition.OldGridPosition = data.CharacterPosition.ToVector3Int();
         }
     
-        private static void ClearAndDestroyGameObjects<K, V>(IDictionary<K, V> dictionary)
+        private static void ClearAndDestroyGameObjects<K, V>(IDictionary<K, V> dictionary) where V : MonoBehaviour
         {
             foreach (var item in dictionary)
             {
-                Destroy(item.Value as GameObject);
+                Destroy(item.Value.gameObject);
             }
 
             dictionary.Clear();
@@ -340,7 +337,7 @@ namespace Controllers
 
             SetWorldFromPositionData(data);
 
-            SpawnTerrainElements();
+            SpawnTerrainElements(false);
         
             InstantiateBuiltElementsFromPosition(data.BuiltElements);
 
@@ -356,7 +353,7 @@ namespace Controllers
             InitialWorldOffset = Generate2DOffset();
             TraversedOffset = Vector2Int.zero;
             ClearElementStores();
-            SpawnTerrainElements();
+            SpawnTerrainElements(true);
         }
 
         private void initialize()

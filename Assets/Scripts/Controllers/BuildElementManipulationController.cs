@@ -23,11 +23,17 @@ namespace Controllers
         private bool inputEnabled = true;
         private bool canBuild = true;
         private GameMode gameMode;
-        private GameObject replacedElement;
-        private GameObject elementToBuild;
-        private GameObject previewItem;
+        private BuildElement replacedElement;
+        private BuildElement elementToBuild;
+        private BuildElement previewItem;
+        public BuildElement self;
 #pragma warning restore 649
-       
+
+        private void Start()
+        {
+            self = GetComponent<BuildElement>();
+        }
+
         private void Update()
         {
             InstantiateBuildElement();
@@ -57,14 +63,22 @@ namespace Controllers
             
             BuiltElementsStoreController.AddElement(instantiatedElement);
 
-            if (instantiatedElement.GetComponent<BuildElement>().BuildBaseOn != BuildPosition.AllSides)
-            {
-                DetachedElementsChecker.CheckForDetachedElements(previewPosition.ToVector3Int(), Vector3Directions.HorizontalDirections);
+            UpdateSurroundingElementsConnections(instantiatedElement);
+            
+            if (instantiatedElement.BuildBaseOn != BuildPosition.AllSides)
+            { //TODO: Here it would need to be tuned for variants of BuildPositions
+                DetachedElementsChecker.CheckForDetachedElements(instantiatedElement);
             }
 
             canBuild = false;
             
             StartCoroutine(CooldownCanBuild());
+        }
+
+        private void UpdateSurroundingElementsConnections(BuildElement element)
+        {
+            SurroundingElementInfo.GetSurroundingElements(element)
+                .ForEach(item => item.SetConnections());
         }
 
         private IEnumerator CooldownCanBuild()
@@ -73,7 +87,7 @@ namespace Controllers
             canBuild = true;
         }
 
-        private void SetPreviewItem(GameObject element)
+        private void SetPreviewItem(BuildElement element)
         {
             element.transform.localScale = previewElementScaleFactor;
             
@@ -139,18 +153,18 @@ namespace Controllers
         {
             if (replacedElement != null)
             {
-                replacedElement.SetActive(true);
+                replacedElement.gameObject.SetActive(true);
             }
 
             replacedElement = BuiltElementsStoreController.GetElementAtPosition(previewPosition);
 
-            if (previewItem.GetComponent<BuildElement>().CanBeBuilt == BuildPosition.Top &&
+            if (previewItem.CanBeBuilt == BuildPosition.Top &&
                 !SurroundingElementInfo.IsGroundOrBuiltElementBellow(previewPosition))
             {
                 return;
             }
             
-            replacedElement.SetActive(false);
+            replacedElement.gameObject.SetActive(false);
             DisplayPreviewElement(previewPosition);
         }
 
@@ -194,13 +208,15 @@ namespace Controllers
         /// <param name="newElement"></param>
         public void SetPreviewElement(BuildElement newElement)
         {
+            HidePreviewElement();
+            
             if (newElement == null) return;
 
             foreach (Transform child in previewElementPivot.transform) {
                 Destroy(child.gameObject);
             }
         
-            previewItem = newElement.gameObject;
+            previewItem = newElement;
             elementToBuild = previewItem;
             var newPreviewItem = Instantiate(previewItem, previewElementPivot.transform.position, Quaternion.identity);
 
