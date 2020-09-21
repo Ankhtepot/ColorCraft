@@ -40,7 +40,7 @@ namespace Controllers
 
         private void Update()
         {
-            // ManageInput();
+            ManageInput();
         }
 
         private void ManageInput()
